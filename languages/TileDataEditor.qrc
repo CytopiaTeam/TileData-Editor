@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>TileDataEditor_nl.qm</file>
+    <file>TileDataEditor_de.qm</file>
+    <file>TileDataEditor_fr.qm</file>
+</qresource>
+</RCC>

@@ -37,6 +37,13 @@ HEADERS += \
 FORMS += \
         src/TileDataUI.ui \
         src/TileSetDataUI.ui
+		
+TRANSLATIONS = languages/TileDataEditor.ts \
+               languages/TileDataEditor_de.ts \
+               languages/TileDataEditor_fr.ts \
+               languages/TileDataEditor_nl.ts
+			   
+RESOURCES    = languages/TileDataEditor.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
