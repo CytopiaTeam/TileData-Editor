@@ -6,8 +6,8 @@
 #include <QtWidgets/QSplitter>
 #include <QtCore/QJsonObject>
 
-#include "ui_TileDataUi.h"
-#include "ui_TileSetDataUi.h"
+#include "ui_TileDataUI.h"
+#include "ui_TileSetDataUI.h"
 
 #include "TileDataContainer.hxx"
 

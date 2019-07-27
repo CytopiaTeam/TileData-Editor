@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-06-16T12:57:03
+# TileDataEditor
 #
 #-------------------------------------------------
 
@@ -24,6 +24,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
+FORMS += \
+        forms/TileDataUI.ui \
+        forms/TileSetDataUI.ui
+
 SOURCES += \
         src/main.cxx \
         src/TileDataUI.cxx \
@@ -32,11 +36,8 @@ SOURCES += \
 HEADERS += \
         src/TileDataContainer.hxx \
         src/TileDataUI.hxx \ 
-		src/tileData.hxx
+        src/tileData.hxx
 
-FORMS += \
-        src/TileDataUI.ui \
-        src/TileSetDataUI.ui
 		
 TRANSLATIONS = languages/TileDataEditor.ts \
                languages/TileDataEditor_de.ts \
