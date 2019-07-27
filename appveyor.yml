@@ -1,0 +1,33 @@
+version: "{build}"
+image: Visual Studio 2017
+clone_depth: 1
+install:
+- cmd: >-
+    git submodule update --init --recursive
+
+    set QTDIR=C:\Qt\5.12\msvc2017_64
+
+    set PATH=%PATH%;%QTDIR%\bin
+
+    call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+build_script:
+- cmd: >-
+    dir
+
+    mkdir build
+
+    cd build
+
+    qmake ../TileDataEditor.pro
+
+    set cl=/MP
+
+    nmake /S /NOLOGO
+
+    windeployqt release/TileDataEditor.exe --release --no-compiler-runtime --no-translations --no-opengl-sw --dir TileDataEditor/
+
+    cp release/TileDataEditor.exe TileDataEditor/
+
+artifacts:
+- path: build/TileDataEditor
+  name: TileDataEditor
