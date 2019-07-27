@@ -13,7 +13,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtCore/QSignalBlocker>
 
-#include "tileData.hxx"
+#include "Cytopia/src/engine/basics/tileData.hxx"
 
 //--------------------------------------------------------------------------------
 
