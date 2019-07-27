@@ -36,7 +36,7 @@ SOURCES += \
 HEADERS += \
         src/TileDataContainer.hxx \
         src/TileDataUI.hxx \ 
-        src/tileData.hxx
+        Cytopia/src/engine/basics/tileData.hxx
 
 		
 TRANSLATIONS = languages/TileDataEditor.ts \
