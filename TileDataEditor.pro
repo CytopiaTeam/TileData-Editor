@@ -25,8 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 FORMS += \
-        forms/TileDataUI.ui \
-        forms/TileSetDataUI.ui
+        src/TileDataUI.ui \
+        src/TileSetDataUI.ui
 
 SOURCES += \
         src/main.cxx \
