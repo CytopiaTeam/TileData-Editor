@@ -20,12 +20,15 @@ set(SOURCES
 set(HEADERS
         src/TileDataContainer.hxx
         src/TileDataUI.hxx
-        Cytopia/src/engine/basics/tileData.hxx)
+        Cytopia/src/engine/basics/tileData.hxx
+        Cytopia/src/engine/common/enums.hxx)
 
 add_executable(TileDataEditor
         ${FORMS}
         ${HEADERS}
         ${SOURCES})
 
-target_include_directories(TileDataEditor PUBLIC ${CMAKE_SOURCE_DIR})
+target_include_directories(TileDataEditor PUBLIC ${CMAKE_SOURCE_DIR}
+        ${CMAKE_SOURCE_DIR}/Cytopia/src/engine/common
+        ${CMAKE_SOURCE_DIR}/Cytopia/external/header_only)
 target_link_libraries(TileDataEditor Qt5::Widgets)
