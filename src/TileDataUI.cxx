@@ -356,7 +356,7 @@ void TileDataUI::writeToTileData(TileData &tile)
   tile.price = ui.buildCost->value();
 
   readTileSetDataWidget(tilesSet, tile.tiles);
-  readTileSetDataWidget(cornerSet, tile.cornerTiles);
+  readTileSetDataWidget(cornerSet, tile.shoreTiles);
   readTileSetDataWidget(slopeSet, tile.slopeTiles);
 
   ensureUniqueId(tile);
@@ -379,7 +379,7 @@ void TileDataUI::readFromTileData(const TileData &tile)
   ui.buildCost->setValue(tile.price);
 
   fillTileSetDataWidget(tilesSet, tile.tiles);
-  fillTileSetDataWidget(cornerSet, tile.cornerTiles);
+  fillTileSetDataWidget(cornerSet, tile.shoreTiles);
   fillTileSetDataWidget(slopeSet, tile.slopeTiles);
 }
 
