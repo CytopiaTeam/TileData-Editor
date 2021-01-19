@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>792</width>
-    <height>678</height>
+    <width>1033</width>
+    <height>811</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,7 +46,17 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_10">
+     <property name="text">
+      <string>Subcategory</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="subCategory"/>
+   </item>
+   <item row="3" column="0" colspan="2">
     <widget class="QTabWidget" name="tabWidget">
      <property name="minimumSize">
       <size>
@@ -60,102 +70,315 @@
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Title</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="title">
-     <property name="toolTip">
-      <string>The items title. It's shown ingame and in the editors tree-view</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>Description</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="4" column="1">
     <widget class="QPlainTextEdit" name="description">
      <property name="toolTip">
       <string>Description of the item that is shown in it's details</string>
      </property>
     </widget>
    </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="label_15">
+     <property name="text">
+      <string>Tags</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QLineEdit" name="tags"/>
+   </item>
    <item row="9" column="0">
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="label_13">
      <property name="text">
-      <string>Author</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="1">
-    <widget class="QLineEdit" name="author">
-     <property name="toolTip">
-      <string>Author of this item</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0">
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>Power production</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="1">
-    <widget class="QSpinBox" name="powerProduction">
-     <property name="toolTip">
-      <string>Power production of this item. Negative values means power consumption.</string>
+      <string>GroundDecoration</string>
      </property>
     </widget>
    </item>
    <item row="11" column="0">
-    <widget class="QLabel" name="label_7">
+    <widget class="QLabel" name="label_16">
      <property name="text">
-      <string>Water production</string>
+      <string>Biomes</string>
      </property>
     </widget>
    </item>
    <item row="11" column="1">
-    <widget class="QSpinBox" name="waterProduction">
-     <property name="toolTip">
-      <string>Water production of this item. Negative values means power consumption.</string>
-     </property>
-    </widget>
+    <widget class="QLineEdit" name="biomes"/>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <layout class="QGridLayout" name="gridLayout_6">
+     <item row="5" column="1">
+      <widget class="QSpinBox" name="happyness"/>
+     </item>
+     <item row="10" column="1">
+      <widget class="QComboBox" name="wealth"/>
+     </item>
+     <item row="11" column="3">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Build cost</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_20">
+       <property name="text">
+        <string>Wealth</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>RequiredTiles</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QLineEdit" name="author">
+       <property name="toolTip">
+        <string>Author of this item</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QLabel" name="label_21">
+       <property name="text">
+        <string>Education</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QSpinBox" name="requiredTilesWidth">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>x</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="requiredTilesHeight">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="title">
+       <property name="toolTip">
+        <string>The items title. It's shown ingame and in the editors tree-view</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>Inhabitants</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="3">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Water production</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QCheckBox" name="placeOnGround">
+         <property name="text">
+          <string>placeOnGround</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="placeOnWater">
+         <property name="text">
+          <string>placeOnWater</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="isOverPlacable">
+         <property name="text">
+          <string>isOverPlacable</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_17">
+       <property name="text">
+        <string>Happyness</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="3">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Upkeep cost</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Author</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_22">
+       <property name="text">
+        <string>Crime</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="4">
+      <widget class="QSpinBox" name="waterProduction">
+       <property name="toolTip">
+        <string>Water production of this item. Negative values means power consumption.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_18">
+       <property name="text">
+        <string>Zones</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Power production</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="4">
+      <widget class="QSpinBox" name="upkeepCost">
+       <property name="toolTip">
+        <string>Monthly upkeep cost</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="4">
+      <widget class="QSpinBox" name="powerProduction">
+       <property name="toolTip">
+        <string>Power production of this item. Negative values means power consumption.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="4">
+      <widget class="QSpinBox" name="buildCost">
+       <property name="toolTip">
+        <string>Buildcost</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Title</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4">
+      <widget class="QSpinBox" name="inhabitants"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_23">
+       <property name="text">
+        <string>Pollution</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLabel" name="label_24">
+       <property name="text">
+        <string>FireHazard</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="crimeLevel"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QSpinBox" name="pollutionLevel"/>
+     </item>
+     <item row="3" column="4">
+      <widget class="QSpinBox" name="educationLevel"/>
+     </item>
+     <item row="4" column="4">
+      <widget class="QSpinBox" name="fireHazardLevel"/>
+     </item>
+     <item row="9" column="1">
+      <widget class="QLineEdit" name="zones"/>
+     </item>
+    </layout>
    </item>
    <item row="12" column="0">
-    <widget class="QLabel" name="label_8">
+    <widget class="QLabel" name="label_19">
      <property name="text">
-      <string>Upkeep cost</string>
+      <string>Styles</string>
      </property>
     </widget>
    </item>
    <item row="12" column="1">
-    <widget class="QSpinBox" name="upkeepCost">
-     <property name="toolTip">
-      <string>Monthly upkeep cost</string>
-     </property>
-    </widget>
+    <widget class="QLineEdit" name="styles"/>
    </item>
-   <item row="13" column="0">
-    <widget class="QLabel" name="label_9">
-     <property name="text">
-      <string>Build cost</string>
-     </property>
-    </widget>
-   </item>
-   <item row="13" column="1">
-    <widget class="QSpinBox" name="buildCost">
-     <property name="toolTip">
-      <string>Buildcost</string>
-     </property>
-    </widget>
+   <item row="9" column="1">
+    <widget class="QLineEdit" name="groundDecoration"/>
    </item>
   </layout>
  </widget>
