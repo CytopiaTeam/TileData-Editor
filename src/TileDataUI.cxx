@@ -32,12 +32,16 @@ TileDataUI::TileDataUI()
 
   ui.id->setMaxLength(TD_ID_MAX_CHARS);
   ui.category->setMaxLength(TD_CATEGORY_MAX_CHARS);
+  ui.subCategory->setMaxLength(TD_SUBCATEGORY_MAX_CHARS);
   ui.title->setMaxLength(TD_TITLE_MAX_CHARS);
   ui.author->setMaxLength(TD_AUTHOR_MAX_CHARS);
   ui.buildCost->setRange(TD_PRICE_MIN, TD_PRICE_MAX);
   ui.upkeepCost->setRange(TD_UPKEEP_MIN, TD_UPKEEP_MAX);
   ui.powerProduction->setRange(TD_POWER_MIN, TD_POWER_MAX);
   ui.waterProduction->setRange(TD_WATER_MIN, TD_WATER_MAX);
+  ui.requiredTilesHeight->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
+  ui.requiredTilesWidth->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
+
 
   w = new QWidget;
   tilesSet.setupUi(w);
@@ -346,14 +350,25 @@ void TileDataUI::writeToTileData(TileData &tile)
 {
   tile.id = ui.id->text().toStdString();
   tile.category = ui.category->text().toStdString();
+  tile.subCategory = ui.subCategory->text().toStdString();
   tile.title = ui.title->text().toStdString();
   tile.description = ui.description->toPlainText().toStdString();
   tile.author = ui.author->text().toStdString();
-
   tile.power = ui.powerProduction->value();
   tile.water = ui.waterProduction->value();
   tile.upkeepCost = ui.upkeepCost->value();
   tile.price = ui.buildCost->value();
+  tile.inhabitants = ui.inhabitants->value();
+  tile.pollutionLevel = ui.pollutionLevel->value();
+  tile.fireHazardLevel = ui.fireHazardLevel->value();
+  tile.educationLevel = ui.educationLevel->value();
+  tile.crimeLevel = ui.crimeLevel->value();
+  tile.happyness = ui.happyness->value();
+  tile.isOverPlacable = ui.isOverPlacable->checkState();
+  tile.placeOnGround = ui.placeOnGround->checkState();
+  tile.placeOnWater = ui.placeOnWater->checkState();
+  tile.RequiredTiles.height = static_cast<unsigned int>(ui.requiredTilesHeight->value());
+  tile.RequiredTiles.width = static_cast<unsigned int>(ui.requiredTilesWidth->value());
 
   readTileSetDataWidget(tilesSet, tile.tiles);
   readTileSetDataWidget(cornerSet, tile.shoreTiles);
@@ -369,6 +384,7 @@ void TileDataUI::readFromTileData(const TileData &tile)
 {
   ui.id->setText(QString::fromStdString(tile.id));
   ui.category->setText(QString::fromStdString(tile.category));
+  ui.subCategory->setText(QString::fromStdString(tile.subCategory));
   ui.title->setText(QString::fromStdString(tile.title));
   ui.description->setPlainText(QString::fromStdString(tile.description));
   ui.author->setText(QString::fromStdString(tile.author));
@@ -377,6 +393,17 @@ void TileDataUI::readFromTileData(const TileData &tile)
   ui.waterProduction->setValue(tile.water);
   ui.upkeepCost->setValue(tile.upkeepCost);
   ui.buildCost->setValue(tile.price);
+  ui.inhabitants->setValue(tile.inhabitants);
+  ui.pollutionLevel->setValue(tile.pollutionLevel);
+  ui.fireHazardLevel->setValue(tile.fireHazardLevel);
+  ui.educationLevel->setValue(tile.educationLevel);
+  ui.crimeLevel->setValue(tile.crimeLevel);
+  ui.happyness->setValue(tile.happyness);
+  ui.isOverPlacable->setChecked(tile.isOverPlacable);
+  ui.placeOnWater->setChecked(tile.placeOnWater);
+  ui.placeOnGround->setChecked(tile.placeOnGround);
+  ui.requiredTilesHeight->setValue(tile.RequiredTiles.height);
+  ui.requiredTilesWidth->setValue(tile.RequiredTiles.width);
 
   fillTileSetDataWidget(tilesSet, tile.tiles);
   fillTileSetDataWidget(cornerSet, tile.shoreTiles);

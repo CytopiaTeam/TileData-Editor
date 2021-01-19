@@ -25,7 +25,9 @@ public:
 
 private:
   void tileSetDataFromJson(TileSetData &data, const QJsonValue &value);
-  QJsonObject tileSetDataToJson(const TileSetData &data);
+  void requiredTilesFromJson(RequiredTilesData& data, const QJsonValue &value);
+  QJsonObject tileSetDataToJson(const TileSetData& data);
+  QJsonObject requiredTilesToJson(const RequiredTilesData& data);
 
 private:
   QString fileName;
