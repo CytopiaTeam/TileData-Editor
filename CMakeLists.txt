@@ -18,6 +18,7 @@ set(SOURCES
         src/TileDataContainer.cxx)
 
 set(HEADERS
+        src/helpers.hxx
         src/TileDataContainer.hxx
         src/TileDataUI.hxx
         Cytopia/src/engine/basics/tileData.hxx

@@ -8,8 +8,10 @@
 
 #include "ui_TileDataUI.h"
 #include "ui_TileSetDataUI.h"
+#include "helpers.hxx"
 
 #include "TileDataContainer.hxx"
+
 
 class TileDataUI : public QMainWindow
 {
@@ -42,7 +44,7 @@ private: // methods
   void fillTileSetDataWidget(const Ui_TileSetDataUi &ui, const TileSetData &data);
   void readTileSetDataWidget(const Ui_TileSetDataUi &ui, TileSetData &data);
   QJsonObject tileSetDataToJson(const TileSetData &data);
-
+      
 private: // members
   TileDataContainer tileContainer;
   QTreeWidget *tree;

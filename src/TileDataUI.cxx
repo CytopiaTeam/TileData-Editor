@@ -13,6 +13,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtCore/QSignalBlocker>
 
+
 #include "Cytopia/src/engine/basics/tileData.hxx"
 
 //--------------------------------------------------------------------------------
@@ -41,7 +42,6 @@ TileDataUI::TileDataUI()
   ui.waterProduction->setRange(TD_WATER_MIN, TD_WATER_MAX);
   ui.requiredTilesHeight->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
   ui.requiredTilesWidth->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
-
 
   w = new QWidget;
   tilesSet.setupUi(w);
@@ -369,7 +369,9 @@ void TileDataUI::writeToTileData(TileData &tile)
   tile.placeOnWater = ui.placeOnWater->checkState();
   tile.RequiredTiles.height = static_cast<unsigned int>(ui.requiredTilesHeight->value());
   tile.RequiredTiles.width = static_cast<unsigned int>(ui.requiredTilesWidth->value());
-
+  
+  commaSeperatedStringToVector(ui.tags->text().toStdString(), tile.tags, ",");
+  
   readTileSetDataWidget(tilesSet, tile.tiles);
   readTileSetDataWidget(cornerSet, tile.shoreTiles);
   readTileSetDataWidget(slopeSet, tile.slopeTiles);
@@ -404,6 +406,9 @@ void TileDataUI::readFromTileData(const TileData &tile)
   ui.placeOnGround->setChecked(tile.placeOnGround);
   ui.requiredTilesHeight->setValue(tile.RequiredTiles.height);
   ui.requiredTilesWidth->setValue(tile.RequiredTiles.width);
+
+  // present tags as a comma seperated string
+  ui.tags->setText(QString::fromStdString(commaSeperateVector(tile.tags, ",")));
 
   fillTileSetDataWidget(tilesSet, tile.tiles);
   fillTileSetDataWidget(cornerSet, tile.shoreTiles);
@@ -569,3 +574,5 @@ void TileDataUI::duplicateItem()
 }
 
 //--------------------------------------------------------------------------------
+
+

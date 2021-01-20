@@ -64,6 +64,8 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 
 		requiredTilesFromJson(tile.RequiredTiles, obj.value("RequiredTiles"));
 
+		tagsFromJson(tile, obj.value("tags"));
+		
 		tileSetDataFromJson(tile.tiles, obj.value("tiles"));
 		tileSetDataFromJson(tile.shoreTiles, obj.value("shoreTiles"));
 		tileSetDataFromJson(tile.slopeTiles, obj.value("slopeTiles"));
@@ -94,6 +96,14 @@ void TileDataContainer::requiredTilesFromJson(RequiredTilesData& data, const QJs
 	data.height= static_cast<unsigned int>(obj.value("height").toInt());
 }
 
+void TileDataContainer::tagsFromJson(TileData& data, const QJsonValue& value)
+{
+	QJsonObject obj = value.toObject();
+	for (const QJsonValue& tag : value.toArray())
+	{
+		data.tags.push_back(tag.toString().toStdString());
+	}
+}
 
 //--------------------------------------------------------------------------------
 
@@ -125,7 +135,8 @@ bool TileDataContainer::saveFile()
 		obj.insert("placeOnGround", tile.placeOnGround);
 		obj.insert("placeOnWater", tile.placeOnWater);
 
-		obj.insert("RequiredTiles",  requiredTilesToJson(tile.RequiredTiles));
+		obj.insert("RequiredTiles", requiredTilesToJson(tile.RequiredTiles));
+		obj.insert("tags", tagsToJson(tile.tags));
 
 		if (!tile.tiles.fileName.empty())
 			obj.insert("tiles", tileSetDataToJson(tile.tiles));
@@ -172,6 +183,18 @@ QJsonObject TileDataContainer::requiredTilesToJson(const RequiredTilesData& data
 	obj.insert("height", static_cast<int>(data.height));
 
 	return obj;
+}
+
+QJsonArray TileDataContainer::tagsToJson(const std::vector<std::string>& data)
+{
+	QJsonArray result;
+
+	for (const std::string tag : data)
+	{
+		result.append(QString::fromStdString(tag));
+	}
+
+	return result;
 }
 
 //--------------------------------------------------------------------------------
