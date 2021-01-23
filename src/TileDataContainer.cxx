@@ -65,7 +65,8 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 		requiredTilesFromJson(tile.RequiredTiles, obj.value("RequiredTiles"));
 
 		tagsFromJson(tile, obj.value("tags"));
-		
+		zonesFromJson(tile.zones, obj.value("zones"));
+
 		tileSetDataFromJson(tile.tiles, obj.value("tiles"));
 		tileSetDataFromJson(tile.shoreTiles, obj.value("shoreTiles"));
 		tileSetDataFromJson(tile.slopeTiles, obj.value("slopeTiles"));
@@ -105,6 +106,15 @@ void TileDataContainer::tagsFromJson(TileData& data, const QJsonValue& value)
 	}
 }
 
+void TileDataContainer::zonesFromJson(std::vector<Zones>& data, const QJsonValue& value)
+{
+	QJsonObject obj = value.toObject();
+	for (const QJsonValue& tag : value.toArray())
+	{
+		data.push_back( Zones::_from_string_nocase(tag.toString().toStdString().c_str()));
+	}
+}
+
 //--------------------------------------------------------------------------------
 
 bool TileDataContainer::saveFile()
@@ -137,6 +147,7 @@ bool TileDataContainer::saveFile()
 
 		obj.insert("RequiredTiles", requiredTilesToJson(tile.RequiredTiles));
 		obj.insert("tags", tagsToJson(tile.tags));
+		obj.insert("zones", zonesToJson(tile.zones));
 
 		if (!tile.tiles.fileName.empty())
 			obj.insert("tiles", tileSetDataToJson(tile.tiles));
@@ -192,6 +203,20 @@ QJsonArray TileDataContainer::tagsToJson(const std::vector<std::string>& data)
 	for (const std::string tag : data)
 	{
 		result.append(QString::fromStdString(tag));
+	}
+
+	return result;
+}
+
+QJsonArray TileDataContainer::zonesToJson(const std::vector<Zones>& data)
+{
+	QJsonArray result;
+
+	for (const Zones zone : data)
+	{
+		std::string myzone = zone._to_string();
+		result.append(QString::fromStdString(myzone));
+		//result.append(QString::fromUtf8(zone._to_string()));
 	}
 
 	return result;

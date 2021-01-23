@@ -28,9 +28,11 @@ private:
   void tagsFromJson(TileData& data, const QJsonValue& value);
   void tileSetDataFromJson(TileSetData &data, const QJsonValue &value);
   void requiredTilesFromJson(RequiredTilesData& data, const QJsonValue& value);
+  void zonesFromJson(std::vector<Zones> &data, const QJsonValue& value);
   QJsonObject tileSetDataToJson(const TileSetData& data);
   QJsonObject requiredTilesToJson(const RequiredTilesData& data);
   QJsonArray tagsToJson(const std::vector<std::string>& data);
+  QJsonArray zonesToJson(const std::vector<Zones>& data);
 
 private:
   QString fileName;

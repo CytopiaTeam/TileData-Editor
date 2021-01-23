@@ -372,6 +372,8 @@ void TileDataUI::writeToTileData(TileData &tile)
   
   commaSeperatedStringToVector(ui.tags->text().toStdString(), tile.tags, ",");
   
+  tile.zones = ZonesEnumVectorFromString(ui.zones->text());
+
   readTileSetDataWidget(tilesSet, tile.tiles);
   readTileSetDataWidget(cornerSet, tile.shoreTiles);
   readTileSetDataWidget(slopeSet, tile.slopeTiles);
@@ -407,6 +409,7 @@ void TileDataUI::readFromTileData(const TileData &tile)
   ui.requiredTilesHeight->setValue(tile.RequiredTiles.height);
   ui.requiredTilesWidth->setValue(tile.RequiredTiles.width);
 
+  ui.zones->setText(QString::fromStdString(ZonesEnumVectorToString(tile.zones)));
   // present tags as a comma seperated string
   ui.tags->setText(QString::fromStdString(commaSeperateVector(tile.tags, ",")));
 
@@ -414,6 +417,32 @@ void TileDataUI::readFromTileData(const TileData &tile)
   fillTileSetDataWidget(cornerSet, tile.shoreTiles);
   fillTileSetDataWidget(slopeSet, tile.slopeTiles);
 }
+
+//------------------------ Zones -------------------------------------------------
+
+std::string TileDataUI::ZonesEnumVectorToString(const std::vector<Zones>& data)
+{
+  std::vector<std::string> zones;
+
+  for (const Zones zone : data)
+  {
+    zones.push_back(zone._to_string());
+  }
+  return commaSeperateVector(zones);
+}
+
+std::vector<Zones> TileDataUI::ZonesEnumVectorFromString(QString zones)
+{
+  std::vector<std::string> zoneNames; 
+  commaSeperatedStringToVector(zones.toStdString(), zoneNames);
+  std::vector<Zones> result;
+  for (const std::string& zoneName : zoneNames)
+  {
+    result.push_back(Zones::_from_string_nocase(zoneName.c_str()));
+  }
+  return result;
+}
+
 
 //--------------------------------------------------------------------------------
 

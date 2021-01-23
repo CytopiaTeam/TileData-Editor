@@ -40,7 +40,9 @@ private: // methods
   void addItem(const TileData &tile);
   void ensureUniqueId(TileData &tile);
   void writeToTileData(TileData &tile);
-  void readFromTileData(const TileData &tile);
+  void readFromTileData(const TileData& tile);
+  std::vector<Zones> ZonesEnumVectorFromString(QString zones);
+  std::string ZonesEnumVectorToString(const std::vector<Zones>& data);
   void fillTileSetDataWidget(const Ui_TileSetDataUi &ui, const TileSetData &data);
   void readTileSetDataWidget(const Ui_TileSetDataUi &ui, TileSetData &data);
   QJsonObject tileSetDataToJson(const TileSetData &data);
