@@ -35,8 +35,11 @@ private slots:
 private: // methods
   void setup(Ui_TileSetDataUi &ui);
   void createActions();
-  void createZoneButtons();
-  void toggleActiveZoneButtons(const std::vector<Zones>& data);
+  void createZoneButtons(); /// dynamically create Buttons for assignable zones from the Zones enum
+  void createStyleButtons(); /// dynamically create Buttons for assignable zones from the Zones enum
+  void createTileTypeDropdown(); /// dynamically create Buttons forall available TileTypes
+  void toggleActiveZoneButtons(const std::vector<Zones>& data); /// when an item is loaded, check all zones button that are assigned in the json
+  void toggleActiveStyleButtons(const std::vector<Style>& data); /// when an item is loaded, check all zones button that are assigned in the json
   QTreeWidgetItem *newTreeRootItem(const TileData &tile);
   QTreeWidgetItem *newTreeItem(const TileData &tile);
   void addItem(const TileData &tile);
@@ -44,7 +47,8 @@ private: // methods
   void writeToTileData(TileData &tile);
   void readFromTileData(const TileData& tile);
   std::vector<Zones> ZonesEnumVectorFromString(QString zones);
-  std::vector<Zones> TileDataUI::ZonesEnumVectorFromButtons();
+  std::vector<Zones> ZonesEnumVectorFromButtons();
+  std::vector<Style> StyleEnumVectorFromButtons();
   std::string ZonesEnumVectorToString(const std::vector<Zones>& data);
   void fillTileSetDataWidget(const Ui_TileSetDataUi &ui, const TileSetData &data);
   void readTileSetDataWidget(const Ui_TileSetDataUi &ui, TileSetData &data);

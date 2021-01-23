@@ -66,6 +66,7 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 
 		tagsFromJson(tile, obj.value("tags"));
 		zonesFromJson(tile.zones, obj.value("zones"));
+		stylesFromJson(tile.style, obj.value("style"));
 
 		tileSetDataFromJson(tile.tiles, obj.value("tiles"));
 		tileSetDataFromJson(tile.shoreTiles, obj.value("shoreTiles"));
@@ -109,9 +110,18 @@ void TileDataContainer::tagsFromJson(TileData& data, const QJsonValue& value)
 void TileDataContainer::zonesFromJson(std::vector<Zones>& data, const QJsonValue& value)
 {
 	QJsonObject obj = value.toObject();
-	for (const QJsonValue& tag : value.toArray())
+	for (const QJsonValue& zone : value.toArray())
 	{
-		data.push_back( Zones::_from_string_nocase(tag.toString().toStdString().c_str()));
+		data.push_back( Zones::_from_string_nocase(zone.toString().toStdString().c_str()));
+	}
+}
+
+void TileDataContainer::stylesFromJson(std::vector<Style>& data, const QJsonValue& value)
+{
+	QJsonObject obj = value.toObject();
+	for (const QJsonValue& style : value.toArray())
+	{
+		data.push_back(Style::_from_string_nocase(style.toString().toStdString().c_str()));
 	}
 }
 
@@ -148,6 +158,7 @@ bool TileDataContainer::saveFile()
 		obj.insert("RequiredTiles", requiredTilesToJson(tile.RequiredTiles));
 		obj.insert("tags", tagsToJson(tile.tags));
 		obj.insert("zones", zonesToJson(tile.zones));
+		obj.insert("style", stylesToJson(tile.style));
 
 		if (!tile.tiles.fileName.empty())
 			obj.insert("tiles", tileSetDataToJson(tile.tiles));
@@ -214,13 +225,24 @@ QJsonArray TileDataContainer::zonesToJson(const std::vector<Zones>& data)
 
 	for (const Zones zone : data)
 	{
-		std::string myzone = zone._to_string();
-		result.append(QString::fromStdString(myzone));
-		//result.append(QString::fromUtf8(zone._to_string()));
+		result.append(QString::fromUtf8(zone._to_string()));
 	}
 
 	return result;
 }
+
+QJsonArray TileDataContainer::stylesToJson(const std::vector<Style>& data)
+{
+	QJsonArray result;
+
+	for (const Style style : data)
+	{
+		result.append(QString::fromUtf8(style._to_string()));
+	}
+
+	return result;
+}
+
 
 //--------------------------------------------------------------------------------
 

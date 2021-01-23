@@ -122,9 +122,9 @@ void TileDataUI::createActions()
   connect(action, &QAction::triggered, this, &QApplication::aboutQt);
   helpMenu->addAction(action);
 
-  // --- zone buttons ---
-  // --- zone buttons ---
+  // --- create buttons ---
   createZoneButtons();
+  createStyleButtons();
 }
 
 //--------------------------------------------------------------------------------
@@ -375,6 +375,7 @@ void TileDataUI::writeToTileData(TileData& tile)
   tile.RequiredTiles.width = static_cast<unsigned int>(ui.requiredTilesWidth->value());
 
   tile.zones = ZonesEnumVectorFromButtons();
+  tile.style = StyleEnumVectorFromButtons();
 
   commaSeperatedStringToVector(ui.tags->text().toStdString(), tile.tags, ",");
 
@@ -421,6 +422,7 @@ void TileDataUI::readFromTileData(const TileData& tile)
   fillTileSetDataWidget(slopeSet, tile.slopeTiles);
 
   toggleActiveZoneButtons(tile.zones);
+  toggleActiveStyleButtons(tile.style);
 
 }
 
@@ -465,7 +467,6 @@ std::vector<Zones> TileDataUI::ZonesEnumVectorFromButtons()
   return result;
 }
 
-//--------------------------------------------------------------------------------
 void TileDataUI::createZoneButtons()
 {
   // Iterate over all Enum values as strings
@@ -496,6 +497,54 @@ void TileDataUI::toggleActiveZoneButtons(const std::vector<Zones>& data)
       }
     }
   }
+}
+
+//-------------------------- Styles ---------------------------------------------
+void TileDataUI::createStyleButtons()
+{
+  for (const auto style : Style::_names())
+  {
+    QPushButton* button = new QPushButton(QString::fromStdString(style));
+    button->setCheckable(true);
+    button->setObjectName(QString::fromStdString(style));
+    ui.stylesButtonsHorizontalLayout->addWidget(button);
+  }
+}
+
+void TileDataUI::toggleActiveStyleButtons(const std::vector<Style>& data)
+{
+  // iterate over all buttons
+  for (int i = 0; i < ui.stylesButtonsHorizontalLayout->count(); i++)
+  {
+    // grab buttons from the horizontal layout they are located at.
+    QPushButton* myButton = dynamic_cast<QPushButton*>(ui.stylesButtonsHorizontalLayout->itemAt(i)->widget());
+    myButton->setChecked(false); // reset button
+    // iterate over all active styles for this tile
+    for (const Style& style : data)
+    {
+      if (myButton->objectName().toStdString().find(style._to_string()) != std::string::npos)
+      {
+        // if it matches, check the button
+        myButton->setChecked(true);
+      }
+    }
+  }
+}
+
+std::vector<Style> TileDataUI::StyleEnumVectorFromButtons()
+{
+  std::vector<Style> result;
+
+  for (int i = 0; i < ui.stylesButtonsHorizontalLayout->count(); i++)
+  {
+    QPushButton* myButton = dynamic_cast<QPushButton*>(ui.stylesButtonsHorizontalLayout->itemAt(i)->widget());
+
+    if (myButton->isChecked())
+    {
+      result.push_back(Style::_from_string_nocase(myButton->objectName().toStdString().c_str()));
+    }
+  }
+  return result;
 }
 
 //--------------------------------------------------------------------------------
