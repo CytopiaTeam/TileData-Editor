@@ -27,7 +27,7 @@ TileDataUI::TileDataUI()
   connect(tree, &QTreeWidget::currentItemChanged, this, &TileDataUI::itemSelected);
   splitter->addWidget(tree);
 
-  QWidget *w = new QWidget;
+  QWidget* w = new QWidget;
   ui.setupUi(w);
   splitter->addWidget(w);
 
@@ -72,16 +72,16 @@ TileDataUI::TileDataUI()
 
 void TileDataUI::createActions()
 {
-  QMenu *fileMenu = menuBar()->addMenu(tr("File"));
-  QMenu *editMenu = menuBar()->addMenu(tr("Edit"));
-  QMenu *helpMenu = menuBar()->addMenu(tr("Help"));
+  QMenu* fileMenu = menuBar()->addMenu(tr("File"));
+  QMenu* editMenu = menuBar()->addMenu(tr("Edit"));
+  QMenu* helpMenu = menuBar()->addMenu(tr("Help"));
 
-  QToolBar *toolBar = new QToolBar(this);
+  QToolBar* toolBar = new QToolBar(this);
   toolBar->setObjectName("ToolBar");
   addToolBar(toolBar);
 
   // --- file menu ---
-  QAction *action = new QAction(tr("Save"), this);
+  QAction* action = new QAction(tr("Save"), this);
   action->setIcon(QIcon::fromTheme("document-save"));
   action->setShortcut(QKeySequence::Save);
   connect(action, &QAction::triggered, this, &TileDataUI::saveTileData);
@@ -121,11 +121,15 @@ void TileDataUI::createActions()
   action = new QAction(tr("About Qt"), this);
   connect(action, &QAction::triggered, this, &QApplication::aboutQt);
   helpMenu->addAction(action);
+
+  // --- zone buttons ---
+  // --- zone buttons ---
+  createZoneButtons();
 }
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::closeEvent(QCloseEvent *event)
+void TileDataUI::closeEvent(QCloseEvent* event)
 {
   saveTileData();
 
@@ -139,7 +143,7 @@ void TileDataUI::closeEvent(QCloseEvent *event)
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::setup(Ui_TileSetDataUi &ui)
+void TileDataUI::setup(Ui_TileSetDataUi& ui)
 {
   connect(ui.fileButton, &QPushButton::clicked, this, [ui]() {
     QString fileName = QFileDialog::getOpenFileName(ui.fileButton, tr("Select Image"), ui.fileName->text(), tr("Images (*.png)"));
@@ -159,7 +163,7 @@ void TileDataUI::setup(Ui_TileSetDataUi &ui)
       // recalc width based on current count
       ui.width->setValue(ui.origImage->pixmap()->width() / ui.count->value());
     }
-  });
+    });
 
   connect(ui.deleteButton, &QPushButton::clicked, this, [ui, this]() {
     QMessageBox::StandardButton ret = QMessageBox::question(this, tr("Delete Image"), tr("Shall the image really be deleted?"));
@@ -176,36 +180,36 @@ void TileDataUI::setup(Ui_TileSetDataUi &ui)
     ui.imageSize->hide();
     ui.size1->setChecked(true);
     ui.deleteButton->setEnabled(false);
-  });
+    });
 
   connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui](int value) {
     if (!ui.origImage->pixmap() || (value == 0))
       return;
 
     ui.width->setValue(ui.origImage->pixmap()->width() / value);
-  });
+    });
 
   ui.origImage->hide(); // a hidden storage for the original sized pixmap
 
-  connect(ui.buttonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), this,
-          [ui](QAbstractButton *button) {
-            if (!ui.origImage->pixmap())
-              return;
+  connect(ui.buttonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this,
+    [ui](QAbstractButton* button) {
+      if (!ui.origImage->pixmap())
+        return;
 
-            QPixmap pix = *(ui.origImage->pixmap());
+      QPixmap pix = *(ui.origImage->pixmap());
 
-            if (button == ui.size2)
-              pix = pix.transformed(QTransform().scale(2, 2));
-            else if (button == ui.size4)
-              pix = pix.transformed(QTransform().scale(4, 4));
+      if (button == ui.size2)
+        pix = pix.transformed(QTransform().scale(2, 2));
+      else if (button == ui.size4)
+        pix = pix.transformed(QTransform().scale(4, 4));
 
-            ui.image->setPixmap(pix);
-          });
+      ui.image->setPixmap(pix);
+    });
 }
 
 //--------------------------------------------------------------------------------
 
-bool TileDataUI::loadFile(const QString &fileName)
+bool TileDataUI::loadFile(const QString& fileName)
 {
   QString error = tileContainer.loadFile(fileName);
   if (!error.isEmpty())
@@ -214,22 +218,22 @@ bool TileDataUI::loadFile(const QString &fileName)
     return false;
   }
 
-  QMap<QString, QTreeWidgetItem *> categories;
-  for (const TileData &tile : tileContainer)
+  QMap<QString, QTreeWidgetItem*> categories;
+  for (const TileData& tile : tileContainer)
   {
     QString category(QString::fromStdString(tile.category));
 
     if (!categories.contains(category))
     {
-      QTreeWidgetItem *item = newTreeRootItem(tile);
+      QTreeWidgetItem* item = newTreeRootItem(tile);
       categories.insert(category, item);
     }
   }
 
-  for (const TileData &tile : tileContainer)
+  for (const TileData& tile : tileContainer)
   {
     QString category(QString::fromStdString(tile.category));
-    QTreeWidgetItem *root = categories.value(category);
+    QTreeWidgetItem* root = categories.value(category);
 
     root->addChild(newTreeItem(tile));
   }
@@ -242,7 +246,7 @@ bool TileDataUI::loadFile(const QString &fileName)
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::itemSelected(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void TileDataUI::itemSelected(QTreeWidgetItem* current, QTreeWidgetItem* previous)
 {
   // store current form values into previous item
   if (previous && previous->data(0, Qt::UserRole).isValid())
@@ -265,16 +269,16 @@ void TileDataUI::itemSelected(QTreeWidgetItem *current, QTreeWidgetItem *previou
       previous->setData(0, Qt::UserRole, tileId);
 
       // if category changed, move item
-      QTreeWidgetItem *root = previous->parent();
+      QTreeWidgetItem* root = previous->parent();
       if (tileCategory != root->text(0))
       {
         QSignalBlocker blocker(tree); // avoid recursive call of itemSelected
 
         // different from current when called from saveTileData()
-        QTreeWidgetItem *currentItem = tree->currentItem();
+        QTreeWidgetItem* currentItem = tree->currentItem();
 
         int idx = root->indexOfChild(previous);
-        QTreeWidgetItem *item = root->takeChild(idx);
+        QTreeWidgetItem* item = root->takeChild(idx);
         if (root->childCount() == 0)
         {
           if (current == root)
@@ -296,7 +300,7 @@ void TileDataUI::itemSelected(QTreeWidgetItem *current, QTreeWidgetItem *previou
 
         if (item) // only if no toplevel category node found - create a new one
         {
-          QTreeWidgetItem *root = newTreeRootItem(tile);
+          QTreeWidgetItem* root = newTreeRootItem(tile);
           root->addChild(item);
         }
 
@@ -315,7 +319,7 @@ void TileDataUI::itemSelected(QTreeWidgetItem *current, QTreeWidgetItem *previou
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::ensureUniqueId(TileData &tile)
+void TileDataUI::ensureUniqueId(TileData& tile)
 {
   if (tile.category.empty())
     tile.category = "unknown category";
@@ -346,7 +350,7 @@ void TileDataUI::ensureUniqueId(TileData &tile)
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::writeToTileData(TileData &tile)
+void TileDataUI::writeToTileData(TileData& tile)
 {
   tile.id = ui.id->text().toStdString();
   tile.category = ui.category->text().toStdString();
@@ -369,10 +373,10 @@ void TileDataUI::writeToTileData(TileData &tile)
   tile.placeOnWater = ui.placeOnWater->checkState();
   tile.RequiredTiles.height = static_cast<unsigned int>(ui.requiredTilesHeight->value());
   tile.RequiredTiles.width = static_cast<unsigned int>(ui.requiredTilesWidth->value());
-  
+
+  tile.zones = ZonesEnumVectorFromButtons();
+
   commaSeperatedStringToVector(ui.tags->text().toStdString(), tile.tags, ",");
-  
-  tile.zones = ZonesEnumVectorFromString(ui.zones->text());
 
   readTileSetDataWidget(tilesSet, tile.tiles);
   readTileSetDataWidget(cornerSet, tile.shoreTiles);
@@ -384,7 +388,7 @@ void TileDataUI::writeToTileData(TileData &tile)
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::readFromTileData(const TileData &tile)
+void TileDataUI::readFromTileData(const TileData& tile)
 {
   ui.id->setText(QString::fromStdString(tile.id));
   ui.category->setText(QString::fromStdString(tile.category));
@@ -409,13 +413,15 @@ void TileDataUI::readFromTileData(const TileData &tile)
   ui.requiredTilesHeight->setValue(tile.RequiredTiles.height);
   ui.requiredTilesWidth->setValue(tile.RequiredTiles.width);
 
-  ui.zones->setText(QString::fromStdString(ZonesEnumVectorToString(tile.zones)));
   // present tags as a comma seperated string
   ui.tags->setText(QString::fromStdString(commaSeperateVector(tile.tags, ",")));
 
   fillTileSetDataWidget(tilesSet, tile.tiles);
   fillTileSetDataWidget(cornerSet, tile.shoreTiles);
   fillTileSetDataWidget(slopeSet, tile.slopeTiles);
+
+  toggleActiveZoneButtons(tile.zones);
+
 }
 
 //------------------------ Zones -------------------------------------------------
@@ -433,7 +439,7 @@ std::string TileDataUI::ZonesEnumVectorToString(const std::vector<Zones>& data)
 
 std::vector<Zones> TileDataUI::ZonesEnumVectorFromString(QString zones)
 {
-  std::vector<std::string> zoneNames; 
+  std::vector<std::string> zoneNames;
   commaSeperatedStringToVector(zones.toStdString(), zoneNames);
   std::vector<Zones> result;
   for (const std::string& zoneName : zoneNames)
@@ -443,10 +449,56 @@ std::vector<Zones> TileDataUI::ZonesEnumVectorFromString(QString zones)
   return result;
 }
 
+std::vector<Zones> TileDataUI::ZonesEnumVectorFromButtons()
+{
+  std::vector<Zones> result;
+
+  for (int i = 0; i < ui.zoneButtonsHorizontalLayout->count(); i++)
+  {
+    QPushButton* myButton = dynamic_cast<QPushButton*>(ui.zoneButtonsHorizontalLayout->itemAt(i)->widget());
+
+    if (myButton->isChecked())
+    {
+      result.push_back(Zones::_from_string_nocase(myButton->objectName().toStdString().c_str()));
+    }
+  }
+  return result;
+}
+
+//--------------------------------------------------------------------------------
+void TileDataUI::createZoneButtons()
+{
+  std::vector<std::string> myZones = { "NONE","RESIDENTIAL", "INDUSTRIAL", "COMMERCIAL","AGRICULTURAL" };
+  for (const auto zone : myZones)
+  {
+    QPushButton* button = new QPushButton(QString::fromStdString(zone));
+    button->setCheckable(true);
+    button->setObjectName(QString::fromStdString(zone));
+    ui.zoneButtonsHorizontalLayout->addWidget(button);
+  }
+}
+
+void TileDataUI::toggleActiveZoneButtons(const std::vector<Zones>& data)
+{
+  for (int i = 0; i < ui.zoneButtonsHorizontalLayout->count(); i++)
+  {
+    QPushButton* myButton = dynamic_cast<QPushButton*>(ui.zoneButtonsHorizontalLayout->itemAt(i)->widget());
+    myButton->setChecked(false); // reset button
+
+    for (const Zones& zone : data)
+    {
+      if (myButton->objectName().toStdString().find(zone._to_string()) != std::string::npos)
+      {
+        myButton->setChecked(true);
+        qInfo() << myButton->objectName() << " and " << zone._to_string();
+      }
+    }
+  }
+}
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi &ui, const TileSetData &data)
+void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSetData& data)
 {
   ui.fileName->setText(QString::fromStdString(data.fileName));
   QPixmap pix(QString::fromStdString(data.fileName));
@@ -464,7 +516,7 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi &ui, const TileSet
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::readTileSetDataWidget(const Ui_TileSetDataUi &ui, TileSetData &data)
+void TileDataUI::readTileSetDataWidget(const Ui_TileSetDataUi& ui, TileSetData& data)
 {
   data.fileName = ui.fileName->text().toStdString();
   data.clippingWidth = ui.width->value();
@@ -484,9 +536,9 @@ void TileDataUI::saveTileData()
 
 //--------------------------------------------------------------------------------
 
-QTreeWidgetItem *TileDataUI::newTreeRootItem(const TileData &tile)
+QTreeWidgetItem* TileDataUI::newTreeRootItem(const TileData& tile)
 {
-  QTreeWidgetItem *root = new QTreeWidgetItem(tree);
+  QTreeWidgetItem* root = new QTreeWidgetItem(tree);
   root->setIcon(0, QIcon::fromTheme("folder"));
   root->setText(0, QString::fromStdString(tile.category));
   root->setExpanded(true);
@@ -496,9 +548,9 @@ QTreeWidgetItem *TileDataUI::newTreeRootItem(const TileData &tile)
 
 //--------------------------------------------------------------------------------
 
-QTreeWidgetItem *TileDataUI::newTreeItem(const TileData &tile)
+QTreeWidgetItem* TileDataUI::newTreeItem(const TileData& tile)
 {
-  QTreeWidgetItem *item = new QTreeWidgetItem;
+  QTreeWidgetItem* item = new QTreeWidgetItem;
   item->setIcon(0, QIcon::fromTheme("text-x-generic"));
   item->setText(0, QString::fromStdString(tile.title));
   item->setData(0, Qt::UserRole, QString::fromStdString(tile.id));
@@ -536,12 +588,12 @@ void TileDataUI::newItem()
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::addItem(const TileData &tile)
+void TileDataUI::addItem(const TileData& tile)
 {
   tileContainer.addTileData(tile);
 
   // show in tree
-  QTreeWidgetItem *root = nullptr;
+  QTreeWidgetItem* root = nullptr;
   for (int i = 0; i < tree->topLevelItemCount(); i++)
   {
     if (tree->topLevelItem(i)->text(0) == QString::fromStdString(tile.category)) // new parent found
@@ -554,7 +606,7 @@ void TileDataUI::addItem(const TileData &tile)
   if (!root)
     root = newTreeRootItem(tile);
 
-  QTreeWidgetItem *item = newTreeItem(tile);
+  QTreeWidgetItem* item = newTreeItem(tile);
   root->addChild(item);
   tree->setCurrentItem(item);
 }
@@ -570,15 +622,15 @@ void TileDataUI::deleteItem()
   TileData tile = tileContainer.getTileData(id);
 
   QMessageBox::StandardButton ret = QMessageBox::question(this, tr("Delete Item"),
-                                                          tr("Shall the item '%1/%2' be deleted?")
-                                                              .arg(QString::fromStdString(tile.category))
-                                                              .arg(QString::fromStdString(tile.title)));
+    tr("Shall the item '%1/%2' be deleted?")
+    .arg(QString::fromStdString(tile.category))
+    .arg(QString::fromStdString(tile.title)));
 
   if (ret == QMessageBox::No)
     return;
 
   tileContainer.removeTileData(id);
-  QTreeWidgetItem *root = tree->currentItem()->parent();
+  QTreeWidgetItem* root = tree->currentItem()->parent();
   delete tree->currentItem();
   tree->setCurrentItem(nullptr); // and select nothing
 
