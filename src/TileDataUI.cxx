@@ -468,8 +468,8 @@ std::vector<Zones> TileDataUI::ZonesEnumVectorFromButtons()
 //--------------------------------------------------------------------------------
 void TileDataUI::createZoneButtons()
 {
-  std::vector<std::string> myZones = { "NONE","RESIDENTIAL", "INDUSTRIAL", "COMMERCIAL","AGRICULTURAL" };
-  for (const auto zone : myZones)
+  // Iterate over all Enum values as strings
+  for (const auto zone : Zones::_names())
   {
     QPushButton* button = new QPushButton(QString::fromStdString(zone));
     button->setCheckable(true);
@@ -480,17 +480,19 @@ void TileDataUI::createZoneButtons()
 
 void TileDataUI::toggleActiveZoneButtons(const std::vector<Zones>& data)
 {
+  // iterate over all buttons
   for (int i = 0; i < ui.zoneButtonsHorizontalLayout->count(); i++)
   {
+    // grab buttons from the horizontal layout they are located at.
     QPushButton* myButton = dynamic_cast<QPushButton*>(ui.zoneButtonsHorizontalLayout->itemAt(i)->widget());
     myButton->setChecked(false); // reset button
-
+    // iterate over all active zones for this tile
     for (const Zones& zone : data)
     {
       if (myButton->objectName().toStdString().find(zone._to_string()) != std::string::npos)
       {
+        // if it matches, check the button
         myButton->setChecked(true);
-        qInfo() << myButton->objectName() << " and " << zone._to_string();
       }
     }
   }
