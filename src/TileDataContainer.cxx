@@ -64,9 +64,12 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 
 		requiredTilesFromJson(tile.RequiredTiles, obj.value("RequiredTiles"));
 
-		tagsFromJson(tile, obj.value("tags"));
+		stringArrayFromJson(tile.tags, obj.value("tags"));
+		stringArrayFromJson(tile.biomes, obj.value("biomes"));
+		stringArrayFromJson(tile.groundDecoration, obj.value("groundDecoration"));
 		zonesFromJson(tile.zones, obj.value("zones"));
 		stylesFromJson(tile.style, obj.value("style"));
+		wealthFromJson(tile.wealth, obj.value("wealth"));
 
 		tileSetDataFromJson(tile.tiles, obj.value("tiles"));
 		tileSetDataFromJson(tile.shoreTiles, obj.value("shoreTiles"));
@@ -98,14 +101,15 @@ void TileDataContainer::requiredTilesFromJson(RequiredTilesData& data, const QJs
 	data.height= static_cast<unsigned int>(obj.value("height").toInt());
 }
 
-void TileDataContainer::tagsFromJson(TileData& data, const QJsonValue& value)
+void TileDataContainer::stringArrayFromJson(std::vector<std::string>& data, const QJsonValue& value)
 {
 	QJsonObject obj = value.toObject();
 	for (const QJsonValue& tag : value.toArray())
 	{
-		data.tags.push_back(tag.toString().toStdString());
+		data.push_back(tag.toString().toStdString());
 	}
 }
+
 
 void TileDataContainer::zonesFromJson(std::vector<Zones>& data, const QJsonValue& value)
 {
@@ -122,6 +126,15 @@ void TileDataContainer::stylesFromJson(std::vector<Style>& data, const QJsonValu
 	for (const QJsonValue& style : value.toArray())
 	{
 		data.push_back(Style::_from_string_nocase(style.toString().toStdString().c_str()));
+	}
+}
+
+void TileDataContainer::wealthFromJson(std::vector<Wealth>& data, const QJsonValue& value)
+{
+	QJsonObject obj = value.toObject();
+	for (const QJsonValue& style : value.toArray())
+	{
+		data.push_back(Wealth::_from_string_nocase(style.toString().toStdString().c_str()));
 	}
 }
 
@@ -156,9 +169,12 @@ bool TileDataContainer::saveFile()
 		obj.insert("placeOnWater", tile.placeOnWater);
 
 		obj.insert("RequiredTiles", requiredTilesToJson(tile.RequiredTiles));
-		obj.insert("tags", tagsToJson(tile.tags));
+		obj.insert("tags", stringArrayToJson(tile.tags));
+		obj.insert("biomes", stringArrayToJson(tile.biomes));
+		obj.insert("groundDecoration", stringArrayToJson(tile.groundDecoration));
 		obj.insert("zones", zonesToJson(tile.zones));
 		obj.insert("style", stylesToJson(tile.style));
+		obj.insert("wealth", wealthToJson(tile.wealth));
 
 		if (!tile.tiles.fileName.empty())
 			obj.insert("tiles", tileSetDataToJson(tile.tiles));
@@ -207,13 +223,13 @@ QJsonObject TileDataContainer::requiredTilesToJson(const RequiredTilesData& data
 	return obj;
 }
 
-QJsonArray TileDataContainer::tagsToJson(const std::vector<std::string>& data)
+QJsonArray TileDataContainer::stringArrayToJson(const std::vector<std::string>& data)
 {
 	QJsonArray result;
 
-	for (const std::string tag : data)
+	for (const std::string value : data)
 	{
-		result.append(QString::fromStdString(tag));
+		result.append(QString::fromStdString(value));
 	}
 
 	return result;
@@ -238,6 +254,18 @@ QJsonArray TileDataContainer::stylesToJson(const std::vector<Style>& data)
 	for (const Style style : data)
 	{
 		result.append(QString::fromUtf8(style._to_string()));
+	}
+
+	return result;
+}
+
+QJsonArray TileDataContainer::wealthToJson(const std::vector<Wealth>& data)
+{
+	QJsonArray result;
+
+	for (const Wealth wealth : data)
+	{
+		result.append(QString::fromUtf8(wealth._to_string()));
 	}
 
 	return result;

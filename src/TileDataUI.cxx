@@ -125,6 +125,7 @@ void TileDataUI::createActions()
   // --- create buttons ---
   createZoneButtons();
   createStyleButtons();
+  createWealthButtons();
 }
 
 //--------------------------------------------------------------------------------
@@ -376,8 +377,11 @@ void TileDataUI::writeToTileData(TileData& tile)
 
   tile.zones = ZonesEnumVectorFromButtons();
   tile.style = StyleEnumVectorFromButtons();
+  tile.wealth= WealthEnumVectorFromButtons();
 
   commaSeperatedStringToVector(ui.tags->text().toStdString(), tile.tags, ",");
+  commaSeperatedStringToVector(ui.biomes->text().toStdString(), tile.biomes, ",");
+  commaSeperatedStringToVector(ui.groundDecoration->text().toStdString(), tile.groundDecoration, ",");
 
   readTileSetDataWidget(tilesSet, tile.tiles);
   readTileSetDataWidget(cornerSet, tile.shoreTiles);
@@ -416,6 +420,8 @@ void TileDataUI::readFromTileData(const TileData& tile)
 
   // present tags as a comma seperated string
   ui.tags->setText(QString::fromStdString(commaSeperateVector(tile.tags, ",")));
+  ui.biomes->setText(QString::fromStdString(commaSeperateVector(tile.biomes, ",")));
+  ui.groundDecoration->setText(QString::fromStdString(commaSeperateVector(tile.groundDecoration, ",")));
 
   fillTileSetDataWidget(tilesSet, tile.tiles);
   fillTileSetDataWidget(cornerSet, tile.shoreTiles);
@@ -423,6 +429,7 @@ void TileDataUI::readFromTileData(const TileData& tile)
 
   toggleActiveZoneButtons(tile.zones);
   toggleActiveStyleButtons(tile.style);
+  toggleActiveWealthButtons(tile.wealth);
 
 }
 
@@ -499,6 +506,38 @@ void TileDataUI::toggleActiveZoneButtons(const std::vector<Zones>& data)
   }
 }
 
+void TileDataUI::createWealthButtons()
+{
+  // Iterate over all Enum values as strings
+  for (const auto wealth : Wealth::_names())
+  {
+    QPushButton* button = new QPushButton(QString::fromStdString(wealth));
+    button->setCheckable(true);
+    button->setObjectName(QString::fromStdString(wealth));
+    ui.wealthButtonsHorizontalLayout->addWidget(button);
+  }
+}
+
+void TileDataUI::toggleActiveWealthButtons(const std::vector<Wealth>& data)
+{
+  // iterate over all buttons
+  for (int i = 0; i < ui.wealthButtonsHorizontalLayout->count(); i++)
+  {
+    // grab buttons from the horizontal layout they are located at.
+    QPushButton* myButton = dynamic_cast<QPushButton*>(ui.wealthButtonsHorizontalLayout->itemAt(i)->widget());
+    myButton->setChecked(false); // reset button
+    // iterate over all active wealth for this tile
+    for (const Wealth& wealth : data)
+    {
+      if (myButton->objectName().toStdString().find(wealth._to_string()) != std::string::npos)
+      {
+        // if it matches, check the button
+        myButton->setChecked(true);
+      }
+    }
+  }
+}
+
 //-------------------------- Styles ---------------------------------------------
 void TileDataUI::createStyleButtons()
 {
@@ -542,6 +581,22 @@ std::vector<Style> TileDataUI::StyleEnumVectorFromButtons()
     if (myButton->isChecked())
     {
       result.push_back(Style::_from_string_nocase(myButton->objectName().toStdString().c_str()));
+    }
+  }
+  return result;
+}
+
+std::vector<Wealth> TileDataUI::WealthEnumVectorFromButtons()
+{
+  std::vector<Wealth> result;
+
+  for (int i = 0; i < ui.wealthButtonsHorizontalLayout->count(); i++)
+  {
+    QPushButton* myButton = dynamic_cast<QPushButton*>(ui.wealthButtonsHorizontalLayout->itemAt(i)->widget());
+
+    if (myButton->isChecked())
+    {
+      result.push_back(Wealth::_from_string_nocase(myButton->objectName().toStdString().c_str()));
     }
   }
   return result;
