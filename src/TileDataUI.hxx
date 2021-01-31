@@ -64,6 +64,7 @@ private: // members
   QSplitter *splitter;
   Ui_TileDataUi ui;
   Ui_TileSetDataUi tilesSet;
+  Ui_TileSetDataUi cornerSet;
   Ui_TileSetDataUi slopeSet;
 };
 
