@@ -73,7 +73,6 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 		tileTypeFromJson(tile.tileType, obj.value("tileType"));
 
 		tileSetDataFromJson(tile.tiles, obj.value("tiles"));
-		tileSetDataFromJson(tile.shoreTiles, obj.value("shoreTiles"));
 		tileSetDataFromJson(tile.slopeTiles, obj.value("slopeTiles"));
 
 		tileData.insert(id, tile);
@@ -178,19 +177,18 @@ bool TileDataContainer::saveFile()
 		obj.insert("placeOnWater", tile.placeOnWater);
 
 		obj.insert("RequiredTiles", requiredTilesToJson(tile.RequiredTiles));
-		obj.insert("tags", stringArrayToJson(tile.tags));
-		obj.insert("biomes", stringArrayToJson(tile.biomes));
-		obj.insert("groundDecoration", stringArrayToJson(tile.groundDecoration));
-		obj.insert("zones", zonesToJson(tile.zones));
-		obj.insert("style", stylesToJson(tile.style));
-		obj.insert("wealth", wealthToJson(tile.wealth));
+
+		if (!tile.groundDecoration.empty()) { obj.insert("groundDecoration", stringArrayToJson(tile.groundDecoration)); }
+		if (!tile.tags.empty()) { obj.insert("tags", stringArrayToJson(tile.tags)); }
+		if (!tile.biomes.empty()) { obj.insert("biomes", stringArrayToJson(tile.biomes)); }
+		if (!tile.style.empty()) { obj.insert("style", stylesToJson(tile.style)); }
+		if (!tile.wealth.empty()) { obj.insert("wealth", wealthToJson(tile.wealth)); }
+		if (!tile.zones.empty()) { obj.insert("zones", zonesToJson(tile.zones)); }
+
 		obj.insert("tileType", QString::fromUtf8(tile.tileType._to_string()));
 
 		if (!tile.tiles.fileName.empty())
 			obj.insert("tiles", tileSetDataToJson(tile.tiles));
-
-		if (!tile.shoreTiles.fileName.empty())
-			obj.insert("shoreTiles", tileSetDataToJson(tile.shoreTiles));
 
 		if (!tile.slopeTiles.fileName.empty())
 			obj.insert("slopeTiles", tileSetDataToJson(tile.slopeTiles));
