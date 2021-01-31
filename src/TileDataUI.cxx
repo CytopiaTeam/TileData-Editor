@@ -49,9 +49,9 @@ TileDataUI::TileDataUI()
   ui.tabWidget->addTab(w, tr("Tiles"));
 
   w = new QWidget;
-  cornerSet.setupUi(w);
-  setup(cornerSet);
-  ui.tabWidget->addTab(w, tr("Corner"));
+  shoreTileSet.setupUi(w);
+  setup(shoreTileSet);
+  ui.tabWidget->addTab(w, tr("ShoreLines"));
 
   w = new QWidget;
   slopeSet.setupUi(w);
@@ -388,7 +388,7 @@ void TileDataUI::writeToTileData(TileData& tile)
   commaSeperatedStringToVector(ui.groundDecoration->text().toStdString(), tile.groundDecoration, ",");
 
   readTileSetDataWidget(tilesSet, tile.tiles);
-  readTileSetDataWidget(cornerSet, tile.shoreTiles);
+  readTileSetDataWidget(shoreTileSet, tile.shoreTiles);
   readTileSetDataWidget(slopeSet, tile.slopeTiles);
 
   ensureUniqueId(tile);
@@ -428,7 +428,7 @@ void TileDataUI::readFromTileData(const TileData& tile)
   ui.groundDecoration->setText(QString::fromStdString(commaSeperateVector(tile.groundDecoration, ",")));
 
   fillTileSetDataWidget(tilesSet, tile.tiles);
-  fillTileSetDataWidget(cornerSet, tile.shoreTiles);
+  fillTileSetDataWidget(shoreTileSet, tile.shoreTiles);
   fillTileSetDataWidget(slopeSet, tile.slopeTiles);
 
   toggleActiveZoneButtons(tile.zones);
