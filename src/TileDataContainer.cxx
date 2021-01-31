@@ -104,7 +104,6 @@ void TileDataContainer::requiredTilesFromJson(RequiredTilesData& data, const QJs
 
 void TileDataContainer::stringArrayFromJson(std::vector<std::string>& data, const QJsonValue& value)
 {
-	QJsonObject obj = value.toObject();
 	for (const QJsonValue& tag : value.toArray())
 	{
 		data.push_back(tag.toString().toStdString());
@@ -114,7 +113,6 @@ void TileDataContainer::stringArrayFromJson(std::vector<std::string>& data, cons
 
 void TileDataContainer::zonesFromJson(std::vector<Zones>& data, const QJsonValue& value)
 {
-	QJsonObject obj = value.toObject();
 	for (const QJsonValue& zone : value.toArray())
 	{
 		data.push_back( Zones::_from_string_nocase(zone.toString().toStdString().c_str()));
@@ -123,7 +121,6 @@ void TileDataContainer::zonesFromJson(std::vector<Zones>& data, const QJsonValue
 
 void TileDataContainer::stylesFromJson(std::vector<Style>& data, const QJsonValue& value)
 {
-	QJsonObject obj = value.toObject();
 	for (const QJsonValue& style : value.toArray())
 	{
 		data.push_back(Style::_from_string_nocase(style.toString().toStdString().c_str()));
@@ -132,7 +129,6 @@ void TileDataContainer::stylesFromJson(std::vector<Style>& data, const QJsonValu
 
 void TileDataContainer::wealthFromJson(std::vector<Wealth>& data, const QJsonValue& value)
 {
-	QJsonObject obj = value.toObject();
 	for (const QJsonValue& style : value.toArray())
 	{
 		data.push_back(Wealth::_from_string_nocase(style.toString().toStdString().c_str()));
