@@ -73,6 +73,7 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 		tileTypeFromJson(tile.tileType, obj.value("tileType"));
 
 		tileSetDataFromJson(tile.tiles, obj.value("tiles"));
+		tileSetDataFromJson(tile.shoreTiles, obj.value("shoreTiles"));
 		tileSetDataFromJson(tile.slopeTiles, obj.value("slopeTiles"));
 
 		tileData.insert(id, tile);
@@ -189,6 +190,9 @@ bool TileDataContainer::saveFile()
 
 		if (!tile.tiles.fileName.empty())
 			obj.insert("tiles", tileSetDataToJson(tile.tiles));
+
+		if (!tile.shoreTiles.fileName.empty())
+			obj.insert("shoreTiles", tileSetDataToJson(tile.shoreTiles));
 
 		if (!tile.slopeTiles.fileName.empty())
 			obj.insert("slopeTiles", tileSetDataToJson(tile.slopeTiles));
