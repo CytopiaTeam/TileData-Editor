@@ -70,6 +70,7 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 		zonesFromJson(tile.zones, obj.value("zones"));
 		stylesFromJson(tile.style, obj.value("style"));
 		wealthFromJson(tile.wealth, obj.value("wealth"));
+		tileTypeFromJson(tile.tileType, obj.value("tileType"));
 
 		tileSetDataFromJson(tile.tiles, obj.value("tiles"));
 		tileSetDataFromJson(tile.shoreTiles, obj.value("shoreTiles"));
@@ -138,6 +139,18 @@ void TileDataContainer::wealthFromJson(std::vector<Wealth>& data, const QJsonVal
 	}
 }
 
+void TileDataContainer::tileTypeFromJson(TileType& tileType, const QJsonValue& value)
+{
+	if (!value.toString().isEmpty())
+	{
+		tileType = TileType::_from_string_nocase(value.toString().toStdString().c_str());
+	}
+	else
+	{
+		tileType = TileType::DEFAULT;
+	}
+}
+
 //--------------------------------------------------------------------------------
 
 bool TileDataContainer::saveFile()
@@ -175,6 +188,7 @@ bool TileDataContainer::saveFile()
 		obj.insert("zones", zonesToJson(tile.zones));
 		obj.insert("style", stylesToJson(tile.style));
 		obj.insert("wealth", wealthToJson(tile.wealth));
+		obj.insert("tileType", QString::fromUtf8(tile.tileType._to_string()));
 
 		if (!tile.tiles.fileName.empty())
 			obj.insert("tiles", tileSetDataToJson(tile.tiles));

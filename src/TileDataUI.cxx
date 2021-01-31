@@ -126,6 +126,7 @@ void TileDataUI::createActions()
   createZoneButtons();
   createStyleButtons();
   createWealthButtons();
+  fillTileTypeDropdown();
 }
 
 //--------------------------------------------------------------------------------
@@ -377,7 +378,8 @@ void TileDataUI::writeToTileData(TileData& tile)
 
   tile.zones = ZonesEnumVectorFromButtons();
   tile.style = StyleEnumVectorFromButtons();
-  tile.wealth= WealthEnumVectorFromButtons();
+  tile.wealth = WealthEnumVectorFromButtons();
+  tile.tileType = TileType::_from_index(ui.TileTypeComboBox->currentIndex());
 
   commaSeperatedStringToVector(ui.tags->text().toStdString(), tile.tags, ",");
   commaSeperatedStringToVector(ui.biomes->text().toStdString(), tile.biomes, ",");
@@ -430,6 +432,7 @@ void TileDataUI::readFromTileData(const TileData& tile)
   toggleActiveZoneButtons(tile.zones);
   toggleActiveStyleButtons(tile.style);
   toggleActiveWealthButtons(tile.wealth);
+  ui.TileTypeComboBox->setCurrentIndex(tile.tileType._to_index());
 
 }
 
@@ -515,6 +518,15 @@ void TileDataUI::createWealthButtons()
     button->setCheckable(true);
     button->setObjectName(QString::fromStdString(wealth));
     ui.wealthButtonsHorizontalLayout->addWidget(button);
+  }
+}
+
+void TileDataUI::fillTileTypeDropdown()
+{
+  // Iterate over all Enum values as strings
+  for (const auto tileType : TileType::_names())
+  {
+    ui.TileTypeComboBox->addItem(QString::fromStdString(tileType));
   }
 }
 

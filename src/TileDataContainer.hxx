@@ -33,6 +33,7 @@ private:
   void zonesFromJson(std::vector<Zones> &data, const QJsonValue& value);
   void stylesFromJson(std::vector<Style>& data, const QJsonValue& value);
   void wealthFromJson(std::vector<Wealth>& data, const QJsonValue& value);
+  void tileTypeFromJson(TileType& tileType, const QJsonValue& value);
   QJsonObject tileSetDataToJson(const TileSetData& data);
   QJsonObject requiredTilesToJson(const RequiredTilesData& data);
   QJsonArray stringArrayToJson(const std::vector<std::string>& data);

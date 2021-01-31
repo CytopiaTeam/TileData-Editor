@@ -38,7 +38,7 @@ private: // methods
   void createZoneButtons(); /// dynamically create Buttons for assignable zones from the Zones enum
   void createStyleButtons(); /// dynamically create Buttons for assignable styles from the Style enum
   void createWealthButtons(); /// dynamically create Buttons for assignable walth classes from the Wealth enum
-  void createTileTypeDropdown(); /// dynamically create Buttons forall available TileTypes
+  void fillTileTypeDropdown(); /// dynamically create Buttons forall available TileTypes
   void toggleActiveZoneButtons(const std::vector<Zones>& data); /// when an item is loaded, check all zones button that are assigned in the json
   void toggleActiveStyleButtons(const std::vector<Style>& data); /// when an item is loaded, check all style button that are assigned in the json
   void toggleActiveWealthButtons(const std::vector<Wealth>& data); /// when an item is loaded, check all wealth button that are assigned in the json
