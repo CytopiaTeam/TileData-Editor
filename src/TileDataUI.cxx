@@ -163,7 +163,21 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui)
       ui.deleteButton->setEnabled(true);
 
       // recalc width based on current count
-      ui.width->setValue(ui.origImage->pixmap()->width() / ui.count->value());
+      int spriteSheetLength = ui.origImage->pixmap()->width();
+      int numOffset = ui.offset->value();
+      int numCount = ui.count->value();
+      int singleTile_width = 0;
+
+      // calculate length of one single tile
+      if (numOffset > 0)
+      {
+        singleTile_width = (spriteSheetLength / (numOffset + numCount));
+      }
+      else
+      {
+        singleTile_width = spriteSheetLength / numCount;
+      }
+      ui.width->setValue(singleTile_width);
     }
     });
 
@@ -184,11 +198,46 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui)
     ui.deleteButton->setEnabled(false);
     });
 
-  connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui](int value) {
+  connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
     if (!ui.origImage->pixmap() || (value == 0))
       return;
+    
+    int spriteSheetLength = ui.origImage->pixmap()->width();
+    int numOffset = ui.offset->value();
+    int numCount = ui.count->value();
+    int singleTile_width = 0;
 
-    ui.width->setValue(ui.origImage->pixmap()->width() / value);
+    // calculate length of one single tile
+    if (numOffset > 0)
+    {
+      singleTile_width = (spriteSheetLength / (numOffset + numCount));
+    }
+    else
+    {
+      singleTile_width = spriteSheetLength / numCount;
+    }
+    ui.width->setValue(singleTile_width);
+    });
+
+  connect(ui.offset, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
+    if (!ui.origImage->pixmap() )
+      return;
+
+    int spriteSheetLength = ui.origImage->pixmap()->width();
+    int numOffset = ui.offset->value();
+    int numCount = ui.count->value();
+    int singleTile_width = 0;
+
+    // calculate length of one single tile
+    if (numOffset > 0)
+    {
+      singleTile_width = (spriteSheetLength / (numOffset + numCount));
+    }
+    else
+    {
+      singleTile_width = spriteSheetLength / numCount;
+    }
+    ui.width->setValue(singleTile_width);
     });
 
   ui.origImage->hide(); // a hidden storage for the original sized pixmap
@@ -636,6 +685,7 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
   ui.width->setValue(data.clippingWidth);
   ui.height->setValue(data.clippingHeight);
   ui.count->setValue(data.count);
+  ui.offset->setValue(data.offset);
 
   ui.deleteButton->setEnabled(!pix.isNull());
 }
@@ -648,6 +698,7 @@ void TileDataUI::readTileSetDataWidget(const Ui_TileSetDataUi& ui, TileSetData& 
   data.clippingWidth = ui.width->value();
   data.clippingHeight = ui.height->value();
   data.count = ui.count->value();
+  data.offset = ui.offset->value();
 }
 
 //--------------------------------------------------------------------------------
