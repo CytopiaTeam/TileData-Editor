@@ -311,6 +311,8 @@ void TileDataUI::itemSelected(QTreeWidgetItem* current, QTreeWidgetItem* previou
     }
   }
 
+  
+
   if (!current || !current->data(0, Qt::UserRole).isValid())
     return;
 
@@ -434,6 +436,12 @@ void TileDataUI::readFromTileData(const TileData& tile)
   toggleActiveWealthButtons(tile.wealth);
   ui.TileTypeComboBox->setCurrentIndex(tile.tileType._to_index());
 
+  // add little preview image
+  QPixmap pix(QString::fromStdString(tile.tiles.fileName));
+  int w = ui.tilePreview->width();
+  int h = ui.tilePreview->height();
+
+  ui.tilePreview->setPixmap(pix.scaled(w, h, Qt::KeepAspectRatio));
 }
 
 //------------------------ Zones -------------------------------------------------
