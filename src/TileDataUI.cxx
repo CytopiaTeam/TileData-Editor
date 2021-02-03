@@ -45,17 +45,17 @@ TileDataUI::TileDataUI()
 
   w = new QWidget;
   tilesSet.setupUi(w);
-  setup(tilesSet);
+  setup(tilesSet, ui);
   ui.tabWidget->addTab(w, tr("Tiles"));
 
   w = new QWidget;
   shoreTileSet.setupUi(w);
-  setup(shoreTileSet);
+  setup(shoreTileSet, ui);
   ui.tabWidget->addTab(w, tr("ShoreLines"));
 
   w = new QWidget;
   slopeSet.setupUi(w);
-  setup(slopeSet);
+  setup(slopeSet, ui);
   ui.tabWidget->addTab(w, tr("Slope"));
 
   setCentralWidget(splitter);
@@ -145,7 +145,7 @@ void TileDataUI::closeEvent(QCloseEvent* event)
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::setup(Ui_TileSetDataUi& ui)
+void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
 {
   connect(ui.fileButton, &QPushButton::clicked, this, [ui]() {
     QString fileName = QFileDialog::getOpenFileName(ui.fileButton, tr("Select Image"), ui.fileName->text(), tr("Images (*.png)"));
@@ -197,6 +197,44 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui)
     ui.size1->setChecked(true);
     ui.deleteButton->setEnabled(false);
     });
+
+  connect(parentUI.TileTypeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [ui, parentUI, this](int value) {
+    
+
+    int numCount = ui.count->value();
+    // get parent ui to access tile type combobox
+
+    TileType tileType = TileType::_from_index(parentUI.TileTypeComboBox->currentIndex());
+
+    if (numCount > 1 && (tileType != +TileType::AUTOTILE && tileType != +TileType::ROAD && tileType != +TileType::UNDERGROUND))
+    {
+      ui.pickRandomTile->setChecked(true);
+    }
+    else
+    {
+      ui.pickRandomTile->setChecked(false);
+    }
+    });
+
+  connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, parentUI, this](int value) {
+    if (!ui.origImage->pixmap() || (value == 0))
+      return;
+
+    int numCount = ui.count->value();
+    // get parent ui to access tile type combobox
+    
+    TileType tileType = TileType::_from_index(parentUI.TileTypeComboBox->currentIndex());
+
+    if (numCount > 1 && (tileType != +TileType::AUTOTILE && tileType != +TileType::ROAD && tileType != +TileType::UNDERGROUND))
+    {
+      ui.pickRandomTile->setChecked(true);
+    }
+    else
+    {
+      ui.pickRandomTile->setChecked(false);
+    }
+  });
+
 
   connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
     if (!ui.origImage->pixmap() || (value == 0))

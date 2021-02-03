@@ -33,7 +33,7 @@ private slots:
   void duplicateItem();
 
 private: // methods
-  void setup(Ui_TileSetDataUi &ui);
+  void setup(Ui_TileSetDataUi &ui, Ui_TileDataUi &parentUI);
   void createActions();
   void createZoneButtons(); /// dynamically create Buttons for assignable zones from the Zones enum
   void createStyleButtons(); /// dynamically create Buttons for assignable styles from the Style enum
@@ -62,10 +62,10 @@ private: // members
   TileDataContainer tileContainer;
   QTreeWidget *tree;
   QSplitter *splitter;
-  Ui_TileDataUi ui;
   Ui_TileSetDataUi tilesSet;
   Ui_TileSetDataUi shoreTileSet;
   Ui_TileSetDataUi slopeSet;
+  Ui_TileDataUi ui;
 };
 
 #endif
