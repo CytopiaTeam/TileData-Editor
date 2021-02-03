@@ -220,7 +220,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui)
     });
 
   connect(ui.offset, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
-    if (!ui.origImage->pixmap() )
+    if (!ui.origImage->pixmap())
       return;
 
     int spriteSheetLength = ui.origImage->pixmap()->width();
@@ -686,6 +686,7 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
   ui.height->setValue(data.clippingHeight);
   ui.count->setValue(data.count);
   ui.offset->setValue(data.offset);
+  ui.pickRandomTile->setChecked(data.pickRandomTile);
 
   ui.deleteButton->setEnabled(!pix.isNull());
 }
@@ -699,6 +700,7 @@ void TileDataUI::readTileSetDataWidget(const Ui_TileSetDataUi& ui, TileSetData& 
   data.clippingHeight = ui.height->value();
   data.count = ui.count->value();
   data.offset = ui.offset->value();
+  data.pickRandomTile = ui.pickRandomTile->isChecked();
 }
 
 //--------------------------------------------------------------------------------
