@@ -93,7 +93,21 @@ void TileDataContainer::tileSetDataFromJson(TileSetData& data, const QJsonValue&
 	data.clippingWidth = obj.value("clip_width").toInt();
 	data.clippingHeight = obj.value("clip_height").toInt();
 	data.offset = obj.value("offset").toInt();
-	data.pickRandomTile = obj.value("pickRandomTile").toBool();
+	if (obj.value("pickRandomTile").isUndefined())
+	{
+		if (data.count > 1)
+		{
+			data.pickRandomTile = true;
+		}
+		else
+		{
+			data.pickRandomTile = false;
+		}
+	}
+	else
+	{
+		data.pickRandomTile = obj.value("pickRandomTile").toBool();
+	}
 }
 
 void TileDataContainer::requiredTilesFromJson(RequiredTilesData& data, const QJsonValue& value)
