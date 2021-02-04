@@ -199,8 +199,6 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     });
 
   connect(parentUI.TileTypeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [ui, parentUI, this](int value) {
-    
-
     int numCount = ui.count->value();
     // get parent ui to access tile type combobox
 
@@ -217,9 +215,6 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     });
 
   connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, parentUI, this](int value) {
-    if (!ui.origImage->pixmap() || (value == 0))
-      return;
-
     int numCount = ui.count->value();
     // get parent ui to access tile type combobox
     
