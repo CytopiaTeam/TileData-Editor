@@ -8,11 +8,14 @@
     <x>0</x>
     <y>0</y>
     <width>777</width>
-    <height>321</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="toolTip">
+   <string>Height of this element or of one tile, if the image contains multiple tiles in a tileset.</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <property name="horizontalSpacing">
@@ -28,39 +31,6 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLineEdit" name="fileName">
-       <property name="toolTip">
-        <string>The filename of the tiles image.</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="fileButton">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset theme="document-open">
-         <normaloff>.</normaloff>.</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="deleteButton">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset theme="edit-delete">
-         <normaloff>.</normaloff>.</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_11">
      <property name="text">
@@ -73,7 +43,7 @@
      <item>
       <widget class="QSpinBox" name="width">
        <property name="toolTip">
-        <string>Size of this element or of one tile, if the image contains multiple tiles in a tileset.</string>
+        <string>Remove image</string>
        </property>
        <property name="maximum">
         <number>20000</number>
@@ -90,7 +60,7 @@
      <item>
       <widget class="QSpinBox" name="height">
        <property name="toolTip">
-        <string>Size of this element or of one tile, if the image contains multiple tiles in a tileset.</string>
+        <string>Height of this element or of one tile, if the image contains multiple tiles in a tileset.</string>
        </property>
        <property name="maximum">
         <number>20000</number>
@@ -115,13 +85,20 @@
      </item>
      <item>
       <widget class="QLabel" name="label">
+       <property name="toolTip">
+        <string>If clip_rect (width and height) is used, the offset in the spritesheet where the clipping should start</string>
+       </property>
        <property name="text">
         <string>Offset</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="offset"/>
+      <widget class="QSpinBox" name="offset">
+       <property name="toolTip">
+        <string>If clip_rect (width and height) is used, the offset in the spritesheet where the clipping should start</string>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
@@ -141,6 +118,9 @@
      </item>
      <item>
       <widget class="QLabel" name="label_12">
+       <property name="toolTip">
+        <string>How many frames  / tiles this image contains. One of the items will be randomly chosen if pickRandomTile is set to true. </string>
+       </property>
        <property name="text">
         <string>Count</string>
        </property>
@@ -149,7 +129,7 @@
      <item>
       <widget class="QSpinBox" name="count">
        <property name="toolTip">
-        <string>How many frames  / tiles this image contains.</string>
+        <string>How many frames  / tiles this image contains. One of the items will be randomly chosen if pickRandomTile is set to true. </string>
        </property>
        <property name="minimum">
         <number>1</number>
@@ -174,6 +154,9 @@
      </item>
      <item>
       <widget class="QCheckBox" name="pickRandomTile">
+       <property name="toolTip">
+        <string> Whether or not a random tile of the tileset should be used, if set to true. Should be set to false for tiles with a predetermined order, like road</string>
+       </property>
        <property name="text">
         <string>Pick Random Tile</string>
        </property>
@@ -265,7 +248,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>230</height>
+       <height>309</height>
       </size>
      </property>
      <property name="widgetResizable">
@@ -280,7 +263,7 @@
         <x>0</x>
         <y>0</y>
         <width>710</width>
-        <height>228</height>
+        <height>307</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -319,6 +302,45 @@
       </layout>
      </widget>
     </widget>
+   </item>
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="fileName">
+       <property name="toolTip">
+        <string>The filename of the tiles image.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="fileButton">
+       <property name="toolTip">
+        <string>Fileselector - select a spritesheet</string>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../images/iconFolder.png</normaloff>../images/iconFolder.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="deleteButton">
+       <property name="toolTip">
+        <string>Remove image</string>
+       </property>
+       <property name="text">
+        <string>X</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../images/iconX.png</normaloff>../images/iconX.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
