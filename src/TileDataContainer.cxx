@@ -59,18 +59,27 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 		tile.educationLevel = obj.value("educationLevel").toInt();
 		tile.crimeLevel = obj.value("crimeLevel").toInt();
 		tile.isOverPlacable = obj.value("isOverPlacable").toBool();
-		tile.placeOnGround = obj.value("placeOnGround").toBool();
 		tile.placeOnWater = obj.value("placeOnWater").toBool();
 
+		// Place on ground should default to true, if not explictly set to false
+		if (obj.value("placeOnGround").isUndefined())
+		{
+			tile.placeOnGround = true;
+		}
+		else
+		{
+			tile.placeOnGround = obj.value("placeOnGround").toBool();
+		}
+
+		tileTypeFromJson(tile.tileType, obj.value("tileType"));
 		requiredTilesFromJson(tile.RequiredTiles, obj.value("RequiredTiles"));
 
 		stringArrayFromJson(tile.tags, obj.value("tags"));
 		stringArrayFromJson(tile.biomes, obj.value("biomes"));
 		stringArrayFromJson(tile.groundDecoration, obj.value("groundDecoration"));
 		zonesFromJson(tile.zones, obj.value("zones"));
-		stylesFromJson(tile.style, obj.value("style"));
-		wealthFromJson(tile.wealth, obj.value("wealth"));
-		tileTypeFromJson(tile.tileType, obj.value("tileType"));
+		stylesFromJson(tile, obj.value("style"));
+		wealthFromJson(tile, obj.value("wealth"));
 
 		tileSetDataFromJson(tile.tiles, obj.value("tiles"));
 		tileSetDataFromJson(tile.shoreTiles, obj.value("shoreLine"));
@@ -135,19 +144,40 @@ void TileDataContainer::zonesFromJson(std::vector<Zones>& data, const QJsonValue
 	}
 }
 
-void TileDataContainer::stylesFromJson(std::vector<Style>& data, const QJsonValue& value)
+void TileDataContainer::stylesFromJson(TileData &data, const QJsonValue& value)
 {
-	for (const QJsonValue& style : value.toArray())
+	// if no values are supplied, we add all styles
+	if (value.toArray().empty() && data.tileType == +TileType::RCI)
 	{
-		data.push_back(Style::_from_string_nocase(style.toString().toStdString().c_str()));
+		for (Style style : Style::_values())
+		{
+			data.style.push_back(style);
+		}
+	}
+	else
+	{
+		for (const QJsonValue& style : value.toArray())
+		{
+			data.style.push_back(Style::_from_string_nocase(style.toString().toStdString().c_str()));
+		}
 	}
 }
 
-void TileDataContainer::wealthFromJson(std::vector<Wealth>& data, const QJsonValue& value)
+void TileDataContainer::wealthFromJson(TileData& data, const QJsonValue& value)
 {
-	for (const QJsonValue& style : value.toArray())
+	if (value.toArray().empty() && data.tileType == +TileType::RCI)
 	{
-		data.push_back(Wealth::_from_string_nocase(style.toString().toStdString().c_str()));
+		for (Wealth wealth : Wealth::_values())
+		{
+			data.wealth.push_back(wealth);
+		}
+	}
+	else
+	{
+		for (const QJsonValue& wealth : value.toArray())
+		{
+			data.wealth.push_back(Wealth::_from_string_nocase(wealth.toString().toStdString().c_str()));
+		}
 	}
 }
 
