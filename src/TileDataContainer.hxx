@@ -6,6 +6,7 @@
 #include <QtCore/QJsonObject>
 
 #include "Cytopia/src/engine/basics/tileData.hxx"
+#include "helpers.hxx"
 
 class TileDataContainer : public QObject
 {
@@ -24,8 +25,21 @@ public:
   Map::iterator end() { return tileData.end(); }
 
 private:
+  void stringArrayFromJson(std::vector<std::string> &data, const QJsonValue& value);
+  void biomesFromJson(TileData& data, const QJsonValue& value);
+  void groundDecorationFromJson(TileData& data, const QJsonValue& value);
   void tileSetDataFromJson(TileSetData &data, const QJsonValue &value);
-  QJsonObject tileSetDataToJson(const TileSetData &data);
+  void requiredTilesFromJson(RequiredTilesData& data, const QJsonValue& value);
+  void zonesFromJson(std::vector<Zones> &data, const QJsonValue& value);
+  void stylesFromJson(TileData& data, const QJsonValue& value);
+  void wealthFromJson(TileData& data, const QJsonValue& value);
+  void tileTypeFromJson(TileType& tileType, const QJsonValue& value);
+  QJsonObject tileSetDataToJson(const TileSetData& data);
+  QJsonObject requiredTilesToJson(const RequiredTilesData& data);
+  QJsonArray stringArrayToJson(const std::vector<std::string>& data);
+  QJsonArray zonesToJson(const std::vector<Zones>& data);
+  QJsonArray stylesToJson(const std::vector<Style>& data);
+  QJsonArray wealthToJson(const std::vector<Wealth>& data);
 
 private:
   QString fileName;
