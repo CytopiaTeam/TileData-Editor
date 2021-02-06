@@ -212,7 +212,41 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     {
       ui.pickRandomTile->setChecked(false);
     }
-    });
+    // disable buttons if necessary
+    if (TileType::_from_integral(tileType == +TileType::RCI))
+    {
+      for (int i = 0; i < parentUI.zoneButtonsHorizontalLayout->count(); ++i)
+      {
+        dynamic_cast<QPushButton*>(parentUI.zoneButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(true);
+      }
+      for (int i = 0; i < parentUI.wealthButtonsHorizontalLayout->count(); ++i)
+      {
+        dynamic_cast<QPushButton*>(parentUI.wealthButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(true);
+      }
+      for (int i = 0; i < parentUI.stylesButtonsHorizontalLayout->count(); ++i)
+      {
+        dynamic_cast<QPushButton*>(parentUI.stylesButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(true);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < parentUI.zoneButtonsHorizontalLayout->count(); ++i)
+      {
+        dynamic_cast<QPushButton*>(parentUI.zoneButtonsHorizontalLayout->itemAt(i)->widget())->setChecked(false);
+        dynamic_cast<QPushButton*>(parentUI.zoneButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(false);
+      }
+      for (int i = 0; i < parentUI.wealthButtonsHorizontalLayout->count(); ++i)
+      {
+        dynamic_cast<QPushButton*>(parentUI.wealthButtonsHorizontalLayout->itemAt(i)->widget())->setChecked(false);
+        dynamic_cast<QPushButton*>(parentUI.wealthButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(false);
+      }
+      for (int i = 0; i < parentUI.stylesButtonsHorizontalLayout->count(); ++i)
+      {
+        dynamic_cast<QPushButton*>(parentUI.stylesButtonsHorizontalLayout->itemAt(i)->widget())->setChecked(false);
+        dynamic_cast<QPushButton*>(parentUI.stylesButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(false);
+      }
+    }
+  });
 
   connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, parentUI, this](int value) {
     int numCount = ui.count->value();
@@ -321,7 +355,7 @@ bool TileDataUI::loadFile(const QString& fileName)
 
     root->addChild(newTreeItem(tile));
   }
-
+  
   tree->resizeColumnToContents(0);
   tree->resize(tree->columnWidth(0), tree->height());
 
@@ -401,6 +435,38 @@ void TileDataUI::itemSelected(QTreeWidgetItem* current, QTreeWidgetItem* previou
   // show current item values
   TileData tile = tileContainer.getTileData(current->data(0, Qt::UserRole).toString());
   readFromTileData(tile);
+
+  // disable buttons if necessary
+  if (TileType::_from_integral(ui.TileTypeComboBox->currentIndex()) == +TileType::RCI)
+  {
+    for (int i = 0; i < ui.zoneButtonsHorizontalLayout->count(); ++i)
+    {
+      dynamic_cast<QPushButton*>(ui.zoneButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(true);
+    }
+    for (int i = 0; i < ui.wealthButtonsHorizontalLayout->count(); ++i)
+    {
+      dynamic_cast<QPushButton*>(ui.wealthButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(true);
+    }
+    for (int i = 0; i < ui.stylesButtonsHorizontalLayout->count(); ++i)
+    {
+      dynamic_cast<QPushButton*>(ui.stylesButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(true);
+    }
+  }
+  else
+  {
+    for (int i = 0; i < ui.zoneButtonsHorizontalLayout->count(); ++i)
+    {
+      dynamic_cast<QPushButton*>(ui.zoneButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(false);
+    }
+    for (int i = 0; i < ui.wealthButtonsHorizontalLayout->count(); ++i)
+    {
+      dynamic_cast<QPushButton*>(ui.wealthButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(false);
+    }
+    for (int i = 0; i < ui.stylesButtonsHorizontalLayout->count(); ++i)
+    {
+      dynamic_cast<QPushButton*>(ui.stylesButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(false);
+    }
+  }
 }
 
 //--------------------------------------------------------------------------------
