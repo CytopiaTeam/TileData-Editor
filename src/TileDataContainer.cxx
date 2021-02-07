@@ -54,7 +54,7 @@ QString TileDataContainer::loadFile(const QString& theFileName)
 		tile.water = obj.value("water").toInt();
 		tile.inhabitants = obj.value("inhabitants").toInt();
 		tile.pollutionLevel = obj.value("pollutionLevel").toInt();
-		tile.happyness = obj.value("happyness").toInt();
+		tile.happiness = obj.value("happiness").toInt();
 		tile.fireHazardLevel = obj.value("fireHazardLevel").toInt();
 		tile.educationLevel = obj.value("educationLevel").toInt();
 		tile.crimeLevel = obj.value("crimeLevel").toInt();
@@ -215,7 +215,7 @@ bool TileDataContainer::saveFile()
 		obj.insert("water", tile.water);
 		obj.insert("inhabitants", tile.inhabitants);
 		obj.insert("pollutionLevel", tile.pollutionLevel);
-		obj.insert("happyness", tile.happyness);
+		obj.insert("happiness", tile.happiness);
 		obj.insert("fireHazardLevel", tile.fireHazardLevel);
 		obj.insert("educationLevel", tile.educationLevel);
 		obj.insert("crimeLevel", tile.crimeLevel);

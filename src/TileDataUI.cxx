@@ -44,7 +44,7 @@ TileDataUI::TileDataUI()
   ui.pollutionLevel->setRange(TD_POLLUTION_MIN, TD_POLLUTION_MAX);
   ui.powerProduction->setRange(TD_POWER_MIN, TD_POWER_MAX);
   ui.waterProduction->setRange(TD_WATER_MIN, TD_WATER_MAX);
-  ui.happyness->setRange(TD_HAPPYNESS_MIN, TD_HAPPYNESS_MAX);
+  ui.happiness->setRange(TD_HAPPINESS_MIN, TD_HAPPINESS_MAX);
   ui.requiredTilesHeight->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
   ui.requiredTilesWidth->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
 
@@ -524,7 +524,7 @@ void TileDataUI::writeToTileData(TileData& tile)
   tile.fireHazardLevel = ui.fireHazardLevel->value();
   tile.educationLevel = ui.educationLevel->value();
   tile.crimeLevel = ui.crimeLevel->value();
-  tile.happyness = ui.happyness->value();
+  tile.happiness = ui.happiness->value();
   tile.isOverPlacable = ui.isOverPlacable->checkState();
   tile.placeOnGround = ui.placeOnGround->checkState();
   tile.placeOnWater = ui.placeOnWater->checkState();
@@ -568,7 +568,7 @@ void TileDataUI::readFromTileData(const TileData& tile)
   ui.fireHazardLevel->setValue(tile.fireHazardLevel);
   ui.educationLevel->setValue(tile.educationLevel);
   ui.crimeLevel->setValue(tile.crimeLevel);
-  ui.happyness->setValue(tile.happyness);
+  ui.happiness->setValue(tile.happiness);
   ui.isOverPlacable->setChecked(tile.isOverPlacable);
   ui.placeOnWater->setChecked(tile.placeOnWater);
   ui.placeOnGround->setChecked(tile.placeOnGround);
