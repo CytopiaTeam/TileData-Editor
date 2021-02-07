@@ -95,7 +95,7 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>The effect on happyness around this building.	</string>
+      <string>The effect on happiness around this building.	</string>
      </property>
      <property name="currentIndex">
       <number>-1</number>
@@ -154,10 +154,10 @@
      <item row="14" column="4">
       <widget class="QLabel" name="label_17">
        <property name="toolTip">
-        <string>The effect on happyness around this building.	</string>
+        <string>The effect on happiness around this building.	</string>
        </property>
        <property name="text">
-        <string>Happyness</string>
+        <string>Happiness</string>
        </property>
       </widget>
      </item>
@@ -295,9 +295,9 @@
       </widget>
      </item>
      <item row="14" column="5">
-      <widget class="QSpinBox" name="happyness">
+      <widget class="QSpinBox" name="happiness">
        <property name="toolTip">
-        <string>The effect on happyness around this building.	</string>
+        <string>The effect on happiness around this building.	</string>
        </property>
       </widget>
      </item>
