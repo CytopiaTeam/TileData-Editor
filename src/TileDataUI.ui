@@ -157,7 +157,7 @@
         <string>The effect on happiness around this building.	</string>
        </property>
        <property name="text">
-        <string>happiness</string>
+        <string>Happiness</string>
        </property>
       </widget>
      </item>
