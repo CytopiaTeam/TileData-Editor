@@ -38,8 +38,13 @@ TileDataUI::TileDataUI()
   ui.author->setMaxLength(TD_AUTHOR_MAX_CHARS);
   ui.buildCost->setRange(TD_PRICE_MIN, TD_PRICE_MAX);
   ui.upkeepCost->setRange(TD_UPKEEP_MIN, TD_UPKEEP_MAX);
+  ui.educationLevel ->setRange(TD_EDUCATION_MIN, TD_EDUCATION_MAX);
+  ui.fireHazardLevel->setRange(TD_FIREDANGER_MIN, TD_FIREDANGER_MAX);
+  ui.crimeLevel->setRange(TD_CRIME_MIN, TD_CRIME_MAX);
+  ui.pollutionLevel->setRange(TD_POLLUTION_MIN, TD_POLLUTION_MAX);
   ui.powerProduction->setRange(TD_POWER_MIN, TD_POWER_MAX);
   ui.waterProduction->setRange(TD_WATER_MIN, TD_WATER_MAX);
+  ui.happyness->setRange(TD_HAPPYNESS_MIN, TD_HAPPYNESS_MAX);
   ui.requiredTilesHeight->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
   ui.requiredTilesWidth->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
 
