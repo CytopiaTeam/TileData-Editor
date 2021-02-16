@@ -113,6 +113,7 @@ void TileDataUI::createActions()
   action->setIcon(QIcon::fromTheme("edit-delete"));
   action->setShortcut(QKeySequence::Cut);
   connect(action, &QAction::triggered, this, &TileDataUI::deleteItem);
+
   toolBar->addAction(action);
   editMenu->addAction(action);
 
@@ -995,3 +996,11 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
 }
 
 //--------------------------------------------------------------------------------
+
+void TileDataUI::keyPressEvent(QKeyEvent* event)
+{
+  if (event->key() == Qt::Key_Delete)
+  {
+    deleteItem();
+  }
+}

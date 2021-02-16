@@ -67,6 +67,9 @@ private: // members
   Ui_TileSetDataUi shoreTileSet;
   Ui_TileSetDataUi slopeSet;
   Ui_TileDataUi ui;
+
+protected:
+  virtual void keyPressEvent(QKeyEvent*);
 };
 
 #endif
