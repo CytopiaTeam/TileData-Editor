@@ -170,7 +170,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
 
       // recalc width based on current count
       int spriteSheetLength = ui.origImage->pixmap()->width();
-      int numOffset = ui.offset->value();
+      int numOffset = abs(ui.offset->value());
       int numCount = ui.count->value();
       int singleTile_width = 0;
 
@@ -261,7 +261,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     TileType tileType = TileType::_from_index(parentUI.TileTypeComboBox->currentIndex());
 
     int spriteSheetLength = ui.origImage->pixmap()->width();
-    int numOffset = ui.offset->value();
+    int numOffset = abs(ui.offset->value());
     int numCount = ui.count->value();
     int singleTile_width = 0;
 
@@ -287,7 +287,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     ui.width->setValue(singleTile_width);
 
     // set tileSetPreview selection boxes
-    //ui.image->setPixmap(preparePixMap(ui));
+    ui.image->setPixmap(preparePixMap(ui));
     });
 
   connect(ui.offset, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
@@ -295,7 +295,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
       return;
 
     int spriteSheetLength = ui.origImage->pixmap()->width();
-    int numOffset = ui.offset->value();
+    int numOffset = abs(ui.offset->value());
     int numCount = ui.count->value();
     int singleTile_width = 0;
 
@@ -311,7 +311,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     ui.width->setValue(singleTile_width);
 
     // set tileSetPreview selection boxes
-    //ui.image->setPixmap(preparePixMap(ui));
+    ui.image->setPixmap(preparePixMap(ui));
     });
 
   ui.origImage->hide(); // a hidden storage for the original sized pixmap
@@ -323,7 +323,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
         return;
 
       // set tileSetPreview selection boxes
-      //ui.image->setPixmap(preparePixMap(ui));
+      ui.image->setPixmap(preparePixMap(ui));
 
     });
 }
@@ -790,7 +790,6 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
   ui.offset->setValue(data.offset);
   ui.pickRandomTile->setChecked(data.pickRandomTile);
 
-
   ui.image->setPixmap(preparePixMap(ui)); // set tileSetPreview selection boxes
 
   ui.deleteButton->setEnabled(!pix.isNull());
@@ -964,10 +963,17 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
     int offsetY = pix.height() - ui.height->value(); // in case our height is smaller then the total height, start drawing from bottom up
     qInfo() << "width " << width;
     qInfo() << "height " << height;
-
+    int offsetX = 0;
     for (int i = 0; i < numCount; i++)
     {
-      int offsetX = (width * numOffset) + (width * i);
+      if (numOffset >= 0)
+      {
+        offsetX = (width * numOffset) + (width * i);
+      }
+      else
+      {
+        offsetX = (width * i);
+      }
       qInfo() << "Offset " << offsetX;
       paint->drawRect(offsetX, offsetY, width -1, height);
     }

@@ -98,6 +98,9 @@
        <property name="toolTip">
         <string>If clip_rect (width and height) is used, the offset in the spritesheet where the clipping should start</string>
        </property>
+       <property name="minimum">
+        <number>-99</number>
+       </property>
       </widget>
      </item>
      <item>
