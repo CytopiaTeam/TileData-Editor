@@ -20,20 +20,20 @@ class TileDataUI : public QMainWindow
 public:
   TileDataUI();
 
-  bool loadFile(const QString &name);
+  bool loadFile(const QString& name);
 
 protected:
-  void closeEvent(QCloseEvent *event) override;
+  void closeEvent(QCloseEvent* event) override;
 
 private slots:
-  void itemSelected(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+  void itemSelected(QTreeWidgetItem* current, QTreeWidgetItem* previous);
   void saveTileData();
   void newItem();
   void deleteItem();
   void duplicateItem();
 
 private: // methods
-  void setup(Ui_TileSetDataUi &ui, Ui_TileDataUi &parentUI);
+  void setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI);
   void createActions();
   void createZoneButtons(); /// dynamically create Buttons for assignable zones from the Zones enum
   void createStyleButtons(); /// dynamically create Buttons for assignable styles from the Style enum
@@ -44,25 +44,25 @@ private: // methods
   void toggleActiveWealthButtons(const std::vector<Wealth>& data); /// when an item is loaded, check all wealth button that are assigned in the json
   QPixmap preparePixMap(const Ui_TileSetDataUi& ui);
 
-  QTreeWidgetItem *newTreeRootItem(const TileData &tile);
-  QTreeWidgetItem *newTreeItem(const TileData &tile);
-  void addItem(const TileData &tile);
-  void ensureUniqueId(TileData &tile);
-  void writeToTileData(TileData &tile);
+  QTreeWidgetItem* newTreeRootItem(const TileData& tile);
+  QTreeWidgetItem* newTreeItem(const TileData& tile);
+  void addItem(const TileData& tile);
+  void ensureUniqueId(TileData& tile);
+  void writeToTileData(TileData& tile);
   void readFromTileData(const TileData& tile);
   std::vector<Zones> ZonesEnumVectorFromString(QString zones);
   std::vector<Zones> ZonesEnumVectorFromButtons();
   std::vector<Style> StyleEnumVectorFromButtons();
   std::vector<Wealth> WealthEnumVectorFromButtons();
   std::string ZonesEnumVectorToString(const std::vector<Zones>& data);
-  void fillTileSetDataWidget(const Ui_TileSetDataUi &ui, const TileSetData &data);
-  void readTileSetDataWidget(const Ui_TileSetDataUi &ui, TileSetData &data);
-  QJsonObject tileSetDataToJson(const TileSetData &data);
-      
+  void fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSetData& data);
+  void readTileSetDataWidget(const Ui_TileSetDataUi& ui, TileSetData& data);
+  QJsonObject tileSetDataToJson(const TileSetData& data);
+
 private: // members
   TileDataContainer tileContainer;
-  QTreeWidget *tree;
-  QSplitter *splitter;
+  QTreeWidget* tree;
+  QSplitter* splitter;
   Ui_TileSetDataUi tilesSet;
   Ui_TileSetDataUi shoreTileSet;
   Ui_TileSetDataUi slopeSet;

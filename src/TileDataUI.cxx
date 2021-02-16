@@ -39,7 +39,7 @@ TileDataUI::TileDataUI()
   ui.author->setMaxLength(TD_AUTHOR_MAX_CHARS);
   ui.buildCost->setRange(TD_PRICE_MIN, TD_PRICE_MAX);
   ui.upkeepCost->setRange(TD_UPKEEP_MIN, TD_UPKEEP_MAX);
-  ui.educationLevel ->setRange(TD_EDUCATION_MIN, TD_EDUCATION_MAX);
+  ui.educationLevel->setRange(TD_EDUCATION_MIN, TD_EDUCATION_MAX);
   ui.fireHazardLevel->setRange(TD_FIREDANGER_MIN, TD_FIREDANGER_MAX);
   ui.crimeLevel->setRange(TD_CRIME_MIN, TD_CRIME_MAX);
   ui.pollutionLevel->setRange(TD_POLLUTION_MIN, TD_POLLUTION_MAX);
@@ -253,12 +253,12 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
         dynamic_cast<QPushButton*>(parentUI.stylesButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(false);
       }
     }
-  });
+    });
 
   connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, parentUI, this](int value) {
     if (!ui.origImage->pixmap() || !ui.image->pixmap())
       return;
-    
+
     TileType tileType = TileType::_from_index(parentUI.TileTypeComboBox->currentIndex());
 
     int spriteSheetLength = ui.origImage->pixmap()->width();
@@ -292,7 +292,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     });
 
   connect(ui.offset, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
-    if (!ui.origImage->pixmap() || !ui.image->pixmap() )
+    if (!ui.origImage->pixmap() || !ui.image->pixmap())
       return;
 
     int spriteSheetLength = ui.origImage->pixmap()->width();
@@ -359,7 +359,7 @@ bool TileDataUI::loadFile(const QString& fileName)
 
     root->addChild(newTreeItem(tile));
   }
-  
+
   tree->resizeColumnToContents(0);
   tree->resize(tree->columnWidth(0), tree->height());
 
@@ -431,7 +431,7 @@ void TileDataUI::itemSelected(QTreeWidgetItem* current, QTreeWidgetItem* previou
     }
   }
 
-  
+
 
   if (!current || !current->data(0, Qt::UserRole).isValid())
     return;
@@ -973,7 +973,7 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
       {
         offsetX = (width * i);
       }
-      paint->drawRect(offsetX, offsetY, width -1, height);
+      paint->drawRect(offsetX, offsetY, width - 1, height);
     }
     delete paint;
 
