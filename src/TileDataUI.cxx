@@ -12,6 +12,7 @@
 #include <QtCore/QDir>
 #include <QtWidgets/QHeaderView>
 #include <QtCore/QSignalBlocker>
+#include <QPainter>
 
 
 #include "Cytopia/src/engine/basics/tileData.hxx"
@@ -140,7 +141,7 @@ void TileDataUI::closeEvent(QCloseEvent* event)
 {
   saveTileData();
 
-  QSettings settings("JimmySnails", "Cytopia");
+  QSettings settings("SimplyLiz", "Cytopia");
   settings.setValue("main/geometry", saveGeometry());
   settings.setValue("main/windowState", saveState());
   settings.setValue("main/splitter", splitter->saveState());
@@ -254,11 +255,17 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
   });
 
   connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, parentUI, this](int value) {
-    int numCount = ui.count->value();
-    // get parent ui to access tile type combobox
+    if (!ui.origImage->pixmap() || !ui.image->pixmap())
+      return;
     
     TileType tileType = TileType::_from_index(parentUI.TileTypeComboBox->currentIndex());
 
+    int spriteSheetLength = ui.origImage->pixmap()->width();
+    int numOffset = ui.offset->value();
+    int numCount = ui.count->value();
+    int singleTile_width = 0;
+
+    // check/uncheck pickRandomTile checkbox
     if (numCount > 1 && (tileType != +TileType::AUTOTILE && tileType != +TileType::ROAD && tileType != +TileType::UNDERGROUND))
     {
       ui.pickRandomTile->setChecked(true);
@@ -267,17 +274,6 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     {
       ui.pickRandomTile->setChecked(false);
     }
-  });
-
-
-  connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
-    if (!ui.origImage->pixmap() || (value == 0))
-      return;
-    
-    int spriteSheetLength = ui.origImage->pixmap()->width();
-    int numOffset = ui.offset->value();
-    int numCount = ui.count->value();
-    int singleTile_width = 0;
 
     // calculate length of one single tile
     if (numOffset > 0)
@@ -289,10 +285,13 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
       singleTile_width = spriteSheetLength / numCount;
     }
     ui.width->setValue(singleTile_width);
+
+    // set tileSetPreview selection boxes
+    //ui.image->setPixmap(preparePixMap(ui));
     });
 
   connect(ui.offset, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
-    if (!ui.origImage->pixmap())
+    if (!ui.origImage->pixmap() || !ui.image->pixmap() )
       return;
 
     int spriteSheetLength = ui.origImage->pixmap()->width();
@@ -310,23 +309,22 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
       singleTile_width = spriteSheetLength / numCount;
     }
     ui.width->setValue(singleTile_width);
+
+    // set tileSetPreview selection boxes
+    //ui.image->setPixmap(preparePixMap(ui));
     });
 
   ui.origImage->hide(); // a hidden storage for the original sized pixmap
 
+   // Scale buttons
   connect(ui.buttonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this,
-    [ui](QAbstractButton* button) {
-      if (!ui.origImage->pixmap())
+    [this, ui](QAbstractButton* button) {
+      if (!ui.origImage->pixmap() || !ui.image->pixmap())
         return;
 
-      QPixmap pix = *(ui.origImage->pixmap());
+      // set tileSetPreview selection boxes
+      //ui.image->setPixmap(preparePixMap(ui));
 
-      if (button == ui.size2)
-        pix = pix.transformed(QTransform().scale(2, 2));
-      else if (button == ui.size4)
-        pix = pix.transformed(QTransform().scale(4, 4));
-
-      ui.image->setPixmap(pix);
     });
 }
 
@@ -781,8 +779,8 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
 {
   ui.fileName->setText(QString::fromStdString(data.fileName));
   QPixmap pix(QString::fromStdString(data.fileName));
-  ui.image->setPixmap(pix);
   ui.origImage->setPixmap(pix);
+  ui.image->setPixmap(pix);
   ui.imageSize->setText(tr("(%1 x %2)").arg(pix.width()).arg(pix.height()));
   ui.imageSize->setVisible(!pix.isNull());
   ui.size1->setChecked(true);
@@ -791,6 +789,9 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
   ui.count->setValue(data.count);
   ui.offset->setValue(data.offset);
   ui.pickRandomTile->setChecked(data.pickRandomTile);
+
+
+  ui.image->setPixmap(preparePixMap(ui)); // set tileSetPreview selection boxes
 
   ui.deleteButton->setEnabled(!pix.isNull());
 }
@@ -940,3 +941,51 @@ void TileDataUI::duplicateItem()
 //--------------------------------------------------------------------------------
 
 
+QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
+{
+  if (!ui.origImage->pixmap())
+  {
+    QPixmap emptyPixMap;
+    return emptyPixMap;
+  }
+
+  int numCount = ui.count->value();
+  int numOffset = ui.offset->value();
+  // tiledata preview
+  if (numCount > 1)
+  {
+    QPixmap pix = *(ui.origImage->pixmap());
+    qInfo() << "orig width " << pix.width();
+
+    QPainter* paint = new QPainter(&pix);
+    paint->setPen(QColor(255, 34, 255, 255));
+    int width = ui.width->value();
+    int height = ui.height->value() - 1;
+    int offsetY = pix.height() - ui.height->value(); // in case our height is smaller then the total height, start drawing from bottom up
+    qInfo() << "width " << width;
+    qInfo() << "height " << height;
+
+    for (int i = 0; i < numCount; i++)
+    {
+      int offsetX = (width * numOffset) + (width * i);
+      qInfo() << "Offset " << offsetX;
+      paint->drawRect(offsetX, offsetY, width -1, height);
+    }
+    delete paint;
+
+    // Scale the image, if necessary
+    if (ui.buttonGroup->checkedButton() == ui.size2)
+      pix = pix.transformed(QTransform().scale(2, 2));
+    else if (ui.buttonGroup->checkedButton() == ui.size4)
+      pix = pix.transformed(QTransform().scale(4, 4));
+
+
+    // return the modified image
+    qInfo() << "orig widthAFTER " << pix.width();
+
+    return pix;
+  }
+  return *(ui.origImage->pixmap());
+}
+
+//--------------------------------------------------------------------------------

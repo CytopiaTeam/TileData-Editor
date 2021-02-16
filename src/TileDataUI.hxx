@@ -42,6 +42,7 @@ private: // methods
   void toggleActiveZoneButtons(const std::vector<Zones>& data); /// when an item is loaded, check all zones button that are assigned in the json
   void toggleActiveStyleButtons(const std::vector<Style>& data); /// when an item is loaded, check all style button that are assigned in the json
   void toggleActiveWealthButtons(const std::vector<Wealth>& data); /// when an item is loaded, check all wealth button that are assigned in the json
+  QPixmap preparePixMap(const Ui_TileSetDataUi& ui);
 
   QTreeWidgetItem *newTreeRootItem(const TileData &tile);
   QTreeWidgetItem *newTreeItem(const TileData &tile);
