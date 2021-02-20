@@ -943,7 +943,7 @@ void TileDataUI::duplicateItem()
 
 QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
 {
-  if (!ui.origImage->pixmap())
+  if (ui.origImage->pixmap()->isNull())
   {
     QPixmap emptyPixMap;
     return emptyPixMap;
