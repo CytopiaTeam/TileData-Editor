@@ -952,8 +952,7 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
   int numCount = ui.count->value();
   int numOffset = ui.offset->value();
   // tiledata preview
-  if (numCount > 1)
-  {
+
     QPixmap pix = *(ui.origImage->pixmap());
     QPainter* paint = new QPainter(&pix);
 
@@ -963,18 +962,21 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
     int offsetY = pix.height() - ui.height->value(); // in case our height is smaller then the total height, start drawing from bottom up
     int offsetX = 0;
 
-    for (int i = 0; i < numCount; i++)
+    if (numCount > 1 || numOffset >= 1)
     {
-      if (numOffset >= 0)
+      for (int i = 0; i < numCount; i++)
       {
-        offsetX = (width * numOffset) + (width * i);
+        if (numOffset >= 0)
+        {
+          offsetX = (width * numOffset) + (width * i);
+        }
+        else
+        {
+          offsetX = (width * i);
+        }
+        paint->drawRect(offsetX, offsetY, width - 1, height);
       }
-      else
-      {
-        offsetX = (width * i);
-      }
-      paint->drawRect(offsetX, offsetY, width - 1, height);
-    }
+  }
     delete paint;
 
     // Scale the image, if necessary
@@ -986,8 +988,8 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
 
     // return the modified image
     return pix;
-  }
-  return *(ui.origImage->pixmap());
+  
+  //return *(ui.origImage->pixmap());
 }
 
 //--------------------------------------------------------------------------------
