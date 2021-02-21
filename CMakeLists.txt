@@ -10,7 +10,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 set(FORMS
         src/TileDataUI.ui
-        src/TileSetDataUI.ui)
+        src/TileSetDataUI.ui
+        src/ItemSelectionUI.ui)
 
 set(SOURCES
         src/main.cxx

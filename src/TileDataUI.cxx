@@ -13,6 +13,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtCore/QSignalBlocker>
 #include <QPainter>
+#include <QDialog>
 
 
 #include "Cytopia/src/engine/basics/tileData.hxx"
@@ -32,6 +33,14 @@ TileDataUI::TileDataUI()
   ui.setupUi(w);
   splitter->addWidget(w);
 
+  biomeSelector = new QWidget;
+  itemSelection.setupUi(biomeSelector);
+  setupNew(ui, itemSelection);
+
+  groundDecorationSelector = new QWidget;
+  itemSelection.setupUi(groundDecorationSelector);
+  setupNew(ui, itemSelection);
+
   ui.id->setMaxLength(TD_ID_MAX_CHARS);
   ui.category->setMaxLength(TD_CATEGORY_MAX_CHARS);
   ui.subCategory->setMaxLength(TD_SUBCATEGORY_MAX_CHARS);
@@ -48,20 +57,22 @@ TileDataUI::TileDataUI()
   ui.happiness->setRange(TD_HAPPINESS_MIN, TD_HAPPINESS_MAX);
   ui.requiredTilesHeight->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
   ui.requiredTilesWidth->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
+  ui.inhabitants->setRange(TD_HABITANTS_MIN, TD_HABITANTS_MAX);
 
   w = new QWidget;
   tilesSet.setupUi(w);
-  setup(tilesSet, ui);
+  setup(tilesSet, ui, itemSelection);
   ui.tabWidget->addTab(w, tr("Tiles"));
+
 
   w = new QWidget;
   shoreTileSet.setupUi(w);
-  setup(shoreTileSet, ui);
+  setup(shoreTileSet, ui, itemSelection);
   ui.tabWidget->addTab(w, tr("ShoreLines"));
 
   w = new QWidget;
   slopeSet.setupUi(w);
-  setup(slopeSet, ui);
+  setup(slopeSet, ui, itemSelection);
   ui.tabWidget->addTab(w, tr("Slope"));
 
   setCentralWidget(splitter);
@@ -152,7 +163,79 @@ void TileDataUI::closeEvent(QCloseEvent* event)
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
+void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelectionDialog)
+{
+  connect(parentUI.BiomeButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+
+    TileData tile = tileContainer.getTileData(parentUI.id->text());
+    itemSelectionDialog.availableItems->clear();
+
+    for (const auto biome : tile.biomes)
+    {
+      itemSelectionDialog.availableItems->addItem(QString::fromStdString(biome));
+    }
+    groundDecorationSelector->setWindowTitle("Select Biome");
+    biomeSelector->show();
+
+    });
+
+  connect(parentUI.groundDecorationButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    itemSelectionDialog.availableItems->clear();
+    //TileData tile = tileContainer.getTileData(parentUI.id->text());
+
+    for (const QString biome : tileContainer.getAllGroundDecorationIDs())
+    {
+      itemSelectionDialog.availableItems->addItem(biome);
+    }
+    groundDecorationSelector->setWindowTitle("Select GroundDecoration");
+    groundDecorationSelector->show();
+
+    });
+
+  connect(itemSelectionDialog.useItemButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    if (!itemSelectionDialog.availableItems->currentItem())
+      return;
+
+    QListWidgetItem* widget = itemSelectionDialog.availableItems->currentItem()->clone();
+    itemSelectionDialog.usedItems->addItem(widget);
+    itemSelectionDialog.usedItems->setCurrentItem(widget);
+    delete itemSelectionDialog.availableItems->currentItem();
+    });
+
+  connect(itemSelectionDialog.okButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    if (itemSelectionDialog.usedItems->count() == 0)
+    {
+
+      for (int i = 0; i < itemSelectionDialog.usedItems->count(); i++)
+      {
+        qInfo() << itemSelectionDialog.usedItems->item(i)->text();
+      }
+    }
+    qInfo() << "clicked OK";
+    biomeSelector->hide();
+    groundDecorationSelector->hide();
+    });
+
+  connect(itemSelectionDialog.cancelButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    qInfo() << "clicked Cancel";
+    biomeSelector->hide();
+    groundDecorationSelector->hide();
+    });
+
+  connect(itemSelectionDialog.removeItemButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    if (!itemSelectionDialog.usedItems->currentItem())
+      return;
+
+    QListWidgetItem* widget = itemSelectionDialog.usedItems->currentItem()->clone();
+    itemSelectionDialog.availableItems->addItem(widget);
+    itemSelectionDialog.availableItems->setCurrentItem(widget);
+    delete itemSelectionDialog.usedItems->currentItem();
+    });
+}
+
+//--------------------------------------------------------------------------------
+
+void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelectionDialog)
 {
   connect(ui.fileButton, &QPushButton::clicked, this, [ui]() {
     QString fileName = QFileDialog::getOpenFileName(ui.fileButton, tr("Select Image"), ui.fileName->text(), tr("Images (*.png)"));
@@ -187,6 +270,8 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
       ui.width->setValue(singleTile_width);
     }
     });
+
+
 
   connect(ui.deleteButton, &QPushButton::clicked, this, [ui, this]() {
     QMessageBox::StandardButton ret = QMessageBox::question(this, tr("Delete Image"), tr("Shall the image really be deleted?"));
@@ -317,7 +402,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
 
   ui.origImage->hide(); // a hidden storage for the original sized pixmap
 
-   // Scale buttons
+  // Scale buttons
   connect(ui.buttonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this,
     [this, ui](QAbstractButton* button) {
       if (!ui.origImage->pixmap() || !ui.image->pixmap())
@@ -953,42 +1038,42 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
   int numOffset = ui.offset->value();
   // tiledata preview
 
-    QPixmap pix = *(ui.origImage->pixmap());
-    QPainter* paint = new QPainter(&pix);
+  QPixmap pix = *(ui.origImage->pixmap());
+  QPainter* paint = new QPainter(&pix);
 
-    paint->setPen(QColor(255, 34, 255, 255));
-    int width = ui.width->value();
-    int height = ui.height->value() - 1;
-    int offsetY = pix.height() - ui.height->value(); // in case our height is smaller then the total height, start drawing from bottom up
-    int offsetX = 0;
+  paint->setPen(QColor(255, 34, 255, 255));
+  int width = ui.width->value();
+  int height = ui.height->value() - 1;
+  int offsetY = pix.height() - ui.height->value(); // in case our height is smaller then the total height, start drawing from bottom up
+  int offsetX = 0;
 
-    if (numCount > 1 || numOffset >= 1)
+  if (numCount > 1 || numOffset >= 1)
+  {
+    for (int i = 0; i < numCount; i++)
     {
-      for (int i = 0; i < numCount; i++)
+      if (numOffset >= 0)
       {
-        if (numOffset >= 0)
-        {
-          offsetX = (width * numOffset) + (width * i);
-        }
-        else
-        {
-          offsetX = (width * i);
-        }
-        paint->drawRect(offsetX, offsetY, width - 1, height);
+        offsetX = (width * numOffset) + (width * i);
       }
+      else
+      {
+        offsetX = (width * i);
+      }
+      paint->drawRect(offsetX, offsetY, width - 1, height);
+    }
   }
-    delete paint;
+  delete paint;
 
-    // Scale the image, if necessary
-    if (ui.buttonGroup->checkedButton() == ui.size2)
-      pix = pix.transformed(QTransform().scale(2, 2));
-    else if (ui.buttonGroup->checkedButton() == ui.size4)
-      pix = pix.transformed(QTransform().scale(4, 4));
+  // Scale the image, if necessary
+  if (ui.buttonGroup->checkedButton() == ui.size2)
+    pix = pix.transformed(QTransform().scale(2, 2));
+  else if (ui.buttonGroup->checkedButton() == ui.size4)
+    pix = pix.transformed(QTransform().scale(4, 4));
 
 
-    // return the modified image
-    return pix;
-  
+  // return the modified image
+  return pix;
+
   //return *(ui.origImage->pixmap());
 }
 

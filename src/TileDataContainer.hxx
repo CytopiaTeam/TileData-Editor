@@ -17,6 +17,8 @@ public:
   bool hasTileData(const QString& id) const;
   TileData getTileData(const QString& id) const;
 
+  std::vector<QString> getAllGroundDecorationIDs();
+
   void removeTileData(const QString& id);
   void addTileData(const TileData& tile);
 

@@ -20,6 +20,23 @@ TileData TileDataContainer::getTileData(const QString& id) const
 
 //--------------------------------------------------------------------------------
 
+std::vector<QString> TileDataContainer::getAllGroundDecorationIDs()
+{
+  std::vector<QString> foundIDs;
+
+  for (const TileData& it : tileData)
+  {
+    if (it.tileType == +TileType::GROUNDDECORATION)
+    {
+      foundIDs.push_back(QString::fromStdString( it.id));
+    }
+  }
+   
+  return foundIDs;
+}
+//--------------------------------------------------------------------------------
+
+
 QString TileDataContainer::loadFile(const QString& theFileName)
 {
   fileName = theFileName;

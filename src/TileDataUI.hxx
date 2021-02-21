@@ -8,6 +8,8 @@
 
 #include "ui_TileDataUI.h"
 #include "ui_TileSetDataUI.h"
+#include "ui_ItemSelectionUI.h"
+
 #include "helpers.hxx"
 
 #include "TileDataContainer.hxx"
@@ -33,7 +35,8 @@ private slots:
   void duplicateItem();
 
 private: // methods
-  void setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI);
+  void setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelectionDialog);
+  void setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelectionDialog);
   void createActions();
   void createZoneButtons(); /// dynamically create Buttons for assignable zones from the Zones enum
   void createStyleButtons(); /// dynamically create Buttons for assignable styles from the Style enum
@@ -63,10 +66,14 @@ private: // members
   TileDataContainer tileContainer;
   QTreeWidget* tree;
   QSplitter* splitter;
+  QWidget* biomeSelector;
+  QWidget* groundDecorationSelector;
   Ui_TileSetDataUi tilesSet;
   Ui_TileSetDataUi shoreTileSet;
   Ui_TileSetDataUi slopeSet;
   Ui_TileDataUi ui;
+  Ui_ItemSelectionUI itemSelection;
+  
 
 protected:
   virtual void keyPressEvent(QKeyEvent*);
