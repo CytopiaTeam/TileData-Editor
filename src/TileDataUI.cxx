@@ -169,25 +169,50 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
 
     TileData tile = tileContainer.getTileData(parentUI.id->text());
     itemSelectionDialog.availableItems->clear();
+    itemSelectionDialog.usedItems->clear();
 
     for (const auto biome : tile.biomes)
     {
       itemSelectionDialog.availableItems->addItem(QString::fromStdString(biome));
     }
     groundDecorationSelector->setWindowTitle("Select Biome");
+    itemSelectionDialog.listOfLabel->setText("Available Biomes");
+    itemSelectionDialog.usedLabel->setText("Used Biomes");
     biomeSelector->show();
 
     });
 
   connect(parentUI.groundDecorationButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
-    itemSelectionDialog.availableItems->clear();
-    //TileData tile = tileContainer.getTileData(parentUI.id->text());
 
-    for (const QString biome : tileContainer.getAllGroundDecorationIDs())
+    itemSelectionDialog.availableItems->clear();
+    itemSelectionDialog.usedItems->clear();
+    TileData tile = tileContainer.getTileData(parentUI.id->text());
+
+
+    for (const QString& groundDecoration : tileContainer.getAllGroundDecorationIDs())
     {
-      itemSelectionDialog.availableItems->addItem(biome);
+      itemSelectionDialog.availableItems->addItem(groundDecoration);
     }
+
+    std::vector<std::string>groundDecorationUsed;
+    commaSeperatedStringToVector(parentUI.groundDecoration->text().toStdString(), groundDecorationUsed);
+
+    for (const auto& usedDecoration : groundDecorationUsed)
+    {
+      itemSelectionDialog.usedItems->addItem(QString::fromStdString(usedDecoration));
+
+      for (int a = 0; a < itemSelectionDialog.availableItems->count() + 1; a++)
+      {
+        if (itemSelectionDialog.availableItems->item(a) && itemSelectionDialog.availableItems->item(a)->text() == QString::fromStdString(usedDecoration))
+        {
+          itemSelectionDialog.availableItems->takeItem(a);
+        }
+      }
+    }
+
     groundDecorationSelector->setWindowTitle("Select GroundDecoration");
+    itemSelectionDialog.listOfLabel->setText("Available GroundDecoration");
+    itemSelectionDialog.usedLabel->setText("Used GroundDecoration");
     groundDecorationSelector->show();
 
     });
@@ -203,15 +228,23 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
     });
 
   connect(itemSelectionDialog.okButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
-    if (itemSelectionDialog.usedItems->count() == 0)
+    if (itemSelectionDialog.usedItems->count() > 0)
     {
-
+    QString items;
       for (int i = 0; i < itemSelectionDialog.usedItems->count(); i++)
       {
-        qInfo() << itemSelectionDialog.usedItems->item(i)->text();
+        qInfo() << "before " << items;
+        items += itemSelectionDialog.usedItems->item(i)->text();
+        qInfo() << "after  " << items;
+
+        if (itemSelectionDialog.usedItems->count() - i > 1)
+        {
+          items += ",";
+        }
       }
+    parentUI.groundDecoration->setText(items);
     }
-    qInfo() << "clicked OK";
+
     biomeSelector->hide();
     groundDecorationSelector->hide();
     });
