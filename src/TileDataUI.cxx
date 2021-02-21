@@ -228,23 +228,20 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
     });
 
   connect(itemSelectionDialog.okButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    QString items;
     if (itemSelectionDialog.usedItems->count() > 0)
     {
-    QString items;
       for (int i = 0; i < itemSelectionDialog.usedItems->count(); i++)
       {
-        qInfo() << "before " << items;
         items += itemSelectionDialog.usedItems->item(i)->text();
-        qInfo() << "after  " << items;
-
         if (itemSelectionDialog.usedItems->count() - i > 1)
         {
           items += ",";
         }
       }
-    parentUI.groundDecoration->setText(items);
     }
 
+    parentUI.groundDecoration->setText(items);
     biomeSelector->hide();
     groundDecorationSelector->hide();
     });
