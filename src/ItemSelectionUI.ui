@@ -54,6 +54,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>All</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="removeItemButton">
         <property name="text">
          <string>&lt;&lt;</string>
