@@ -12,12 +12,14 @@ class TileDataContainer : public QObject
 {
 public:
   QString loadFile(const QString& fileName);
+  QString getBiomeDataFromFile(const QString& fileName);
   bool saveFile();
 
   bool hasTileData(const QString& id) const;
   TileData getTileData(const QString& id) const;
 
   std::vector<QString> getAllGroundDecorationIDs();
+  std::vector<QString> getBiomes() { return biomes; };
 
   void removeTileData(const QString& id);
   void addTileData(const TileData& tile);
@@ -46,6 +48,7 @@ private:
 private:
   QString fileName;
   QMap<QString, TileData> tileData;
+  std::vector<QString> biomes;
 };
 
 #endif

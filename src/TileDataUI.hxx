@@ -23,6 +23,7 @@ public:
   TileDataUI();
 
   bool loadFile(const QString& name);
+  bool loadBiomeData(const QString& name);
 
 protected:
   void closeEvent(QCloseEvent* event) override;

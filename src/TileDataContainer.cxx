@@ -34,8 +34,34 @@ std::vector<QString> TileDataContainer::getAllGroundDecorationIDs()
    
   return foundIDs;
 }
+
 //--------------------------------------------------------------------------------
 
+QString TileDataContainer::getBiomeDataFromFile(const QString& fileName)
+{
+  QFile file(fileName);
+  if (!file.exists())
+    return QString();
+
+  if (!file.open(QIODevice::ReadOnly))
+    return file.errorString();
+
+
+  QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+  if (doc.isNull() )
+    return tr("Illegal file content");
+
+  if (!doc.isObject())
+    return tr("Illegal file content");
+
+  QJsonObject obj = doc.object();
+
+  for (const QString& key : obj.keys())
+  {
+    biomes.push_back(key);
+  }
+  return "Loaded File biomeData";
+}
 
 QString TileDataContainer::loadFile(const QString& theFileName)
 {
