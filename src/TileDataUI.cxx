@@ -33,11 +33,13 @@ TileDataUI::TileDataUI()
   ui.setupUi(w);
   splitter->addWidget(w);
 
-  biomeSelector = new QWidget;
+  biomeSelector = new QWidget(this, Qt::Popup | Qt::Dialog);;
+
   itemSelection.setupUi(biomeSelector);
   setupNew(ui, itemSelection);
 
-  groundDecorationSelector = new QWidget;
+  groundDecorationSelector = new QWidget(this, Qt::Popup | Qt::Dialog);;
+
   itemSelection.setupUi(groundDecorationSelector);
   setupNew(ui, itemSelection);
 
@@ -193,6 +195,7 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
     itemSelectionDialog.listOfLabel->setText("Available Biomes");
     itemSelectionDialog.usedLabel->setText("Used Biomes");
     biomeSelector->setWindowTitle("Select Biome");
+    biomeSelector->setWindowModality(Qt::WindowModal);
     biomeSelector->show();
 
     });
