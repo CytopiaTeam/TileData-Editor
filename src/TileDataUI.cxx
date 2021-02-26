@@ -242,7 +242,7 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
     delete itemSelectionDialog.availableItems->currentItem();
     });
 
-  connect(itemSelectionDialog.clearButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+  connect(itemSelectionDialog.clearButton, QOverload<bool>::of(&QPushButton::clicked), this, [itemSelectionDialog, this]() {
     // store count as it will change when we manipulate the list
     int count = itemSelectionDialog.usedItems->count() - 1;
     // iterate over all items, starting backwards to avoid index out of range
