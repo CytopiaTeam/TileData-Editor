@@ -167,17 +167,32 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
 {
   connect(parentUI.BiomeButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
 
-    TileData tile = tileContainer.getTileData(parentUI.id->text());
     itemSelectionDialog.availableItems->clear();
     itemSelectionDialog.usedItems->clear();
 
-    for (const auto biome : tile.biomes)
+    std::vector<std::string>biomesUsed;
+    commaSeperatedStringToVector(parentUI.biomes->text().toStdString(), biomesUsed);
+
+    for (const QString& biome : tileContainer.getBiomes())
     {
-      itemSelectionDialog.availableItems->addItem(QString::fromStdString(biome));
+      bool found = false;
+      for (const std::string& usedBiome : biomesUsed)
+      {
+        if (usedBiome == biome.toStdString())
+        {
+          itemSelectionDialog.usedItems->addItem(biome);
+          found = true;
+        }
+      }
+      if (!found)
+      { 
+        itemSelectionDialog.availableItems->addItem(biome);
+      }
     }
-    groundDecorationSelector->setWindowTitle("Select Biome");
+
     itemSelectionDialog.listOfLabel->setText("Available Biomes");
     itemSelectionDialog.usedLabel->setText("Used Biomes");
+    biomeSelector->setWindowTitle("Select Biome");
     biomeSelector->show();
 
     });
@@ -186,27 +201,24 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
 
     itemSelectionDialog.availableItems->clear();
     itemSelectionDialog.usedItems->clear();
-    TileData tile = tileContainer.getTileData(parentUI.id->text());
-
-
-    for (const QString& groundDecoration : tileContainer.getAllGroundDecorationIDs())
-    {
-      itemSelectionDialog.availableItems->addItem(groundDecoration);
-    }
 
     std::vector<std::string>groundDecorationUsed;
     commaSeperatedStringToVector(parentUI.groundDecoration->text().toStdString(), groundDecorationUsed);
 
-    for (const auto& usedDecoration : groundDecorationUsed)
+      for (const QString& groundDecoration : tileContainer.getAllGroundDecorationIDs())
     {
-      itemSelectionDialog.usedItems->addItem(QString::fromStdString(usedDecoration));
-
-      for (int a = 0; a < itemSelectionDialog.availableItems->count() + 1; a++)
+      bool found = false;
+      for (const auto& usedDecoration : groundDecorationUsed)
       {
-        if (itemSelectionDialog.availableItems->item(a) && itemSelectionDialog.availableItems->item(a)->text() == QString::fromStdString(usedDecoration))
+        if (usedDecoration == groundDecoration.toStdString())
         {
-          itemSelectionDialog.availableItems->takeItem(a);
+          itemSelectionDialog.usedItems->addItem(groundDecoration);
+          found = true;
         }
+      }
+      if (!found)
+      {
+        itemSelectionDialog.availableItems->addItem(groundDecoration);
       }
     }
 
@@ -241,13 +253,23 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
       }
     }
 
-    parentUI.groundDecoration->setText(items);
-    biomeSelector->hide();
-    groundDecorationSelector->hide();
+    if (biomeSelector->isVisible())
+    {
+      biomeSelector->hide();
+      parentUI.biomes->setText(items);
+    }
+    else if (groundDecorationSelector->isVisible())
+    {
+      groundDecorationSelector->hide();
+      parentUI.groundDecoration->setText(items);
+    }
+    else 
+    {
+      qInfo() << "Error! Clicked OK on an unimplemented DIalog!";
+    }
     });
 
   connect(itemSelectionDialog.cancelButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
-    qInfo() << "clicked Cancel";
     biomeSelector->hide();
     groundDecorationSelector->hide();
     });
@@ -445,6 +467,12 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI, Ui_ItemSel
 }
 
 //--------------------------------------------------------------------------------
+
+bool TileDataUI::loadBiomeData(const QString& fileName)
+{
+  QString error = tileContainer.getBiomeDataFromFile(fileName);
+  return true;
+}
 
 bool TileDataUI::loadFile(const QString& fileName)
 {
