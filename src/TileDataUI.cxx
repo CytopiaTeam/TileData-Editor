@@ -187,7 +187,7 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
         }
       }
       if (!found)
-      { 
+      {
         itemSelectionDialog.availableItems->addItem(biome);
       }
     }
@@ -208,7 +208,7 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
     std::vector<std::string>groundDecorationUsed;
     commaSeperatedStringToVector(parentUI.groundDecoration->text().toStdString(), groundDecorationUsed);
 
-      for (const QString& groundDecoration : tileContainer.getAllGroundDecorationIDs())
+    for (const QString& groundDecoration : tileContainer.getAllGroundDecorationIDs())
     {
       bool found = false;
       for (const auto& usedDecoration : groundDecorationUsed)
@@ -242,6 +242,22 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
     delete itemSelectionDialog.availableItems->currentItem();
     });
 
+  connect(itemSelectionDialog.clearButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    // store count as it will change when we manipulate the list
+    int count = itemSelectionDialog.usedItems->count() - 1;
+    // iterate over all items, starting backwards to avoid index out of range
+    for (int i = count; i >= 0; --i)
+    {
+      // we have to clone the widget, moving is not possible
+      QListWidgetItem* widget = itemSelectionDialog.usedItems->item(i)->clone();
+      if (widget) // better be safe than sorry
+      {
+        itemSelectionDialog.availableItems->addItem(widget); // add the cloned item to the list
+        itemSelectionDialog.usedItems->takeItem(i); // remove the old item we found and cloned
+      }
+    }
+    });
+
   connect(itemSelectionDialog.okButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
     QString items;
     if (itemSelectionDialog.usedItems->count() > 0)
@@ -266,7 +282,7 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
       groundDecorationSelector->hide();
       parentUI.groundDecoration->setText(items);
     }
-    else 
+    else
     {
       qInfo() << "Error! Clicked OK on an unimplemented DIalog!";
     }
