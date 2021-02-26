@@ -54,7 +54,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="addAllButton">
         <property name="text">
          <string>All</string>
         </property>
