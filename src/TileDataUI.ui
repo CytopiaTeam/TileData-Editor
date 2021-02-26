@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1033</width>
-    <height>850</height>
+    <height>851</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -104,27 +104,79 @@
    </item>
    <item>
     <layout class="QGridLayout" name="TilePropertiesGridLayout">
-     <item row="9" column="4">
-      <widget class="QLabel" name="label_7">
-       <property name="toolTip">
-        <string>Water production of this item. Negative values means power consumption.</string>
-       </property>
+     <item row="12" column="3">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="BiomeButton">
+         <property name="text">
+          <string>Edit</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="biomes">
+         <property name="toolTip">
+          <string>Restrict this building to spawn only in the given biomes. Must correspond to a biome defined in resources/data/TerrainGen.json. Values must be commaseperated</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Water production</string>
+        <string>Title</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_18">
+     <item row="3" column="5">
+      <widget class="QLabel" name="label_21">
        <property name="toolTip">
-        <string>Restrict this building to a zone type</string>
+        <string>How much education this building provides (educational building) / requires (job)</string>
        </property>
        <property name="text">
-        <string>Zones</string>
+        <string>Education</string>
        </property>
       </widget>
      </item>
-     <item row="13" column="4">
+     <item row="4" column="3">
+      <layout class="QHBoxLayout" name="zoneButtonsHorizontalLayout"/>
+     </item>
+     <item row="10" column="3">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QCheckBox" name="placeOnGround">
+         <property name="toolTip">
+          <string>Whether or not this building be placed on ground.	</string>
+         </property>
+         <property name="text">
+          <string>placeOnGround</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="placeOnWater">
+         <property name="toolTip">
+          <string>Whether or not this building be placed on water.	</string>
+         </property>
+         <property name="text">
+          <string>placeOnWater</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="isOverPlacable">
+         <property name="toolTip">
+          <string>Determines if other tiles can be placed over this one tile or if it needs to be demolished first</string>
+         </property>
+         <property name="text">
+          <string>isOverPlacable</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="13" column="5">
       <widget class="QLabel" name="label_23">
        <property name="toolTip">
         <string>Pollution rate this building produces or prevents (police station)</string>
@@ -134,10 +186,80 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="2">
-      <widget class="QComboBox" name="TileTypeComboBox">
+     <item row="4" column="5">
+      <widget class="QLabel" name="label_24">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tiletype determines the tiles behaviour.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;DEFAULT&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Default is for buildings and practically everything that'll be placed on the TERRAIN layer&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;TERRAIN&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Terrain itself&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;WATER&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Water terrain&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;BLUEPRIN&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#000000;&quot;&gt;T&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Same as terrain, but gets placed on the BLUEPRINT layer&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;AUTOTILE&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#24292e;&quot;/&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt;- Autotiling to itself, like roads, power lines, etc&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;ZONE&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Zones (rectangular placement)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;GROUNDDECORATION&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Draw this Tile on GROUNDDECORATION layer. Buildings can be placed over it&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;UNDERGROUND&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#24292e;&quot;/&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt;- same as AUTOTILE, but for the BLUEPRINT layer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Fire hazard rate this building produces or prevents (police station)</string>
+       </property>
+       <property name="text">
+        <string>FireHazard</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QLabel" name="label_5">
+       <property name="toolTip">
+        <string>Author of this item</string>
+       </property>
+       <property name="text">
+        <string>Author</string>
+       </property>
+      </widget>
+     </item>
+     <item row="14" column="5">
+      <widget class="QLabel" name="label_17">
+       <property name="toolTip">
+        <string>The effect on happiness around this building.	</string>
+       </property>
+       <property name="text">
+        <string>Happiness</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="6">
+      <widget class="QLineEdit" name="author">
+       <property name="toolTip">
+        <string>Author of this item</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <layout class="QHBoxLayout" name="wealthButtonsHorizontalLayout"/>
+     </item>
+     <item row="10" column="5">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Upkeep cost</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="5">
+      <widget class="QLabel" name="label_14">
+       <property name="toolTip">
+        <string>How many residents / workers this building can hold. Also how much jobs it provides</string>
+       </property>
+       <property name="text">
+        <string>Inhabitants</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="5">
+      <widget class="QLabel" name="label_22">
+       <property name="toolTip">
+        <string>Crime rate this building produces or prevents (police station)</string>
+       </property>
+       <property name="text">
+        <string>Crime</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label_15">
+       <property name="toolTip">
+        <string>Multiple tags for searching this item ingame. Seperate tags with a comma.</string>
+       </property>
+       <property name="text">
+        <string>Tags</string>
        </property>
       </widget>
      </item>
@@ -151,17 +273,14 @@
        </property>
       </widget>
      </item>
-     <item row="14" column="4">
-      <widget class="QLabel" name="label_17">
+     <item row="9" column="6">
+      <widget class="QSpinBox" name="waterProduction">
        <property name="toolTip">
-        <string>The effect on happiness around this building.	</string>
-       </property>
-       <property name="text">
-        <string>Happiness</string>
+        <string>Water production of this item. Negative values means power consumption.</string>
        </property>
       </widget>
      </item>
-     <item row="13" column="5">
+     <item row="13" column="6">
       <widget class="QSpinBox" name="pollutionLevel">
        <property name="toolTip">
         <string>Pollution rate this building produces or prevents (police station)</string>
@@ -175,133 +294,65 @@
        </property>
       </widget>
      </item>
-     <item row="11" column="4">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>Build cost</string>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="4">
-      <widget class="QLabel" name="label_22">
+     <item row="15" column="5">
+      <widget class="QLabel" name="label_11">
        <property name="toolTip">
-        <string>Crime rate this building produces or prevents (police station)</string>
+        <string>How many tiles this building uses.</string>
        </property>
        <property name="text">
-        <string>Crime</string>
+        <string>RequiredTiles</string>
        </property>
       </widget>
      </item>
-     <item row="10" column="4">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Upkeep cost</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="5">
-      <widget class="QSpinBox" name="upkeepCost">
+     <item row="13" column="0">
+      <widget class="QLabel" name="label_13">
        <property name="toolTip">
-        <string>Monthly upkeep cost</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica','Arial','sans-serif','Apple Color Emoji','Segoe UI Emoji'; font-size:16px; color:#24292e; background-color:#ffffff;&quot;&gt;tileID of the item that should be drawn on ground below sprite instead of terrain (grass, concrete, ...). When more than one tileID is supplied, a random ground decoration is chosen from the list on placement. Must be a tileID with tileType GroundDecoration.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica','Arial','sans-serif','Apple Color Emoji','Segoe UI Emoji'; font-size:16px; color:#24292e; background-color:#ffffff;&quot;&gt;Valuesmust be commaseperated.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>GroundDecoration</string>
        </property>
       </widget>
      </item>
-     <item row="11" column="5">
+     <item row="11" column="6">
       <widget class="QSpinBox" name="buildCost">
        <property name="toolTip">
         <string>Buildcost</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_20">
-       <property name="toolTip">
-        <string>Restrict this building to a certain wealth level. </string>
-       </property>
-       <property name="text">
-        <string>Wealth</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="4">
-      <widget class="QLabel" name="label_14">
-       <property name="toolTip">
-        <string>How many residents / workers this building can hold. Also how much jobs it provides</string>
-       </property>
-       <property name="text">
-        <string>Inhabitants</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QLabel" name="label_5">
-       <property name="toolTip">
-        <string>Author of this item</string>
-       </property>
-       <property name="text">
-        <string>Author</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QPlainTextEdit" name="description">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>10</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Description of the item that is shown in it's details</string>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="5">
-      <widget class="QSpinBox" name="waterProduction">
-       <property name="toolTip">
-        <string>Water production of this item. Negative values means power consumption.</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="5">
+     <item row="5" column="6">
       <widget class="QSpinBox" name="powerProduction">
        <property name="toolTip">
         <string>Power production of this item. Negative values means power consumption.</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
+     <item row="3" column="6">
+      <widget class="QSpinBox" name="educationLevel">
+       <property name="toolTip">
+        <string>How much education this building provides (educational building) / requires (job)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="5">
+      <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Title</string>
+        <string>Build cost</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="5">
-      <widget class="QLineEdit" name="author">
+     <item row="12" column="0">
+      <widget class="QLabel" name="label_16">
        <property name="toolTip">
-        <string>Author of this item</string>
+        <string>Restrict this building to spawn only in the given biomes. Must correspond to a biome defined in resources/data/TerrainGen.json. Values must be commaseperated</string>
+       </property>
+       <property name="text">
+        <string>Biomes</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="2">
-      <layout class="QHBoxLayout" name="zoneButtonsHorizontalLayout"/>
-     </item>
-     <item row="12" column="5">
-      <widget class="QSpinBox" name="crimeLevel">
-       <property name="toolTip">
-        <string>Crime rate this building produces or prevents (police station)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="14" column="5">
-      <widget class="QSpinBox" name="happiness">
-       <property name="toolTip">
-        <string>The effect on happiness around this building.	</string>
-       </property>
-      </widget>
-     </item>
-     <item row="15" column="5">
+     <item row="15" column="6">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QSpinBox" name="requiredTilesWidth">
@@ -364,58 +415,73 @@
        </item>
       </layout>
      </item>
-     <item row="4" column="5">
-      <widget class="QSpinBox" name="fireHazardLevel">
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_18">
        <property name="toolTip">
-        <string>Fire hazard rate this building produces or prevents (police station)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="5">
-      <widget class="QSpinBox" name="educationLevel">
-       <property name="toolTip">
-        <string>How much education this building provides (educational building) / requires (job)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="5">
-      <widget class="QSpinBox" name="inhabitants">
-       <property name="toolTip">
-        <string>How many residents / workers this building can hold. Also how much jobs it provides</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="4">
-      <widget class="QLabel" name="label_6">
-       <property name="toolTip">
-        <string>Power production of this item. Negative values means power consumption.</string>
+        <string>Restrict this building to a zone type</string>
        </property>
        <property name="text">
-        <string>Power production</string>
+        <string>Zones</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="4">
-      <widget class="QLabel" name="label_21">
+     <item row="3" column="3">
+      <widget class="QComboBox" name="TileTypeComboBox">
        <property name="toolTip">
-        <string>How much education this building provides (educational building) / requires (job)</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tiletype determines the tiles behaviour.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;DEFAULT&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Default is for buildings and practically everything that'll be placed on the TERRAIN layer&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;TERRAIN&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Terrain itself&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;WATER&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Water terrain&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;BLUEPRIN&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#000000;&quot;&gt;T&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Same as terrain, but gets placed on the BLUEPRINT layer&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;AUTOTILE&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#24292e;&quot;/&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt;- Autotiling to itself, like roads, power lines, etc&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;ZONE&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Zones (rectangular placement)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;GROUNDDECORATION&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt; - Draw this Tile on GROUNDDECORATION layer. Buildings can be placed over it&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; font-weight:600; color:#24292e;&quot;&gt;UNDERGROUND&lt;/span&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#24292e;&quot;/&gt;&lt;span style=&quot; font-family:'SFMono-Regular','Consolas','Liberation Mono','Menlo','monospace'; color:#000000;&quot;&gt;- same as AUTOTILE, but for the BLUEPRINT layer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_19">
+       <property name="toolTip">
+        <string>Restrict this building to certain Art Styles. </string>
        </property>
        <property name="text">
-        <string>Education</string>
+        <string>Styles</string>
        </property>
       </widget>
      </item>
-     <item row="15" column="4">
-      <widget class="QLabel" name="label_11">
+     <item row="2" column="3">
+      <widget class="QPlainTextEdit" name="description">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>50</height>
+        </size>
+       </property>
        <property name="toolTip">
-        <string>How many tiles this building uses.</string>
-       </property>
-       <property name="text">
-        <string>RequiredTiles</string>
+        <string>Description of the item that is shown in it's details</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
+     <item row="10" column="6">
+      <widget class="QSpinBox" name="upkeepCost">
+       <property name="toolTip">
+        <string>Monthly upkeep cost</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="6">
+      <widget class="QSpinBox" name="crimeLevel">
+       <property name="toolTip">
+        <string>Crime rate this building produces or prevents (police station)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
       <widget class="QLineEdit" name="title">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -434,117 +500,85 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="4">
-      <widget class="QLabel" name="label_24">
+     <item row="2" column="6">
+      <widget class="QSpinBox" name="inhabitants">
        <property name="toolTip">
-        <string>Fire hazard rate this building produces or prevents (police station)</string>
-       </property>
-       <property name="text">
-        <string>FireHazard</string>
+        <string>How many residents / workers this building can hold. Also how much jobs it provides</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="2">
-      <layout class="QHBoxLayout" name="wealthButtonsHorizontalLayout"/>
+     <item row="5" column="5">
+      <widget class="QLabel" name="label_6">
+       <property name="toolTip">
+        <string>Power production of this item. Negative values means power consumption.</string>
+       </property>
+       <property name="text">
+        <string>Power production</string>
+       </property>
+      </widget>
      </item>
-     <item row="10" column="2">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QCheckBox" name="placeOnGround">
-         <property name="toolTip">
-          <string>Whether or not this building be placed on ground.	</string>
-         </property>
-         <property name="text">
-          <string>placeOnGround</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="placeOnWater">
-         <property name="toolTip">
-          <string>Whether or not this building be placed on water.	</string>
-         </property>
-         <property name="text">
-          <string>placeOnWater</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="isOverPlacable">
-         <property name="toolTip">
-          <string>Determines if other tiles can be placed over this one tile or if it needs to be demolished first</string>
-         </property>
-         <property name="text">
-          <string>isOverPlacable</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="9" column="5">
+      <widget class="QLabel" name="label_7">
+       <property name="toolTip">
+        <string>Water production of this item. Negative values means power consumption.</string>
+       </property>
+       <property name="text">
+        <string>Water production</string>
+       </property>
+      </widget>
      </item>
-     <item row="9" column="2">
+     <item row="9" column="3">
       <layout class="QHBoxLayout" name="stylesButtonsHorizontalLayout"/>
      </item>
-     <item row="9" column="0">
-      <widget class="QLabel" name="label_19">
+     <item row="14" column="6">
+      <widget class="QSpinBox" name="happiness">
        <property name="toolTip">
-        <string>Restrict this building to certain Art Styles. </string>
-       </property>
-       <property name="text">
-        <string>Styles</string>
+        <string>The effect on happiness around this building.	</string>
        </property>
       </widget>
      </item>
-     <item row="11" column="2">
+     <item row="11" column="3">
       <widget class="QLineEdit" name="tags">
        <property name="toolTip">
         <string>Multiple tags for searching this item ingame. Seperate tags with a comma.</string>
        </property>
       </widget>
      </item>
-     <item row="11" column="0">
-      <widget class="QLabel" name="label_15">
+     <item row="4" column="6">
+      <widget class="QSpinBox" name="fireHazardLevel">
        <property name="toolTip">
-        <string>Multiple tags for searching this item ingame. Seperate tags with a comma.</string>
+        <string>Fire hazard rate this building produces or prevents (police station)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_20">
+       <property name="toolTip">
+        <string>Restrict this building to a certain wealth level. </string>
        </property>
        <property name="text">
-        <string>Tags</string>
+        <string>Wealth</string>
        </property>
       </widget>
      </item>
-     <item row="12" column="0">
-      <widget class="QLabel" name="label_16">
-       <property name="toolTip">
-        <string>Restrict this building to spawn only in the given biomes. Must correspond to a biome defined in resources/data/TerrainGen.json. Values must be commaseperated</string>
-       </property>
-       <property name="text">
-        <string>Biomes</string>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="2">
-      <widget class="QLineEdit" name="biomes">
-       <property name="toolTip">
-        <string>Restrict this building to spawn only in the given biomes. Must correspond to a biome defined in resources/data/TerrainGen.json. Values must be commaseperated</string>
-       </property>
-      </widget>
-     </item>
-     <item row="13" column="0">
-      <widget class="QLabel" name="label_13">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica','Arial','sans-serif','Apple Color Emoji','Segoe UI Emoji'; font-size:16px; color:#24292e; background-color:#ffffff;&quot;&gt;tileID of the item that should be drawn on ground below sprite instead of terrain (grass, concrete, ...). When more than one tileID is supplied, a random ground decoration is chosen from the list on placement. Must be a tileID with tileType GroundDecoration.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica','Arial','sans-serif','Apple Color Emoji','Segoe UI Emoji'; font-size:16px; color:#24292e; background-color:#ffffff;&quot;&gt;Valuesmust be commaseperated.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>GroundDecoration</string>
-       </property>
-      </widget>
-     </item>
-     <item row="13" column="2">
-      <widget class="QLineEdit" name="groundDecoration">
-       <property name="toolTip">
-        <string>tileID of the item that should be drawn on ground below sprite instead of terrain (grass, concrete, ...). When more than one tileID is supplied, a random ground decoration is chosen from the list on placement. Must be a tileID with tileType GroundDecoration.
+     <item row="13" column="3">
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="groundDecorationButton">
+         <property name="text">
+          <string>Edit</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="groundDecoration">
+         <property name="toolTip">
+          <string>tileID of the item that should be drawn on ground below sprite instead of terrain (grass, concrete, ...). When more than one tileID is supplied, a random ground decoration is chosen from the list on placement. Must be a tileID with tileType GroundDecoration.
 Valuesmust be commaseperated.</string>
-       </property>
-      </widget>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

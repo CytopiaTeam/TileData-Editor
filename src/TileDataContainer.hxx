@@ -11,26 +11,30 @@
 class TileDataContainer : public QObject
 {
 public:
-  QString loadFile(const QString &fileName);
+  QString loadFile(const QString& fileName);
+  QString getBiomeDataFromFile(const QString& fileName);
   bool saveFile();
 
-  bool hasTileData(const QString &id) const;
-  TileData getTileData(const QString &id) const;
+  bool hasTileData(const QString& id) const;
+  TileData getTileData(const QString& id) const;
 
-  void removeTileData(const QString &id);
-  void addTileData(const TileData &tile);
+  std::vector<QString> getAllGroundDecorationIDs();
+  std::vector<QString> getBiomes() { return biomes; };
+
+  void removeTileData(const QString& id);
+  void addTileData(const TileData& tile);
 
   using Map = QMap<QString, TileData>;
   Map::iterator begin() { return tileData.begin(); }
   Map::iterator end() { return tileData.end(); }
 
 private:
-  void stringArrayFromJson(std::vector<std::string> &data, const QJsonValue& value);
+  void stringArrayFromJson(std::vector<std::string>& data, const QJsonValue& value);
   void biomesFromJson(TileData& data, const QJsonValue& value);
   void groundDecorationFromJson(TileData& data, const QJsonValue& value);
-  void tileSetDataFromJson(TileSetData &data, const QJsonValue &value);
+  void tileSetDataFromJson(TileSetData& data, const QJsonValue& value);
   void requiredTilesFromJson(RequiredTilesData& data, const QJsonValue& value);
-  void zonesFromJson(std::vector<Zones> &data, const QJsonValue& value);
+  void zonesFromJson(std::vector<Zones>& data, const QJsonValue& value);
   void stylesFromJson(TileData& data, const QJsonValue& value);
   void wealthFromJson(TileData& data, const QJsonValue& value);
   void tileTypeFromJson(TileType& tileType, const QJsonValue& value);
@@ -44,6 +48,7 @@ private:
 private:
   QString fileName;
   QMap<QString, TileData> tileData;
+  std::vector<QString> biomes;
 };
 
 #endif

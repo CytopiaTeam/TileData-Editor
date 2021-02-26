@@ -15,7 +15,7 @@
    <string>Form</string>
   </property>
   <property name="toolTip">
-   <string>Height of this element or of one tile, if the image contains multiple tiles in a tileset.</string>
+   <string/>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <property name="horizontalSpacing">
@@ -97,6 +97,9 @@
       <widget class="QSpinBox" name="offset">
        <property name="toolTip">
         <string>If clip_rect (width and height) is used, the offset in the spritesheet where the clipping should start</string>
+       </property>
+       <property name="minimum">
+        <number>-99</number>
        </property>
       </widget>
      </item>
@@ -263,7 +266,7 @@
         <x>0</x>
         <y>0</y>
         <width>710</width>
-        <height>307</height>
+        <height>322</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -322,7 +325,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../images/iconFolder.png</normaloff>../images/iconFolder.png</iconset>
+         <normaloff>C:/Users/lisaw/.designer/images/iconFolder.png</normaloff>C:/Users/lisaw/.designer/images/iconFolder.png</iconset>
        </property>
       </widget>
      </item>
@@ -336,7 +339,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../images/iconX.png</normaloff>../images/iconX.png</iconset>
+         <normaloff>C:/Users/lisaw/.designer/images/iconX.png</normaloff>C:/Users/lisaw/.designer/images/iconX.png</iconset>
        </property>
       </widget>
      </item>

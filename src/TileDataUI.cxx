@@ -12,6 +12,8 @@
 #include <QtCore/QDir>
 #include <QtWidgets/QHeaderView>
 #include <QtCore/QSignalBlocker>
+#include <QPainter>
+#include <QDialog>
 
 
 #include "Cytopia/src/engine/basics/tileData.hxx"
@@ -31,6 +33,16 @@ TileDataUI::TileDataUI()
   ui.setupUi(w);
   splitter->addWidget(w);
 
+  biomeSelector = new QWidget(this, Qt::Popup | Qt::Dialog);;
+
+  itemSelection.setupUi(biomeSelector);
+  setupNew(ui, itemSelection);
+
+  groundDecorationSelector = new QWidget(this, Qt::Popup | Qt::Dialog);;
+
+  itemSelection.setupUi(groundDecorationSelector);
+  setupNew(ui, itemSelection);
+
   ui.id->setMaxLength(TD_ID_MAX_CHARS);
   ui.category->setMaxLength(TD_CATEGORY_MAX_CHARS);
   ui.subCategory->setMaxLength(TD_SUBCATEGORY_MAX_CHARS);
@@ -38,7 +50,7 @@ TileDataUI::TileDataUI()
   ui.author->setMaxLength(TD_AUTHOR_MAX_CHARS);
   ui.buildCost->setRange(TD_PRICE_MIN, TD_PRICE_MAX);
   ui.upkeepCost->setRange(TD_UPKEEP_MIN, TD_UPKEEP_MAX);
-  ui.educationLevel ->setRange(TD_EDUCATION_MIN, TD_EDUCATION_MAX);
+  ui.educationLevel->setRange(TD_EDUCATION_MIN, TD_EDUCATION_MAX);
   ui.fireHazardLevel->setRange(TD_FIREDANGER_MIN, TD_FIREDANGER_MAX);
   ui.crimeLevel->setRange(TD_CRIME_MIN, TD_CRIME_MAX);
   ui.pollutionLevel->setRange(TD_POLLUTION_MIN, TD_POLLUTION_MAX);
@@ -47,20 +59,22 @@ TileDataUI::TileDataUI()
   ui.happiness->setRange(TD_HAPPINESS_MIN, TD_HAPPINESS_MAX);
   ui.requiredTilesHeight->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
   ui.requiredTilesWidth->setRange(TD_REQUIREDTILES_MIN, TD_REQUIREDTILES_MAX);
+  ui.inhabitants->setRange(TD_HABITANTS_MIN, TD_HABITANTS_MAX);
 
   w = new QWidget;
   tilesSet.setupUi(w);
-  setup(tilesSet, ui);
+  setup(tilesSet, ui, itemSelection);
   ui.tabWidget->addTab(w, tr("Tiles"));
+
 
   w = new QWidget;
   shoreTileSet.setupUi(w);
-  setup(shoreTileSet, ui);
+  setup(shoreTileSet, ui, itemSelection);
   ui.tabWidget->addTab(w, tr("ShoreLines"));
 
   w = new QWidget;
   slopeSet.setupUi(w);
-  setup(slopeSet, ui);
+  setup(slopeSet, ui, itemSelection);
   ui.tabWidget->addTab(w, tr("Slope"));
 
   setCentralWidget(splitter);
@@ -112,6 +126,7 @@ void TileDataUI::createActions()
   action->setIcon(QIcon::fromTheme("edit-delete"));
   action->setShortcut(QKeySequence::Cut);
   connect(action, &QAction::triggered, this, &TileDataUI::deleteItem);
+
   toolBar->addAction(action);
   editMenu->addAction(action);
 
@@ -140,7 +155,7 @@ void TileDataUI::closeEvent(QCloseEvent* event)
 {
   saveTileData();
 
-  QSettings settings("JimmySnails", "Cytopia");
+  QSettings settings("SimplyLiz", "Cytopia");
   settings.setValue("main/geometry", saveGeometry());
   settings.setValue("main/windowState", saveState());
   settings.setValue("main/splitter", splitter->saveState());
@@ -150,7 +165,148 @@ void TileDataUI::closeEvent(QCloseEvent* event)
 
 //--------------------------------------------------------------------------------
 
-void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
+void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelectionDialog)
+{
+  connect(parentUI.BiomeButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+
+    itemSelectionDialog.availableItems->clear();
+    itemSelectionDialog.usedItems->clear();
+
+    std::vector<std::string>biomesUsed;
+    commaSeperatedStringToVector(parentUI.biomes->text().toStdString(), biomesUsed);
+
+    for (const QString& biome : tileContainer.getBiomes())
+    {
+      bool found = false;
+      for (const std::string& usedBiome : biomesUsed)
+      {
+        if (usedBiome == biome.toStdString())
+        {
+          itemSelectionDialog.usedItems->addItem(biome);
+          found = true;
+        }
+      }
+      if (!found)
+      {
+        itemSelectionDialog.availableItems->addItem(biome);
+      }
+    }
+
+    itemSelectionDialog.listOfLabel->setText("Available Biomes");
+    itemSelectionDialog.usedLabel->setText("Used Biomes");
+    biomeSelector->setWindowTitle("Select Biome");
+    biomeSelector->setWindowModality(Qt::WindowModal);
+    biomeSelector->show();
+
+    });
+
+  connect(parentUI.groundDecorationButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+
+    itemSelectionDialog.availableItems->clear();
+    itemSelectionDialog.usedItems->clear();
+
+    std::vector<std::string>groundDecorationUsed;
+    commaSeperatedStringToVector(parentUI.groundDecoration->text().toStdString(), groundDecorationUsed);
+
+    for (const QString& groundDecoration : tileContainer.getAllGroundDecorationIDs())
+    {
+      bool found = false;
+      for (const auto& usedDecoration : groundDecorationUsed)
+      {
+        if (usedDecoration == groundDecoration.toStdString())
+        {
+          itemSelectionDialog.usedItems->addItem(groundDecoration);
+          found = true;
+        }
+      }
+      if (!found)
+      {
+        itemSelectionDialog.availableItems->addItem(groundDecoration);
+      }
+    }
+
+    groundDecorationSelector->setWindowTitle("Select GroundDecoration");
+    itemSelectionDialog.listOfLabel->setText("Available GroundDecoration");
+    itemSelectionDialog.usedLabel->setText("Used GroundDecoration");
+    groundDecorationSelector->show();
+
+    });
+
+  connect(itemSelectionDialog.useItemButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    if (!itemSelectionDialog.availableItems->currentItem())
+      return;
+
+    QListWidgetItem* widget = itemSelectionDialog.availableItems->currentItem()->clone();
+    itemSelectionDialog.usedItems->addItem(widget);
+    itemSelectionDialog.usedItems->setCurrentItem(widget);
+    delete itemSelectionDialog.availableItems->currentItem();
+    });
+
+  connect(itemSelectionDialog.clearButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    // store count as it will change when we manipulate the list
+    int count = itemSelectionDialog.usedItems->count() - 1;
+    // iterate over all items, starting backwards to avoid index out of range
+    for (int i = count; i >= 0; --i)
+    {
+      // we have to clone the widget, moving is not possible
+      QListWidgetItem* widget = itemSelectionDialog.usedItems->item(i)->clone();
+      if (widget) // better be safe than sorry
+      {
+        itemSelectionDialog.availableItems->addItem(widget); // add the cloned item to the list
+        itemSelectionDialog.usedItems->takeItem(i); // remove the old item we found and cloned
+      }
+    }
+    });
+
+  connect(itemSelectionDialog.okButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    QString items;
+    if (itemSelectionDialog.usedItems->count() > 0)
+    {
+      for (int i = 0; i < itemSelectionDialog.usedItems->count(); i++)
+      {
+        items += itemSelectionDialog.usedItems->item(i)->text();
+        if (itemSelectionDialog.usedItems->count() - i > 1)
+        {
+          items += ",";
+        }
+      }
+    }
+
+    if (biomeSelector->isVisible())
+    {
+      biomeSelector->hide();
+      parentUI.biomes->setText(items);
+    }
+    else if (groundDecorationSelector->isVisible())
+    {
+      groundDecorationSelector->hide();
+      parentUI.groundDecoration->setText(items);
+    }
+    else
+    {
+      qInfo() << "Error! Clicked OK on an unimplemented DIalog!";
+    }
+    });
+
+  connect(itemSelectionDialog.cancelButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    biomeSelector->hide();
+    groundDecorationSelector->hide();
+    });
+
+  connect(itemSelectionDialog.removeItemButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+    if (!itemSelectionDialog.usedItems->currentItem())
+      return;
+
+    QListWidgetItem* widget = itemSelectionDialog.usedItems->currentItem()->clone();
+    itemSelectionDialog.availableItems->addItem(widget);
+    itemSelectionDialog.availableItems->setCurrentItem(widget);
+    delete itemSelectionDialog.usedItems->currentItem();
+    });
+}
+
+//--------------------------------------------------------------------------------
+
+void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelectionDialog)
 {
   connect(ui.fileButton, &QPushButton::clicked, this, [ui]() {
     QString fileName = QFileDialog::getOpenFileName(ui.fileButton, tr("Select Image"), ui.fileName->text(), tr("Images (*.png)"));
@@ -169,7 +325,7 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
 
       // recalc width based on current count
       int spriteSheetLength = ui.origImage->pixmap()->width();
-      int numOffset = ui.offset->value();
+      int numOffset = abs(ui.offset->value());
       int numCount = ui.count->value();
       int singleTile_width = 0;
 
@@ -185,6 +341,8 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
       ui.width->setValue(singleTile_width);
     }
     });
+
+
 
   connect(ui.deleteButton, &QPushButton::clicked, this, [ui, this]() {
     QMessageBox::StandardButton ret = QMessageBox::question(this, tr("Delete Image"), tr("Shall the image really be deleted?"));
@@ -251,14 +409,20 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
         dynamic_cast<QPushButton*>(parentUI.stylesButtonsHorizontalLayout->itemAt(i)->widget())->setEnabled(false);
       }
     }
-  });
+    });
 
   connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, parentUI, this](int value) {
-    int numCount = ui.count->value();
-    // get parent ui to access tile type combobox
-    
+    if (!ui.origImage->pixmap() || !ui.image->pixmap())
+      return;
+
     TileType tileType = TileType::_from_index(parentUI.TileTypeComboBox->currentIndex());
 
+    int spriteSheetLength = ui.origImage->pixmap()->width();
+    int numOffset = abs(ui.offset->value());
+    int numCount = ui.count->value();
+    int singleTile_width = 0;
+
+    // check/uncheck pickRandomTile checkbox
     if (numCount > 1 && (tileType != +TileType::AUTOTILE && tileType != +TileType::ROAD && tileType != +TileType::UNDERGROUND))
     {
       ui.pickRandomTile->setChecked(true);
@@ -267,17 +431,6 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
     {
       ui.pickRandomTile->setChecked(false);
     }
-  });
-
-
-  connect(ui.count, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
-    if (!ui.origImage->pixmap() || (value == 0))
-      return;
-    
-    int spriteSheetLength = ui.origImage->pixmap()->width();
-    int numOffset = ui.offset->value();
-    int numCount = ui.count->value();
-    int singleTile_width = 0;
 
     // calculate length of one single tile
     if (numOffset > 0)
@@ -289,14 +442,17 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
       singleTile_width = spriteSheetLength / numCount;
     }
     ui.width->setValue(singleTile_width);
+
+    // set tileSetPreview selection boxes
+    ui.image->setPixmap(preparePixMap(ui));
     });
 
   connect(ui.offset, QOverload<int>::of(&QSpinBox::valueChanged), this, [ui, this](int value) {
-    if (!ui.origImage->pixmap())
+    if (!ui.origImage->pixmap() || !ui.image->pixmap())
       return;
 
     int spriteSheetLength = ui.origImage->pixmap()->width();
-    int numOffset = ui.offset->value();
+    int numOffset = abs(ui.offset->value());
     int numCount = ui.count->value();
     int singleTile_width = 0;
 
@@ -310,27 +466,32 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI)
       singleTile_width = spriteSheetLength / numCount;
     }
     ui.width->setValue(singleTile_width);
+
+    // set tileSetPreview selection boxes
+    ui.image->setPixmap(preparePixMap(ui));
     });
 
   ui.origImage->hide(); // a hidden storage for the original sized pixmap
 
+  // Scale buttons
   connect(ui.buttonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this,
-    [ui](QAbstractButton* button) {
-      if (!ui.origImage->pixmap())
+    [this, ui](QAbstractButton* button) {
+      if (!ui.origImage->pixmap() || !ui.image->pixmap())
         return;
 
-      QPixmap pix = *(ui.origImage->pixmap());
+      // set tileSetPreview selection boxes
+      ui.image->setPixmap(preparePixMap(ui));
 
-      if (button == ui.size2)
-        pix = pix.transformed(QTransform().scale(2, 2));
-      else if (button == ui.size4)
-        pix = pix.transformed(QTransform().scale(4, 4));
-
-      ui.image->setPixmap(pix);
     });
 }
 
 //--------------------------------------------------------------------------------
+
+bool TileDataUI::loadBiomeData(const QString& fileName)
+{
+  QString error = tileContainer.getBiomeDataFromFile(fileName);
+  return true;
+}
 
 bool TileDataUI::loadFile(const QString& fileName)
 {
@@ -360,7 +521,7 @@ bool TileDataUI::loadFile(const QString& fileName)
 
     root->addChild(newTreeItem(tile));
   }
-  
+
   tree->resizeColumnToContents(0);
   tree->resize(tree->columnWidth(0), tree->height());
 
@@ -432,7 +593,7 @@ void TileDataUI::itemSelected(QTreeWidgetItem* current, QTreeWidgetItem* previou
     }
   }
 
-  
+
 
   if (!current || !current->data(0, Qt::UserRole).isValid())
     return;
@@ -781,8 +942,8 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
 {
   ui.fileName->setText(QString::fromStdString(data.fileName));
   QPixmap pix(QString::fromStdString(data.fileName));
-  ui.image->setPixmap(pix);
   ui.origImage->setPixmap(pix);
+  ui.image->setPixmap(pix);
   ui.imageSize->setText(tr("(%1 x %2)").arg(pix.width()).arg(pix.height()));
   ui.imageSize->setVisible(!pix.isNull());
   ui.size1->setChecked(true);
@@ -791,6 +952,8 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
   ui.count->setValue(data.count);
   ui.offset->setValue(data.offset);
   ui.pickRandomTile->setChecked(data.pickRandomTile);
+
+  ui.image->setPixmap(preparePixMap(ui)); // set tileSetPreview selection boxes
 
   ui.deleteButton->setEnabled(!pix.isNull());
 }
@@ -940,3 +1103,63 @@ void TileDataUI::duplicateItem()
 //--------------------------------------------------------------------------------
 
 
+QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
+{
+  if (ui.origImage->pixmap()->isNull())
+  {
+    QPixmap emptyPixMap;
+    return emptyPixMap;
+  }
+
+  int numCount = ui.count->value();
+  int numOffset = ui.offset->value();
+  // tiledata preview
+
+  QPixmap pix = *(ui.origImage->pixmap());
+  QPainter* paint = new QPainter(&pix);
+
+  paint->setPen(QColor(255, 34, 255, 255));
+  int width = ui.width->value();
+  int height = ui.height->value() - 1;
+  int offsetY = pix.height() - ui.height->value(); // in case our height is smaller then the total height, start drawing from bottom up
+  int offsetX = 0;
+
+  if (numCount > 1 || numOffset >= 1)
+  {
+    for (int i = 0; i < numCount; i++)
+    {
+      if (numOffset >= 0)
+      {
+        offsetX = (width * numOffset) + (width * i);
+      }
+      else
+      {
+        offsetX = (width * i);
+      }
+      paint->drawRect(offsetX, offsetY, width - 1, height);
+    }
+  }
+  delete paint;
+
+  // Scale the image, if necessary
+  if (ui.buttonGroup->checkedButton() == ui.size2)
+    pix = pix.transformed(QTransform().scale(2, 2));
+  else if (ui.buttonGroup->checkedButton() == ui.size4)
+    pix = pix.transformed(QTransform().scale(4, 4));
+
+
+  // return the modified image
+  return pix;
+
+  //return *(ui.origImage->pixmap());
+}
+
+//--------------------------------------------------------------------------------
+
+void TileDataUI::keyPressEvent(QKeyEvent* event)
+{
+  if (event->key() == Qt::Key_Delete)
+  {
+    deleteItem();
+  }
+}

@@ -22,6 +22,10 @@ int main(int argc, char **argv)
     if (!ui.loadFile("resources/data/TileData.json"))
         return -1;
 
+    if (!ui.loadBiomeData("resources/data/TerrainGen.json"))
+      return -1;
+    
+
     ui.show();
 
     return app.exec();
