@@ -324,7 +324,7 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
 
 void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelectionDialog)
 {
-  connect(ui.fileButton, &QPushButton::clicked, this, [ui]() {
+  connect(ui.fileButton, &QPushButton::clicked, this, [ui, this]() {
     QString fileName = QFileDialog::getOpenFileName(ui.fileButton, tr("Select Image"), ui.fileName->text(), tr("Images (*.png)"));
     if (!fileName.isEmpty())
     {
@@ -494,6 +494,16 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI, Ui_ItemSel
     [this, ui](QAbstractButton* button) {
       if (!ui.origImage->pixmap() || !ui.image->pixmap())
         return;
+
+      // Set the zoomlevel property if a button has changed
+      if (ui.buttonGroup->checkedButton() == ui.size2)
+        zoomLevel = 2;
+      else if (ui.buttonGroup->checkedButton() == ui.size4)
+        zoomLevel = 4;
+      else if (ui.buttonGroup->checkedButton() == ui.sizeAuto)
+        zoomLevel = 0;
+      else
+        zoomLevel = 1;
 
       // set tileSetPreview selection boxes
       ui.image->setPixmap(preparePixMap(ui));
@@ -969,9 +979,28 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
   ui.offset->setValue(data.offset);
   ui.pickRandomTile->setChecked(data.pickRandomTile);
 
-  ui.image->setPixmap(preparePixMap(ui)); // set tileSetPreview selection boxes
 
   ui.deleteButton->setEnabled(!pix.isNull());
+
+  switch (zoomLevel)
+  {
+  case 0: // auto
+    ui.sizeAuto->setChecked(true);
+    break;
+  case 1:
+    ui.size1->setChecked(true);
+    break;
+  case 2:
+    ui.size2->setChecked(true);
+    break;
+  case 4:
+    ui.size4->setChecked(true);
+    break;
+  default:
+    break;
+  }
+
+  ui.image->setPixmap(preparePixMap(ui)); // set tileSetPreview selection boxes
 }
 
 //--------------------------------------------------------------------------------
@@ -1156,16 +1185,6 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
     }
   }
   delete paint;
-
-  // Scale the image, if necessary
-  if (ui.buttonGroup->checkedButton() == ui.size2)
-    zoomLevel = 2;
-  else if (ui.buttonGroup->checkedButton() == ui.size4)
-    zoomLevel = 4;
-  else if (ui.buttonGroup->checkedButton() == ui.sizeAuto)
-    zoomLevel = 0;
-  else
-    zoomLevel = 1;
 
   switch (zoomLevel)
   {
