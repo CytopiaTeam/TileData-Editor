@@ -258,6 +258,22 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
     }
     });
 
+  connect(itemSelectionDialog.addAllButton, QOverload<bool>::of(&QPushButton::clicked), this, [itemSelectionDialog, this]() {
+    // store count as it will change when we manipulate the list
+    int count = itemSelectionDialog.availableItems->count() - 1;
+    // iterate over all items, starting backwards to avoid index out of range
+    for (int i = count; i >= 0; --i)
+    {
+      // we have to clone the widget, moving is not possible
+      QListWidgetItem* widget = itemSelectionDialog.availableItems->item(i)->clone();
+      if (widget) // better be safe than sorry
+      {
+        itemSelectionDialog.usedItems->addItem(widget); // add the cloned item to the list
+        itemSelectionDialog.availableItems->takeItem(i); // remove the old item we found and cloned
+      }
+    }
+    });
+
   connect(itemSelectionDialog.okButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
     QString items;
     if (itemSelectionDialog.usedItems->count() > 0)
@@ -1143,10 +1159,30 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
 
   // Scale the image, if necessary
   if (ui.buttonGroup->checkedButton() == ui.size2)
-    pix = pix.transformed(QTransform().scale(2, 2));
+    zoomLevel = 2;
   else if (ui.buttonGroup->checkedButton() == ui.size4)
-    pix = pix.transformed(QTransform().scale(4, 4));
+    zoomLevel = 4;
+  else if (ui.buttonGroup->checkedButton() == ui.sizeAuto)
+    zoomLevel = 0;
+  else
+    zoomLevel = 1;
 
+  switch (zoomLevel)
+  {
+  case 0:
+    //auto
+    break;
+  case 1:
+    break; // do nothing if it's not zoomed
+  case 2:
+    pix = pix.transformed(QTransform().scale(2, 2));
+    break;
+  case 4:
+    pix = pix.transformed(QTransform().scale(4, 4));
+    break;
+  default:
+    break;
+  }
 
   // return the modified image
   return pix;
