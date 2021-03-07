@@ -62,7 +62,7 @@ private: // methods
   void fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSetData& data);
   void readTileSetDataWidget(const Ui_TileSetDataUi& ui, TileSetData& data);
   QJsonObject tileSetDataToJson(const TileSetData& data);
-
+  int zoomLevel = 1; // zoomLevel for the tile preview. 1x, 2x, 4x or 0 == auto
 private: // members
   TileDataContainer tileContainer;
   QTreeWidget* tree;

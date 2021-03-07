@@ -242,7 +242,7 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
     delete itemSelectionDialog.availableItems->currentItem();
     });
 
-  connect(itemSelectionDialog.clearButton, QOverload<bool>::of(&QPushButton::clicked), this, [parentUI, itemSelectionDialog, this]() {
+  connect(itemSelectionDialog.clearButton, QOverload<bool>::of(&QPushButton::clicked), this, [itemSelectionDialog, this]() {
     // store count as it will change when we manipulate the list
     int count = itemSelectionDialog.usedItems->count() - 1;
     // iterate over all items, starting backwards to avoid index out of range
@@ -254,6 +254,22 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
       {
         itemSelectionDialog.availableItems->addItem(widget); // add the cloned item to the list
         itemSelectionDialog.usedItems->takeItem(i); // remove the old item we found and cloned
+      }
+    }
+    });
+
+  connect(itemSelectionDialog.addAllButton, QOverload<bool>::of(&QPushButton::clicked), this, [itemSelectionDialog, this]() {
+    // store count as it will change when we manipulate the list
+    int count = itemSelectionDialog.availableItems->count() - 1;
+    // iterate over all items, starting backwards to avoid index out of range
+    for (int i = count; i >= 0; --i)
+    {
+      // we have to clone the widget, moving is not possible
+      QListWidgetItem* widget = itemSelectionDialog.availableItems->item(i)->clone();
+      if (widget) // better be safe than sorry
+      {
+        itemSelectionDialog.usedItems->addItem(widget); // add the cloned item to the list
+        itemSelectionDialog.availableItems->takeItem(i); // remove the old item we found and cloned
       }
     }
     });
@@ -308,7 +324,7 @@ void TileDataUI::setupNew(Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelec
 
 void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI, Ui_ItemSelectionUI& itemSelectionDialog)
 {
-  connect(ui.fileButton, &QPushButton::clicked, this, [ui]() {
+  connect(ui.fileButton, &QPushButton::clicked, this, [ui, this]() {
     QString fileName = QFileDialog::getOpenFileName(ui.fileButton, tr("Select Image"), ui.fileName->text(), tr("Images (*.png)"));
     if (!fileName.isEmpty())
     {
@@ -478,6 +494,16 @@ void TileDataUI::setup(Ui_TileSetDataUi& ui, Ui_TileDataUi& parentUI, Ui_ItemSel
     [this, ui](QAbstractButton* button) {
       if (!ui.origImage->pixmap() || !ui.image->pixmap())
         return;
+
+      // Set the zoomlevel property if a button has changed
+      if (ui.buttonGroup->checkedButton() == ui.size2)
+        zoomLevel = 2;
+      else if (ui.buttonGroup->checkedButton() == ui.size4)
+        zoomLevel = 4;
+      else if (ui.buttonGroup->checkedButton() == ui.sizeAuto)
+        zoomLevel = 0;
+      else
+        zoomLevel = 1;
 
       // set tileSetPreview selection boxes
       ui.image->setPixmap(preparePixMap(ui));
@@ -953,9 +979,27 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
   ui.offset->setValue(data.offset);
   ui.pickRandomTile->setChecked(data.pickRandomTile);
 
-  ui.image->setPixmap(preparePixMap(ui)); // set tileSetPreview selection boxes
-
   ui.deleteButton->setEnabled(!pix.isNull());
+
+  switch (zoomLevel)
+  {
+  case 0: // auto
+    ui.sizeAuto->setChecked(true);
+    break;
+  case 1:
+    ui.size1->setChecked(true);
+    break;
+  case 2:
+    ui.size2->setChecked(true);
+    break;
+  case 4:
+    ui.size4->setChecked(true);
+    break;
+  default:
+    break;
+  }
+
+  ui.image->setPixmap(preparePixMap(ui)); // set tileSetPreview selection boxes
 }
 
 //--------------------------------------------------------------------------------
@@ -1141,17 +1185,41 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
   }
   delete paint;
 
-  // Scale the image, if necessary
-  if (ui.buttonGroup->checkedButton() == ui.size2)
-    pix = pix.transformed(QTransform().scale(2, 2));
-  else if (ui.buttonGroup->checkedButton() == ui.size4)
-    pix = pix.transformed(QTransform().scale(4, 4));
+  // values for auto scaling - subtract a few pixels to prevent scrollarea
+  int windowWidth = ui.scrollArea->width() - 20;
+  int windowHeight = ui.scrollArea->height() - 20;
+ 
+  double XScalefactor = (double)windowWidth / (double)pix.width();
+  double YScalefactor = (double)windowHeight / (double)pix.height();
 
+  switch (zoomLevel)
+  {
+  case 0: //auto 7
+    // check if we need to scale the image in the width or height
+    if (pix.height() * XScalefactor < windowHeight && pix.width() * YScalefactor > windowWidth) // scale the width to max
+    {
+      // calculate Height, width = max
+      pix = pix.transformed(QTransform().scale(XScalefactor, XScalefactor));
+    }
+    else // scale the height to max
+    {
+      pix = pix.transformed(QTransform().scale(YScalefactor, YScalefactor));
+    }
+    break;
+  case 1:
+    break; // do nothing if it's not zoomed
+  case 2:
+    pix = pix.transformed(QTransform().scale(2, 2));
+    break;
+  case 4:
+    pix = pix.transformed(QTransform().scale(4, 4));
+    break;
+  default:
+    break;
+  }
 
   // return the modified image
   return pix;
-
-  //return *(ui.origImage->pixmap());
 }
 
 //--------------------------------------------------------------------------------
