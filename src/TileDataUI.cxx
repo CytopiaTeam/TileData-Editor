@@ -979,7 +979,6 @@ void TileDataUI::fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSet
   ui.offset->setValue(data.offset);
   ui.pickRandomTile->setChecked(data.pickRandomTile);
 
-
   ui.deleteButton->setEnabled(!pix.isNull());
 
   switch (zoomLevel)
@@ -1186,10 +1185,26 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
   }
   delete paint;
 
+  // values for auto scaling - subtract a few pixels to prevent scrollarea
+  int windowWidth = ui.scrollArea->width() - 20;
+  int windowHeight = ui.scrollArea->height() - 20;
+ 
+  double XScalefactor = (double)windowWidth / (double)pix.width();
+  double YScalefactor = (double)windowHeight / (double)pix.height();
+
   switch (zoomLevel)
   {
-  case 0:
-    //auto
+  case 0: //auto 7
+    // check if we need to scale the image in the width or height
+    if (pix.height() * XScalefactor < windowHeight && pix.width() * YScalefactor > windowWidth) // scale the width to max
+    {
+      // calculate Height, width = max
+      pix = pix.transformed(QTransform().scale(XScalefactor, XScalefactor));
+    }
+    else // scale the height to max
+    {
+      pix = pix.transformed(QTransform().scale(YScalefactor, YScalefactor));
+    }
     break;
   case 1:
     break; // do nothing if it's not zoomed
@@ -1205,8 +1220,6 @@ QPixmap TileDataUI::preparePixMap(const Ui_TileSetDataUi& ui)
 
   // return the modified image
   return pix;
-
-  //return *(ui.origImage->pixmap());
 }
 
 //--------------------------------------------------------------------------------
