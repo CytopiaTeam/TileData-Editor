@@ -15,7 +15,7 @@ int main(int argc, char **argv)
         app.installTranslator(&qtTranslator);
 
     QTranslator TileDataUITranslator;
-    if(TileDataUITranslator.load("TileDataEditor_" + QLocale::system().name(), ":/"))
+    if(TileDataUITranslator.load("TileDataEditor_" + QLocale::system().name(), qApp->applicationDirPath() + "/translations"))
         app.installTranslator(&TileDataUITranslator);
 
     TileDataUI ui;

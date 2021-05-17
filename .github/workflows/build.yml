@@ -8,9 +8,9 @@ jobs:
     name: Build Windows
     runs-on: windows-latest
     env:
-      JOM_PATH: C:\apps\JOM
+      BUILD_TOOLS_PATH: C:\apps\build-tools\
     steps:
-      - run: echo $env:JOM_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - run: echo $env:BUILD_TOOLS_PATH | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - uses: actions/checkout@v2.3.4
         with:
@@ -19,9 +19,12 @@ jobs:
       - name: Install JOM
         shell: cmake -P {0}
         run: |
-          file(MAKE_DIRECTORY $ENV{JOM_PATH})
-          file(DOWNLOAD https://vps.anotherfoxguy.com/ipfs/QmQEMVbNzZzbU4qsbTQo4tgAKLfeJGURXypFQaNnru9Fm5 "$ENV{TMP}/JOM.zip" SHOW_PROGRESS)
-          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf "$ENV{TMP}/JOM.zip" WORKING_DIRECTORY "$ENV{JOM_PATH}")
+          file(MAKE_DIRECTORY $ENV{BUILD_TOOLS_PATH})
+          file(DOWNLOAD http://prdownloads.sourceforge.net/rigs-of-rods/build-tools.zip "$ENV{TMP}/build-tools.zip" SHOW_PROGRESS)
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf "$ENV{TMP}/build-tools.zip" WORKING_DIRECTORY "$ENV{BUILD_TOOLS_PATH}")
+
+      - name: Enable Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1.8.0
 
       - name: Cache Qt
         id: cache-qt
@@ -37,7 +40,6 @@ jobs:
 
       - name: Build
         run: |
-            call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
             mkdir build
             cd build
             cmake -G"NMake Makefiles JOM" ..
