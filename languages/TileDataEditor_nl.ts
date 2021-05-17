@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="15"/>
         <source>ItemSelectionUI</source>
-        <translation type="unfinished"></translation>
+        <translation>ItemSelectionUI</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="30"/>
