@@ -43,7 +43,7 @@
        <item row="1" column="1">
         <widget class="QLineEdit" name="category">
          <property name="toolTip">
-          <string>The  category this item resides in. Categories are used for the building menu in-game and for sorting the items in the editors tree view</string>
+          <string>The category this item resides in. Categories are used for the building menu in-game and for sorting the items in the editors tree view</string>
          </property>
          <property name="text">
           <string/>
@@ -147,7 +147,7 @@
        <item>
         <widget class="QCheckBox" name="placeOnGround">
          <property name="toolTip">
-          <string>Whether or not this building be placed on ground.	</string>
+          <string>Whether or not this building can be placed on the ground.	</string>
          </property>
          <property name="text">
           <string>placeOnGround</string>
@@ -157,7 +157,7 @@
        <item>
         <widget class="QCheckBox" name="placeOnWater">
          <property name="toolTip">
-          <string>Whether or not this building be placed on water.	</string>
+          <string>Whether or not this building can be placed on water.	</string>
          </property>
          <property name="text">
           <string>placeOnWater</string>
@@ -236,7 +236,7 @@
      <item row="2" column="5">
       <widget class="QLabel" name="label_14">
        <property name="toolTip">
-        <string>How many residents / workers this building can hold. Also how much jobs it provides</string>
+        <string>How many residents / workers this building can hold. Also how many jobs it provides</string>
        </property>
        <property name="text">
         <string>Inhabitants</string>
@@ -276,7 +276,7 @@
      <item row="9" column="6">
       <widget class="QSpinBox" name="waterProduction">
        <property name="toolTip">
-        <string>Water production of this item. Negative values means power consumption.</string>
+        <string>Water production of this item. Negative values means water consumption.</string>
        </property>
       </widget>
      </item>
@@ -503,7 +503,7 @@
      <item row="2" column="6">
       <widget class="QSpinBox" name="inhabitants">
        <property name="toolTip">
-        <string>How many residents / workers this building can hold. Also how much jobs it provides</string>
+        <string>How many residents / workers this building can hold. Also how many jobs it provides</string>
        </property>
       </widget>
      </item>
@@ -520,7 +520,7 @@
      <item row="9" column="5">
       <widget class="QLabel" name="label_7">
        <property name="toolTip">
-        <string>Water production of this item. Negative values means power consumption.</string>
+        <string>Water production of this item. Negative values means water consumption.</string>
        </property>
        <property name="text">
         <string>Water production</string>
@@ -573,8 +573,8 @@
        <item>
         <widget class="QLineEdit" name="groundDecoration">
          <property name="toolTip">
-          <string>tileID of the item that should be drawn on ground below sprite instead of terrain (grass, concrete, ...). When more than one tileID is supplied, a random ground decoration is chosen from the list on placement. Must be a tileID with tileType GroundDecoration.
-Valuesmust be commaseperated.</string>
+          <string>tileID of the item that should be drawn on ground below sprite instead of terrain (grass, concrete, …). When more than one tileID is supplied, a random ground decoration is chosen from the list on placement. Must be a tileID with tileType GroundDecoration.
+Values must be comma-seperated.</string>
          </property>
         </widget>
        </item>
