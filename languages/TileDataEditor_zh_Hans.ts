@@ -6,47 +6,47 @@
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="15"/>
         <source>ItemSelectionUI</source>
-        <translation type="unfinished"></translation>
+        <translation>项目选择界面</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="30"/>
         <source>List of</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">列表</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="37"/>
         <source>Used</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">用过的</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="59"/>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">全部</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="66"/>
         <source>&lt;&lt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;&lt;</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="73"/>
         <source>&gt;&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&gt;&gt;</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="80"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">清除</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="110"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/ItemSelectionUI.ui" line="117"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">好的</translation>
     </message>
 </context>
 <context>
@@ -56,7 +56,7 @@
         <location filename="../src/TileDataContainer.cxx" line="55"/>
         <location filename="../src/TileDataContainer.cxx" line="80"/>
         <source>Illegal file content</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">不合规的文件内容</translation>
     </message>
 </context>
 <context>
@@ -64,104 +64,104 @@
     <message>
         <location filename="../src/TileDataUI.cxx" line="67"/>
         <source>Tiles</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">瓦片</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="73"/>
         <source>ShoreLines</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">海岸线</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="78"/>
         <source>Slope</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">坡</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="94"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="95"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="96"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>帮助</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="103"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="110"/>
         <source>Save and Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>保存并退出</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="118"/>
         <source>New Item</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新项目</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="125"/>
         <location filename="../src/TileDataUI.cxx" line="1114"/>
         <source>Delete Item</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">删除项目</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="133"/>
         <source>Duplicate Item</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">重复的项目</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="141"/>
         <source>About Qt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">关于 Qt</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="328"/>
         <source>Select Image</source>
-        <translation type="unfinished"></translation>
+        <translation>选择图像</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="328"/>
         <source>Images (*.png)</source>
-        <translation type="unfinished"></translation>
+        <translation>图像 (*.png)</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="337"/>
         <location filename="../src/TileDataUI.cxx" line="973"/>
         <source>(%1 x %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>(%1 x %2)</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="364"/>
         <source>Delete Image</source>
-        <translation type="unfinished"></translation>
+        <translation>删除图像</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="364"/>
         <source>Shall the image really be deleted?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">该图像真的要被删除吗？</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="527"/>
         <source>Load Error</source>
-        <translation type="unfinished"></translation>
+        <translation>加载错误</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="527"/>
         <source>Could not load %1. %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">无法加载 %1。 %2</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.cxx" line="1115"/>
         <source>Shall the item &apos;%1/%2&apos; be deleted?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">是否要删除项目“%1/%2”？</translation>
     </message>
 </context>
 <context>
@@ -169,77 +169,77 @@
     <message>
         <location filename="../src/TileDataUI.ui" line="15"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">形式</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="25"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="32"/>
         <source>The ID of this item. Must be unique and can be referenced in the code.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">此项目的 ID。必须是独一无二的，可以在代码中引用。</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="39"/>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>类别</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="46"/>
         <source>The  category this item resides in. Categories are used for the building menu in-game and for sorting the items in the editors tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">这个项目所在的类别。类别用于游戏中的建筑菜单和编辑器树状视图中的项目排序。</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="56"/>
         <source>Subcategory</source>
-        <translation type="unfinished"></translation>
+        <translation>子类别</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="80"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>预览</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="98"/>
         <location filename="../src/TileDataUI.ui" line="212"/>
         <location filename="../src/TileDataUI.ui" line="536"/>
         <source>The effect on happiness around this building.	</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">对这个建筑周围的幸福的影响。	</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="112"/>
         <location filename="../src/TileDataUI.ui" line="569"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="119"/>
         <location filename="../src/TileDataUI.ui" line="348"/>
         <source>Restrict this building to spawn only in the given biomes. Must correspond to a biome defined in resources/data/TerrainGen.json. Values must be commaseperated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">限制该建筑只能在给定的生物群落中产卵。必须与resources/data/TerrainGen.json中定义的生物群落对应。数值必须用逗号表示</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="128"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>标题</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="135"/>
         <location filename="../src/TileDataUI.ui" line="334"/>
         <source>How much education this building provides (educational building) / requires (job)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">这个建筑提供多少教育（教育建筑）/需要多少教育（工作）。</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="138"/>
         <source>Education</source>
-        <translation type="unfinished"></translation>
+        <translation>教育</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="150"/>
         <source>Whether or not this building be placed on ground.	</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">这座建筑是否被安置在地面上。	</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="153"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/TileDataUI.ui" line="160"/>
         <source>Whether or not this building be placed on water.	</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">这座建筑是否放在水面上。	</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="163"/>
@@ -259,7 +259,7 @@
     <message>
         <location filename="../src/TileDataUI.ui" line="170"/>
         <source>Determines if other tiles can be placed over this one tile or if it needs to be demolished first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">决定其他瓷砖是否可以放在这块瓷砖上，或者是否需要先拆掉它。</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="173"/>
@@ -270,61 +270,61 @@
         <location filename="../src/TileDataUI.ui" line="182"/>
         <location filename="../src/TileDataUI.ui" line="286"/>
         <source>Pollution rate this building produces or prevents (police station)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">该建筑产生或防止的污染率（警察局）</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="185"/>
         <source>Pollution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">污染</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="192"/>
         <location filename="../src/TileDataUI.ui" line="550"/>
         <source>Fire hazard rate this building produces or prevents (police station)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">该建筑物产生或防止的火灾危险率（警察局）</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="195"/>
         <source>FireHazard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">火灾隐患</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="215"/>
         <source>Happiness</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">幸福</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="239"/>
         <location filename="../src/TileDataUI.ui" line="506"/>
         <source>How many residents / workers this building can hold. Also how much jobs it provides</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">这个建筑能容纳多少居民/工人。还有它能提供多少就业机会</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="242"/>
         <source>Inhabitants</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">居民</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="249"/>
         <location filename="../src/TileDataUI.ui" line="480"/>
         <source>Crime rate this building produces or prevents (police station)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">该建筑物产生或防止的犯罪率（警察局）</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="252"/>
         <source>Crime</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">犯罪</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="259"/>
         <location filename="../src/TileDataUI.ui" line="543"/>
         <source>Multiple tags for searching this item ingame. Seperate tags with a comma.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">用于在游戏中搜索此项目的多个标签。用逗号分隔标签。</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="262"/>
         <source>Tags</source>
-        <translation type="unfinished"></translation>
+        <translation>标签</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="269"/>
@@ -334,17 +334,17 @@
     <message>
         <location filename="../src/TileDataUI.ui" line="272"/>
         <source>TileType</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">瓷砖类型</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="300"/>
         <source>How many tiles this building uses.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">这座建筑使用了多少瓷砖。</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="303"/>
         <source>RequiredTiles</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">所需瓷砖</translation>
     </message>
     <message>
         <location filename="../src/TileDataUI.ui" line="310"/>
