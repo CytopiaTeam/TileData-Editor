@@ -162,7 +162,7 @@ void TileDataContainer::tileSetDataFromJson(TileSetData& data, const QJsonValue&
   }
 }
 
-void TileDataContainer::requiredTilesFromJson(RequiredTilesData& data, const QJsonValue& value)
+void TileDataContainer::requiredTilesFromJson(TileSize& data, const QJsonValue& value)
 {
   QJsonObject obj = value.toObject();
 
@@ -317,7 +317,7 @@ QJsonObject TileDataContainer::tileSetDataToJson(const TileSetData& data)
   return obj;
 }
 
-QJsonObject TileDataContainer::requiredTilesToJson(const RequiredTilesData& data)
+QJsonObject TileDataContainer::requiredTilesToJson(const TileSize& data)
 {
   QJsonObject obj;
   obj.insert("width", static_cast<int>(data.width));

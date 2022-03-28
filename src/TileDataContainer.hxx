@@ -33,13 +33,13 @@ private:
   void biomesFromJson(TileData& data, const QJsonValue& value);
   void groundDecorationFromJson(TileData& data, const QJsonValue& value);
   void tileSetDataFromJson(TileSetData& data, const QJsonValue& value);
-  void requiredTilesFromJson(RequiredTilesData& data, const QJsonValue& value);
+  void requiredTilesFromJson(TileSize& data, const QJsonValue& value);
   void zonesFromJson(std::vector<Zones>& data, const QJsonValue& value);
   void stylesFromJson(TileData& data, const QJsonValue& value);
   void wealthFromJson(TileData& data, const QJsonValue& value);
   void tileTypeFromJson(TileType& tileType, const QJsonValue& value);
   QJsonObject tileSetDataToJson(const TileSetData& data);
-  QJsonObject requiredTilesToJson(const RequiredTilesData& data);
+  QJsonObject requiredTilesToJson(const TileSize& data);
   QJsonArray stringArrayToJson(const std::vector<std::string>& data);
   QJsonArray zonesToJson(const std::vector<Zones>& data);
   QJsonArray stylesToJson(const std::vector<Style>& data);
