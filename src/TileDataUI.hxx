@@ -43,9 +43,9 @@ private: // methods
   void createStyleButtons(); /// dynamically create Buttons for assignable styles from the Style enum
   void createWealthButtons(); /// dynamically create Buttons for assignable walth classes from the Wealth enum
   void fillTileTypeDropdown(); /// dynamically create Buttons forall available TileTypes
-  void toggleActiveZoneButtons(const std::vector<Zones>& data); /// when an item is loaded, check all zones button that are assigned in the json
+ void toggleActiveZoneButtons(const std::vector<ZoneType>& data); /// when an item is loaded, check all zones button that are assigned in the json
   void toggleActiveStyleButtons(const std::vector<Style>& data); /// when an item is loaded, check all style button that are assigned in the json
-  void toggleActiveWealthButtons(const std::vector<Wealth>& data); /// when an item is loaded, check all wealth button that are assigned in the json
+  void toggleActiveWealthButtons(const std::vector<ZoneDensity>& data); /// when an item is loaded, check all wealth button that are assigned in the json
   QPixmap preparePixMap(const Ui_TileSetDataUi& ui);
 
   QTreeWidgetItem* newTreeRootItem(const TileData& tile);
@@ -54,11 +54,11 @@ private: // methods
   void ensureUniqueId(TileData& tile);
   void writeToTileData(TileData& tile);
   void readFromTileData(const TileData& tile);
-  std::vector<Zones> ZonesEnumVectorFromString(QString zones);
-  std::vector<Zones> ZonesEnumVectorFromButtons();
+  std::vector<ZoneType> ZonesEnumVectorFromString(QString zones);
+  std::vector<ZoneType> ZonesEnumVectorFromButtons();
   std::vector<Style> StyleEnumVectorFromButtons();
-  std::vector<Wealth> WealthEnumVectorFromButtons();
-  std::string ZonesEnumVectorToString(const std::vector<Zones>& data);
+  std::vector<ZoneDensity> WealthEnumVectorFromButtons();
+  std::string ZonesEnumVectorToString(const std::vector<ZoneType>& data);
   void fillTileSetDataWidget(const Ui_TileSetDataUi& ui, const TileSetData& data);
   void readTileSetDataWidget(const Ui_TileSetDataUi& ui, TileSetData& data);
   QJsonObject tileSetDataToJson(const TileSetData& data);

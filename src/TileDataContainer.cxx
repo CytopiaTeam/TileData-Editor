@@ -120,9 +120,9 @@ QString TileDataContainer::loadFile(const QString& theFileName)
     stringArrayFromJson(tile.tags, obj.value("tags"));
     stringArrayFromJson(tile.biomes, obj.value("biomes"));
     stringArrayFromJson(tile.groundDecoration, obj.value("groundDecoration"));
-    zonesFromJson(tile.zones, obj.value("zones"));
+    zoneTypesFromJson(tile.zoneTypes, obj.value("zoneType"));
     stylesFromJson(tile, obj.value("style"));
-    wealthFromJson(tile, obj.value("wealth"));
+    zoneDensityFromJson(tile, obj.value("zoneDensity"));
 
     tileSetDataFromJson(tile.tiles, obj.value("tiles"));
     tileSetDataFromJson(tile.shoreTiles, obj.value("shoreLine"));
@@ -179,11 +179,11 @@ void TileDataContainer::stringArrayFromJson(std::vector<std::string>& data, cons
 }
 
 
-void TileDataContainer::zonesFromJson(std::vector<Zones>& data, const QJsonValue& value)
+void TileDataContainer::zoneTypesFromJson(std::vector<ZoneType>& data, const QJsonValue& value)
 {
-  for (const QJsonValue& zone : value.toArray())
+  for (const QJsonValue& zoneType : value.toArray())
   {
-    data.push_back(Zones::_from_string_nocase(zone.toString().toStdString().c_str()));
+    data.push_back(ZoneType::_from_string_nocase(zoneType.toString().toStdString().c_str()));
   }
 }
 
@@ -206,20 +206,20 @@ void TileDataContainer::stylesFromJson(TileData& data, const QJsonValue& value)
   }
 }
 
-void TileDataContainer::wealthFromJson(TileData& data, const QJsonValue& value)
+void TileDataContainer::zoneDensityFromJson(TileData& data, const QJsonValue& value)
 {
   if (value.toArray().empty() && data.tileType == +TileType::RCI)
   {
-    for (Wealth wealth : Wealth::_values())
+    for (ZoneDensity zoneDensity : ZoneDensity::_values())
     {
-      data.wealth.push_back(wealth);
+      data.zoneDensity.push_back(zoneDensity);
     }
   }
   else
   {
-    for (const QJsonValue& wealth : value.toArray())
+    for (const QJsonValue& zoneDensity : value.toArray())
     {
-      data.wealth.push_back(Wealth::_from_string_nocase(wealth.toString().toStdString().c_str()));
+      data.zoneDensity.push_back(ZoneDensity::_from_string_nocase(zoneDensity.toString().toStdString().c_str()));
     }
   }
 }
@@ -272,8 +272,8 @@ bool TileDataContainer::saveFile()
     if (!tile.tags.empty()) { obj.insert("tags", stringArrayToJson(tile.tags)); }
     if (!tile.biomes.empty()) { obj.insert("biomes", stringArrayToJson(tile.biomes)); }
     if (!tile.style.empty()) { obj.insert("style", stylesToJson(tile.style)); }
-    if (!tile.wealth.empty()) { obj.insert("wealth", wealthToJson(tile.wealth)); }
-    if (!tile.zones.empty()) { obj.insert("zones", zonesToJson(tile.zones)); }
+    if (!tile.zoneDensity.empty()) { obj.insert("zoneDensity", zoneDensityToJson(tile.zoneDensity)); }
+    if (!tile.zoneTypes.empty()) { obj.insert("zoneType", zoneTypeToJson(tile.zoneTypes)); }
 
     obj.insert("tileType", QString::fromUtf8(tile.tileType._to_string()));
 
@@ -338,13 +338,13 @@ QJsonArray TileDataContainer::stringArrayToJson(const std::vector<std::string>& 
   return result;
 }
 
-QJsonArray TileDataContainer::zonesToJson(const std::vector<Zones>& data)
+QJsonArray TileDataContainer::zoneTypeToJson(const std::vector<ZoneType>& data)
 {
   QJsonArray result;
 
-  for (const Zones zone : data)
+  for (const ZoneType zoneType : data)
   {
-    result.append(QString::fromUtf8(zone._to_string()));
+    result.append(QString::fromUtf8(zoneType._to_string()));
   }
 
   return result;
@@ -362,13 +362,13 @@ QJsonArray TileDataContainer::stylesToJson(const std::vector<Style>& data)
   return result;
 }
 
-QJsonArray TileDataContainer::wealthToJson(const std::vector<Wealth>& data)
+QJsonArray TileDataContainer::zoneDensityToJson(const std::vector<ZoneDensity>& data)
 {
   QJsonArray result;
 
-  for (const Wealth wealth : data)
+  for (const ZoneDensity zoneDensity : data)
   {
-    result.append(QString::fromUtf8(wealth._to_string()));
+    result.append(QString::fromUtf8(zoneDensity._to_string()));
   }
 
   return result;

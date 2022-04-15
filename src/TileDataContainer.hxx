@@ -34,16 +34,16 @@ private:
   void groundDecorationFromJson(TileData& data, const QJsonValue& value);
   void tileSetDataFromJson(TileSetData& data, const QJsonValue& value);
   void requiredTilesFromJson(TileSize& data, const QJsonValue& value);
-  void zonesFromJson(std::vector<Zones>& data, const QJsonValue& value);
+  void zoneTypesFromJson(std::vector<ZoneType>& data, const QJsonValue& value);
   void stylesFromJson(TileData& data, const QJsonValue& value);
-  void wealthFromJson(TileData& data, const QJsonValue& value);
+  void zoneDensityFromJson(TileData& data, const QJsonValue& value);
   void tileTypeFromJson(TileType& tileType, const QJsonValue& value);
   QJsonObject tileSetDataToJson(const TileSetData& data);
   QJsonObject requiredTilesToJson(const TileSize& data);
   QJsonArray stringArrayToJson(const std::vector<std::string>& data);
-  QJsonArray zonesToJson(const std::vector<Zones>& data);
+  QJsonArray zoneTypeToJson(const std::vector<ZoneType>& data);
   QJsonArray stylesToJson(const std::vector<Style>& data);
-  QJsonArray wealthToJson(const std::vector<Wealth>& data);
+  QJsonArray zoneDensityToJson(const std::vector<ZoneDensity>& data);
 
 private:
   QString fileName;
