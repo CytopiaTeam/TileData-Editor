@@ -81,7 +81,7 @@ TileDataUI::TileDataUI()
 
   createActions();
 
-  QSettings settings("JimmySnails", "Cytopia");
+  QSettings settings("SimplyLiz", "Cytopia");
   restoreGeometry(settings.value("main/geometry").toByteArray());
   restoreState(settings.value("main/windowState").toByteArray());
   splitter->restoreState(settings.value("main/splitter").toByteArray());
@@ -718,9 +718,9 @@ void TileDataUI::writeToTileData(TileData& tile)
   tile.RequiredTiles.height = static_cast<unsigned int>(ui.requiredTilesHeight->value());
   tile.RequiredTiles.width = static_cast<unsigned int>(ui.requiredTilesWidth->value());
 
-  tile.zones = ZonesEnumVectorFromButtons();
+  tile.zoneTypes = ZonesEnumVectorFromButtons();
   tile.style = StyleEnumVectorFromButtons();
-  tile.wealth = WealthEnumVectorFromButtons();
+  tile.zoneDensity = WealthEnumVectorFromButtons();
   tile.tileType = TileType::_from_index(ui.TileTypeComboBox->currentIndex());
 
   commaSeperatedStringToVector(ui.tags->text().toStdString(), tile.tags, ",");
@@ -771,9 +771,9 @@ void TileDataUI::readFromTileData(const TileData& tile)
   fillTileSetDataWidget(shoreTileSet, tile.shoreTiles);
   fillTileSetDataWidget(slopeSet, tile.slopeTiles);
 
-  toggleActiveZoneButtons(tile.zones);
+  toggleActiveZoneButtons(tile.zoneTypes);
   toggleActiveStyleButtons(tile.style);
-  toggleActiveWealthButtons(tile.wealth);
+  toggleActiveWealthButtons(tile.zoneDensity);
   ui.TileTypeComboBox->setCurrentIndex(tile.tileType._to_index());
 
   // add little preview image
@@ -786,32 +786,32 @@ void TileDataUI::readFromTileData(const TileData& tile)
 
 //------------------------ Zones -------------------------------------------------
 
-std::string TileDataUI::ZonesEnumVectorToString(const std::vector<Zones>& data)
+std::string TileDataUI::ZonesEnumVectorToString(const std::vector<ZoneType>& data)
 {
-  std::vector<std::string> zones;
+  std::vector<std::string> zoneTypes;
 
-  for (const Zones zone : data)
+  for (const ZoneType zone : data)
   {
-    zones.push_back(zone._to_string());
+    zoneTypes.push_back(zone._to_string());
   }
-  return commaSeperateVector(zones);
+  return commaSeperateVector(zoneTypes);
 }
 
-std::vector<Zones> TileDataUI::ZonesEnumVectorFromString(QString zones)
+std::vector<ZoneType> TileDataUI::ZonesEnumVectorFromString(QString zoneType)
 {
   std::vector<std::string> zoneNames;
-  commaSeperatedStringToVector(zones.toStdString(), zoneNames);
-  std::vector<Zones> result;
+  commaSeperatedStringToVector(zoneType.toStdString(), zoneNames);
+  std::vector<ZoneType> result;
   for (const std::string& zoneName : zoneNames)
   {
-    result.push_back(Zones::_from_string_nocase(zoneName.c_str()));
+    result.push_back(ZoneType::_from_string_nocase(zoneName.c_str()));
   }
   return result;
 }
 
-std::vector<Zones> TileDataUI::ZonesEnumVectorFromButtons()
+std::vector<ZoneType> TileDataUI::ZonesEnumVectorFromButtons()
 {
-  std::vector<Zones> result;
+  std::vector<ZoneType> result;
 
   for (int i = 0; i < ui.zoneButtonsHorizontalLayout->count(); i++)
   {
@@ -819,7 +819,7 @@ std::vector<Zones> TileDataUI::ZonesEnumVectorFromButtons()
 
     if (myButton->isChecked())
     {
-      result.push_back(Zones::_from_string_nocase(myButton->objectName().toStdString().c_str()));
+      result.push_back(ZoneType::_from_string_nocase(myButton->objectName().toStdString().c_str()));
     }
   }
   return result;
@@ -828,7 +828,7 @@ std::vector<Zones> TileDataUI::ZonesEnumVectorFromButtons()
 void TileDataUI::createZoneButtons()
 {
   // Iterate over all Enum values as strings
-  for (const auto zone : Zones::_names())
+  for (const auto zone : ZoneType::_names())
   {
     QPushButton* button = new QPushButton(QString::fromStdString(zone));
     button->setCheckable(true);
@@ -837,7 +837,7 @@ void TileDataUI::createZoneButtons()
   }
 }
 
-void TileDataUI::toggleActiveZoneButtons(const std::vector<Zones>& data)
+void TileDataUI::toggleActiveZoneButtons(const std::vector<ZoneType>& data)
 {
   // iterate over all buttons
   for (int i = 0; i < ui.zoneButtonsHorizontalLayout->count(); i++)
@@ -846,9 +846,9 @@ void TileDataUI::toggleActiveZoneButtons(const std::vector<Zones>& data)
     QPushButton* myButton = dynamic_cast<QPushButton*>(ui.zoneButtonsHorizontalLayout->itemAt(i)->widget());
     myButton->setChecked(false); // reset button
     // iterate over all active zones for this tile
-    for (const Zones& zone : data)
+    for (const ZoneType& zoneType : data)
     {
-      if (myButton->objectName().toStdString().find(zone._to_string()) != std::string::npos)
+      if (myButton->objectName().toStdString().find(zoneType._to_string()) != std::string::npos)
       {
         // if it matches, check the button
         myButton->setChecked(true);
@@ -860,11 +860,11 @@ void TileDataUI::toggleActiveZoneButtons(const std::vector<Zones>& data)
 void TileDataUI::createWealthButtons()
 {
   // Iterate over all Enum values as strings
-  for (const auto wealth : Wealth::_names())
+  for (const auto zoneDensity : ZoneDensity::_names())
   {
-    QPushButton* button = new QPushButton(QString::fromStdString(wealth));
+    QPushButton* button = new QPushButton(QString::fromStdString(zoneDensity));
     button->setCheckable(true);
-    button->setObjectName(QString::fromStdString(wealth));
+    button->setObjectName(QString::fromStdString(zoneDensity));
     ui.wealthButtonsHorizontalLayout->addWidget(button);
   }
 }
@@ -878,7 +878,7 @@ void TileDataUI::fillTileTypeDropdown()
   }
 }
 
-void TileDataUI::toggleActiveWealthButtons(const std::vector<Wealth>& data)
+void TileDataUI::toggleActiveWealthButtons(const std::vector<ZoneDensity>& data)
 {
   // iterate over all buttons
   for (int i = 0; i < ui.wealthButtonsHorizontalLayout->count(); i++)
@@ -887,9 +887,9 @@ void TileDataUI::toggleActiveWealthButtons(const std::vector<Wealth>& data)
     QPushButton* myButton = dynamic_cast<QPushButton*>(ui.wealthButtonsHorizontalLayout->itemAt(i)->widget());
     myButton->setChecked(false); // reset button
     // iterate over all active wealth for this tile
-    for (const Wealth& wealth : data)
+    for (const ZoneDensity& zoneDensity : data)
     {
-      if (myButton->objectName().toStdString().find(wealth._to_string()) != std::string::npos)
+      if (myButton->objectName().toStdString().find(zoneDensity._to_string()) != std::string::npos)
       {
         // if it matches, check the button
         myButton->setChecked(true);
@@ -946,9 +946,9 @@ std::vector<Style> TileDataUI::StyleEnumVectorFromButtons()
   return result;
 }
 
-std::vector<Wealth> TileDataUI::WealthEnumVectorFromButtons()
+std::vector<ZoneDensity> TileDataUI::WealthEnumVectorFromButtons()
 {
-  std::vector<Wealth> result;
+  std::vector<ZoneDensity> result;
 
   for (int i = 0; i < ui.wealthButtonsHorizontalLayout->count(); i++)
   {
@@ -956,7 +956,7 @@ std::vector<Wealth> TileDataUI::WealthEnumVectorFromButtons()
 
     if (myButton->isChecked())
     {
-      result.push_back(Wealth::_from_string_nocase(myButton->objectName().toStdString().c_str()));
+      result.push_back(ZoneDensity::_from_string_nocase(myButton->objectName().toStdString().c_str()));
     }
   }
   return result;
